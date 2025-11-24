@@ -4,7 +4,9 @@ import os
 from appium import webdriver
 from selenium import webdriver as desktop_webdriver
 from selenium.webdriver import ActionChains
-from selenium.webdriver.chrome import webdriver as chrome_webdriver
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.actions import interaction
@@ -100,7 +102,11 @@ def get_desktop_webdriver():
     Creates desktop browser webdriver instance from drivers directory
     """
     if config.CURRENT_PLATFORM == 'chrome':
-        return chrome_webdriver.WebDriver(executable_path=os.path.join(os.getcwd(), 'drivers', 'chromedriver'))
+        # Set up service (path to your chromedriver)
+        service = Service("drivers/chromedriver")
+        # Set up Chrome options
+        options = Options()
+        return webdriver.Chrome(service=service, options=options)
     elif config.CURRENT_PLATFORM == 'firefox':
         return desktop_webdriver.Firefox()
     else:

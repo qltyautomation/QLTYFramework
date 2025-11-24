@@ -48,6 +48,9 @@ class QLTYArgumentParser:
         self.parser.add_argument('-l', '--saucelabs', default=False,
                                  help='Execute tests on Saucelabs cloud platform', required=False,
                                  dest='saucelabs', action='store_true')
+        self.parser.add_argument('-r', '--testrail', default=False,
+                                 help='Enable TestRail integration for test result reporting', required=False,
+                                 dest='testrail', action='store_true')
         self.parser.add_argument('-d', '--managed', default=False,
                                  help='Use automated driver management', required=False,
                                  dest='managed_drivers', action='store_true')
@@ -66,6 +69,7 @@ class QLTYArgumentParser:
         config.UPDATE_AUTOMATION = args.update_automation
         config.REPORT_ON_FAIL = args.report_on_fail
         config.SAUCELABS_INTEGRATION = args.saucelabs
+        config.TESTRAIL_INTEGRATION = args.testrail
         config.MANAGED_DRIVERS = args.managed_drivers
         config.MOBILE_BROWSER = False
         config.DESKTOP_BROWSER = False
@@ -87,6 +91,7 @@ class QLTYArgumentParser:
         logger.debug('Single test execution: {}'.format(config.SINGLE_TEST_NAME))
         logger.debug('Report on failure: {}'.format(config.REPORT_ON_FAIL))
         logger.debug('Saucelabs Integration enabled: {}'.format(config.SAUCELABS_INTEGRATION))
+        logger.debug('TestRail Integration enabled: {}'.format(config.TESTRAIL_INTEGRATION))
         logger.debug('Mobile browser mode: {}'.format(config.MOBILE_BROWSER))
         logger.debug('Jenkins execution detected: {}'.format(config.RUNNING_ON_JENKINS))
 
@@ -149,6 +154,24 @@ class QLTYArgumentParser:
                 missing_settings = True
             if exists(lambda: settings.SAUCELABS['URL']) is None:
                 logger.error('Saucelabs integration requires URL in `settings.py` file')
+                missing_settings = True
+
+        # Validate TestRail integration requirements
+        if config.TESTRAIL_INTEGRATION:
+            if exists(lambda: settings.TESTRAIL['BASE_URL']) is None:
+                logger.error('TestRail integration requires BASE_URL in `settings.py` file')
+                missing_settings = True
+            if exists(lambda: settings.TESTRAIL['USERNAME']) is None:
+                logger.error('TestRail integration requires USERNAME in `settings.py` file')
+                missing_settings = True
+            if exists(lambda: settings.TESTRAIL['API_KEY']) is None:
+                logger.error('TestRail integration requires API_KEY in `settings.py` file')
+                missing_settings = True
+            if exists(lambda: settings.TESTRAIL['PROJECT_ID']) is None:
+                logger.error('TestRail integration requires PROJECT_ID in `settings.py` file')
+                missing_settings = True
+            if exists(lambda: settings.TESTRAIL['SUITE_ID']) is None:
+                logger.error('TestRail integration requires SUITE_ID in `settings.py` file')
                 missing_settings = True
 
         # Validate Jenkins environment configuration

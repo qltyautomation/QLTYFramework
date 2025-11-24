@@ -105,7 +105,7 @@ def get_uuid():
     :return: Shortened unique 6-character identifier
     :rtype: str
     """
-    return '[{}]'.format(str(uuid.uuid4())[:6])
+    return '{}'.format(str(uuid.uuid4())[:6])
 
 
 #: Unique identifier for current test execution session

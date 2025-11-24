@@ -64,7 +64,7 @@ def _report(results, test_run_elapsed_time):
     # Collect all test case results including failures and errors
     test_reporter.get_results(results)
     # Generate and distribute reports
-    logger.debug('Generating test reports')
+    logger.debug('Generating test reports for results :\n{}'.format(test_reporter.test_results))
     TestRunnerUtils.report(test_reporter.test_results, settings.TEST_RUN_ID, test_run_elapsed_time)
 
 

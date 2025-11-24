@@ -4,7 +4,8 @@ import os
 from pprint import pformat
 from datetime import datetime
 # Project libraries
-from qlty.classes.integrations.slack_reporter import SlackReporter
+from qlty.classes.integrations.slack_integration import SlackIntegration
+from qlty.classes.integrations.testrail_integration import TestRailIntegration
 from qlty.utilities.utils import setup_logger, get_unique_build_id
 import qlty.config as config
 import settings
@@ -39,10 +40,19 @@ class TestRunnerUtils:
         :type test_run_elapsed_time: datetime
         """
 
-        # Dispatch Slack notification if enabled
+        # Submit test results to TestRail first if enabled (to get run_id for Slack)
+        testrail_run_id = None
+        if config.TESTRAIL_INTEGRATION:
+            testrail_run_id = TestRunnerUtils._report_to_testrail(test_results, test_run_id, test_run_elapsed_time)
+
+        # Dispatch Slack notification if enabled (with TestRail run_id if available)
         if config.SLACK_REPORTING:
-            SlackReporter().report(TestRunnerUtils.get_testrun_totals(
-                test_results), TestRunnerUtils.get_readable_run_time(test_run_elapsed_time))
+            SlackIntegration().report(
+                TestRunnerUtils.get_testrun_totals(test_results),
+                TestRunnerUtils.get_readable_run_time(test_run_elapsed_time),
+                testrail_run_id,
+                test_run_id
+            )
 
         # Display Saucelabs results link if integration active
         if config.SAUCELABS_INTEGRATION:
@@ -57,8 +67,16 @@ class TestRunnerUtils:
         :return: Test run identifier string
         :rtype: str
         """
-        return '[{}] {} - LOCAL | {} '.format(datetime.now().strftime('%H:%M'),
-                                              config.CURRENT_PLATFORM, pwd.getpwuid(os.getuid())[0])
+        from qlty.utilities.utils import BUILD_ID
+
+        project_name = settings.PROJECT_CONFIG.get('PROJECT_NAME', 'QLTY').upper()
+        platform = config.CURRENT_PLATFORM.upper()
+        start_time = datetime.now().strftime('%H:%M:%S')
+        user = pwd.getpwuid(os.getuid())[0]
+
+        return '{} {} running on {} | started at [{}] by {}'.format(
+            BUILD_ID, project_name, platform, start_time, user
+        )
 
     @staticmethod
     def running_on_ios():
@@ -172,3 +190,85 @@ class TestRunnerUtils:
         result += '{}s'.format(int(test_run_time))
 
         return result
+
+    @staticmethod
+    def _report_to_testrail(test_results, test_run_id, test_run_elapsed_time):
+        """
+        Submits test results to TestRail test management system
+
+        :param test_results: Collection of test execution results
+        :type test_results: dict
+        :param test_run_id: Unique test run identifier
+        :type test_run_id: str
+        :param test_run_elapsed_time: Total test run duration in seconds
+        :type test_run_elapsed_time: float
+        :return: TestRail run ID
+        :rtype: int
+        """
+        try:
+            # Initialize TestRail integration
+            logger.info('Initializing TestRail integration...')
+            testrail = TestRailIntegration()
+
+            # Collect all case IDs that will be tested BEFORE creating the run
+            case_ids_to_test = []
+            for test_class, test_methods in test_results.items():
+                for test_method, result in test_methods.items():
+                    # Include test cases with associated TestRail case IDs
+                    if result.get('test_case_ids') and len(result['test_case_ids']) > 0:
+                        case_ids_to_test.extend(result['test_case_ids'])
+
+            # Remove duplicates while preserving order
+            case_ids_to_test = list(dict.fromkeys(case_ids_to_test))
+            logger.debug('Found {} test case(s) to report: {}'.format(len(case_ids_to_test), case_ids_to_test))
+
+            # Create test run in TestRail with only the cases that were tested
+            # test_run_id already contains: PROJECT | PLATFORM | [TIME] - USER
+            run_name = test_run_id
+            run_description = 'Automated test run\nPlatform: {}\nDuration: {}'.format(
+                config.CURRENT_PLATFORM,
+                TestRunnerUtils.get_readable_run_time(test_run_elapsed_time)
+            )
+
+            test_run = testrail.create_test_run(run_name, run_description, case_ids=case_ids_to_test)
+            run_id = test_run['id']
+
+            # Submit results for each test case
+            for test_class, test_methods in test_results.items():
+                for test_method, result in test_methods.items():
+                    # Skip test cases without associated TestRail case IDs
+                    if not result.get('test_case_ids') or len(result['test_case_ids']) == 0:
+                        logger.debug('Skipping {} - no TestRail case IDs associated'.format(test_method))
+                        continue
+
+                    # Submit result for each associated case ID
+                    for case_id in result['test_case_ids']:
+                        try:
+                            # Map framework status to TestRail status
+                            status = result['status']
+                            comment = result.get('message', '')
+                            elapsed = TestRunnerUtils.get_readable_run_time(result['duration']) if result.get('duration') else None
+
+                            # Add test class and method name to comment
+                            test_identifier = '{}.{}'.format(test_class, test_method)
+                            if comment:
+                                comment = 'Test: {}\n\n{}'.format(test_identifier, comment)
+                            else:
+                                comment = 'Test: {}'.format(test_identifier)
+
+                            # Submit result to TestRail
+                            testrail.add_result_for_case(run_id, case_id, status, comment, elapsed)
+
+                        except Exception as e:
+                            logger.error('Failed to add result for case {}: {}'.format(case_id, str(e)))
+
+            logger.info('TestRail reporting completed successfully')
+            logger.info('View results at: {}/index.php?/runs/view/{}'.format(
+                settings.TESTRAIL['BASE_URL'].rstrip('/'), run_id))
+
+            return run_id
+
+        except Exception as e:
+            logger.error('TestRail integration failed: {}'.format(str(e)))
+            logger.warning('Continuing execution despite TestRail failure')
+            return None

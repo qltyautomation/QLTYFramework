@@ -24,6 +24,8 @@ python -m qlty.qlty_tests -p ios -t TestClassName.test_method_name
 # Run with integrations
 python -m qlty.qlty_tests -p android -s     # Enable Slack
 python -m qlty.qlty_tests -p ios -l         # Enable SauceLabs
+python -m qlty.qlty_tests -p android -r     # Enable TestRail
+python -m qlty.qlty_tests -p ios -s -r      # Enable multiple integrations
 ```
 
 ### Command Line Arguments
@@ -32,6 +34,7 @@ python -m qlty.qlty_tests -p ios -l         # Enable SauceLabs
 - `-t, --test`: Run single test case
 - `-f, --report-on-fail`: Generate reports even for failed tests
 - `-l, --saucelabs`: Run tests on SauceLabs
+- `-r, --testrail`: Enable TestRail integration for test result reporting
 - `-d, --managed`: Enable managed driver functionality
 
 ## Architecture
@@ -40,7 +43,7 @@ python -m qlty.qlty_tests -p ios -l         # Enable SauceLabs
 
 **qlty/config.py**: Framework-wide configuration settings
 - Platform selection
-- Integration toggles (Slack, SauceLabs)
+- Integration toggles (Slack, SauceLabs, TestRail)
 - Environment configurations
 
 **qlty/qlty_tests.py**: Main test runner entry point
@@ -57,7 +60,7 @@ python -m qlty.qlty_tests -p ios -l         # Enable SauceLabs
 - `test_runner_utils.py`: Test execution utilities
   - Platform detection helpers
   - Result aggregation and formatting
-  - Integration orchestration (Slack, SauceLabs)
+  - Integration orchestration (Slack, SauceLabs, TestRail)
 - `test_reporter.py`: Test result collection and tracking
   - Registers test cases with metadata (target, feature)
   - Tracks execution status, duration, and messages
@@ -69,8 +72,9 @@ python -m qlty.qlty_tests -p ios -l         # Enable SauceLabs
 - `web_element_operations.py`: Element manipulation utilities
 
 **qlty/classes/integrations/**
-- `slack_reporter.py`: Slack notification integration
+- `slack_integration.py`: Slack notification integration
 - `saucelabs_integration.py`: SauceLabs cloud testing integration
+- `testrail_integration.py`: TestRail test management integration
 
 **qlty/utilities/**
 - `utils.py`: Common utilities (logging, screenshots, file operations)
@@ -96,6 +100,7 @@ python -m qlty.qlty_tests -p ios -l         # Enable SauceLabs
 4. **Reporting** (`TestRunnerUtils.report()`)
    - Slack notifications
    - SauceLabs results linking
+   - TestRail test run creation and result submission
    - Console output
 
 ### Configuration Requirements
@@ -129,6 +134,13 @@ SELENIUM = {
 # Integration settings (optional, based on flags used)
 SLACK = {'SLACK_AUTH_TOKEN': os.getenv('SLACK_TOKEN'), 'CHANNEL_ID': 'C123456'}
 SAUCELABS = {'USERNAME': '...', 'ACCESS_KEY': '...', 'URL': '...'}
+TESTRAIL = {
+    'BASE_URL': 'https://yourcompany.testrail.io',
+    'USERNAME': 'your.email@company.com',
+    'API_KEY': 'your_api_key',
+    'PROJECT_ID': 1,
+    'SUITE_ID': 1
+}
 GUS = {'ORG_ID': '...', 'URL': '...', 'PRODUCT_TAG': {...}, ...}
 JENKINS = {'JOBS': {...}}
 ```

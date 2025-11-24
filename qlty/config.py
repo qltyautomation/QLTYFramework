@@ -20,6 +20,8 @@ REPORT_ON_FAIL = False
 SINGLE_TEST_NAME = None
 #: Enable SauceLabs cloud testing platform integration
 SAUCELABS_INTEGRATION = False
+#: Enable TestRail test management integration for result reporting
+TESTRAIL_INTEGRATION = False
 #: Execute tests targeting mobile web browsers
 MOBILE_BROWSER = False
 #: Indicates execution within Jenkins CI environment
