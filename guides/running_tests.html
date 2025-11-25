@@ -1,0 +1,322 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Running tests &mdash; QLTY Framework 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ec3859" />
+
+  
+    <link rel="shortcut icon" href="../_static/qltyautomationlogo.jpg"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="QLTY for mobile browsers" href="mobile_browser.html" />
+    <link rel="prev" title="Environment setup" href="environment_setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #131927" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QLTY Framework
+              <img src="../_static/qltyautomationlogo.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="environment_setup.html">Environment setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Running tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#test-execution">Test execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-with-local-settings-py">Configuration with local_settings.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-arguments">Command line arguments</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mobile_browser.html">QLTY for mobile browsers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending_docs.html">Extending documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="saucelabs_integration.html">Saucelabs integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managed_drivers.html">Managed drivers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/integrations.html">Integrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/selenium.html">Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/qlty_utilities.html">QLTY Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #131927" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QLTY Framework</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Running tests</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/running_tests.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="running-tests">
+<h1>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading"></a></h1>
+<p>This section will show you how to run your tests and the available command line arguments</p>
+<section id="test-execution">
+<h2>Test execution<a class="headerlink" href="#test-execution" title="Link to this heading"></a></h2>
+<p>Run the python script <code class="code docutils literal notranslate"><span class="pre">test_runner.py</span></code> with the <code class="code docutils literal notranslate"><span class="pre">--platform=</span></code> parameter:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>test_runner.py<span class="w"> </span>--platform<span class="o">=</span>android
+</pre></div>
+</div>
+<p>With this minimum setup the test runner will execute all available tests for the given platform</p>
+<p>In order for a test to be discoverable, the test method name must have the prefix: <code class="code docutils literal notranslate"><span class="pre">test_</span></code>
+For example: <code class="code docutils literal notranslate"><span class="pre">test_create_new_report</span></code></p>
+<p>Tests methods that do not have that prefix will not be recognized by the test runner as test methods</p>
+</section>
+<section id="configuration-with-local-settings-py">
+<h2>Configuration with local_settings.py<a class="headerlink" href="#configuration-with-local-settings-py" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All integrations require proper configuration in your <code class="code docutils literal notranslate"><span class="pre">local_settings.py</span></code> file.
+This file should be created from the <code class="code docutils literal notranslate"><span class="pre">local_settings.py.example</span></code> template in your test repository.
+Never commit <code class="code docutils literal notranslate"><span class="pre">local_settings.py</span></code> to version control as it contains sensitive credentials.</p>
+</div>
+<p>The framework uses a <code class="code docutils literal notranslate"><span class="pre">local_settings.py</span></code> file to manage all configuration and credentials. This approach:</p>
+<ul class="simple">
+<li><p>Keeps sensitive data out of version control</p></li>
+<li><p>Uses environment variables for CI/CD environments (Jenkins, GitHub Actions, etc.)</p></li>
+<li><p>Provides a consistent configuration pattern across all integrations</p></li>
+</ul>
+<p><strong>Setting up local_settings.py:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy the example file</span>
+cp<span class="w"> </span>local_settings.py.example<span class="w"> </span>local_settings.py
+
+<span class="c1"># Edit with your credentials</span>
+<span class="c1"># Add your API keys, tokens, and configuration values</span>
+</pre></div>
+</div>
+<p>The test runner validates that all required settings are present based on the flags you use. If any required configuration is missing, the framework will exit with an error message indicating which settings need to be added.</p>
+</section>
+<section id="command-line-arguments">
+<h2>Command line arguments<a class="headerlink" href="#command-line-arguments" title="Link to this heading"></a></h2>
+<p>Test execution can be customized in many ways and integrations can also be enabled or disabled through
+command line arguments. These options can be activated by the short flag or the full command name.</p>
+<ul>
+<li><p><strong>Platform</strong> <code class="code docutils literal notranslate"><span class="pre">-p</span></code> or <code class="code docutils literal notranslate"><span class="pre">--platform</span></code> <strong>(REQUIRED)</strong></p>
+<blockquote>
+<div><p><strong>Options:</strong> <code class="code docutils literal notranslate"><span class="pre">ios</span></code>, <code class="code docutils literal notranslate"><span class="pre">android</span></code>, <code class="code docutils literal notranslate"><span class="pre">android_web</span></code>, <code class="code docutils literal notranslate"><span class="pre">ios_web</span></code>, <code class="code docutils literal notranslate"><span class="pre">chrome</span></code>, <code class="code docutils literal notranslate"><span class="pre">firefox</span></code></p>
+<p>Defines the target platform for test execution.</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mobile native apps</span>
+python<span class="w"> </span>test_runner.py<span class="w"> </span>--platform<span class="o">=</span>android
+python<span class="w"> </span>test_runner.py<span class="w"> </span>--platform<span class="o">=</span>ios
+
+<span class="c1"># Mobile web browsers</span>
+python<span class="w"> </span>test_runner.py<span class="w"> </span>--platform<span class="o">=</span>android_web
+python<span class="w"> </span>test_runner.py<span class="w"> </span>--platform<span class="o">=</span>ios_web
+
+<span class="c1"># Desktop browsers</span>
+python<span class="w"> </span>test_runner.py<span class="w"> </span>--platform<span class="o">=</span>chrome
+python<span class="w"> </span>test_runner.py<span class="w"> </span>--platform<span class="o">=</span>firefox
+</pre></div>
+</div>
+<p>Test classes or test methods should be decorated with platform-specific decorators:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@unittest</span><span class="o">.</span><span class="n">skipUnless</span><span class="p">(</span><span class="n">TestRunnerUtils</span><span class="o">.</span><span class="n">running_on_android</span><span class="p">(),</span>
+                   <span class="n">TestRunnerUtils</span><span class="o">.</span><span class="n">running_on_android_message</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_offline_visit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># Test implementation</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Single test</strong> <code class="code docutils literal notranslate"><span class="pre">-t</span></code> or <code class="code docutils literal notranslate"><span class="pre">--test</span></code></p>
+<blockquote>
+<div><p><strong>Default:</strong> <code class="code docutils literal notranslate"><span class="pre">None</span></code> (runs all tests)</p>
+<p>Execute a specific test case instead of running the entire test suite.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>chrome<span class="w"> </span>-t<span class="w"> </span>tests.mobile_web.test_homepage.TestHomepage.test_login
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Slack integration</strong> <code class="code docutils literal notranslate"><span class="pre">-s</span></code> or <code class="code docutils literal notranslate"><span class="pre">--slack</span></code></p>
+<blockquote>
+<div><p><strong>Default:</strong> <code class="code docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Enables Slack notifications for test results. Posts test execution summaries to a configured Slack channel.</p>
+<p><strong>Required configuration in local_settings.py:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SLACK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;SLACK_AUTH_TOKEN&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SLACK_TOKEN&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="s1">&#39;CHANNEL_ID&#39;</span><span class="p">:</span> <span class="s1">&#39;C123456789&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">PROJECT_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;PROJECT_NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;My Project&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;RELEASE&#39;</span><span class="p">:</span> <span class="s1">&#39;1.0.0&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ENVIRONMENT&#39;</span><span class="p">:</span> <span class="s1">&#39;QA&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>android<span class="w"> </span>-s
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>TestRail integration</strong> <code class="code docutils literal notranslate"><span class="pre">-r</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testrail</span></code></p>
+<blockquote>
+<div><p><strong>Default:</strong> <code class="code docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Enables TestRail integration to create test runs and report results automatically.</p>
+<p><strong>Required configuration in local_settings.py:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TESTRAIL</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;BASE_URL&#39;</span><span class="p">:</span> <span class="s1">&#39;https://yourcompany.testrail.io&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;USERNAME&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TESTRAIL_USERNAME&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="s1">&#39;API_KEY&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TESTRAIL_API_KEY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;SUITE_ID&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>android<span class="w"> </span>-r
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>SauceLabs integration</strong> <code class="code docutils literal notranslate"><span class="pre">-l</span></code> or <code class="code docutils literal notranslate"><span class="pre">--saucelabs</span></code></p>
+<blockquote>
+<div><p><strong>Default:</strong> <code class="code docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Executes tests on SauceLabs cloud platform using virtual or real devices.</p>
+<p><strong>Required configuration in local_settings.py:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SAUCELABS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;USERNAME&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SAUCELABS_USERNAME&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="s1">&#39;ACCESS_KEY&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SAUCELABS_ACCESS_KEY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="s1">&#39;URL&#39;</span><span class="p">:</span> <span class="s1">&#39;https://</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">@ondemand.us-west-1.saucelabs.com:443/wd/hub&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Also requires platform-specific capabilities with _saucelabs suffix</span>
+<span class="n">SELENIUM</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;CAPABILITIES&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;android_saucelabs&#39;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+        <span class="s1">&#39;ios_saucelabs&#39;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>android<span class="w"> </span>-l
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Report on fail</strong> <code class="code docutils literal notranslate"><span class="pre">-f</span></code> or <code class="code docutils literal notranslate"><span class="pre">--report-on-fail</span></code></p>
+<blockquote>
+<div><p><strong>Default:</strong> <code class="code docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>By default, reports are only sent on successful test runs. This flag enables reporting regardless of test outcome.
+Automatically activates Slack integration.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>android<span class="w"> </span>-s<span class="w"> </span>-f
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Without this flag, Slack reports are only sent when all tests pass. Use <code class="code docutils literal notranslate"><span class="pre">-f</span></code> to receive notifications
+for both passing and failing test runs.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Managed drivers</strong> <code class="code docutils literal notranslate"><span class="pre">-d</span></code> or <code class="code docutils literal notranslate"><span class="pre">--managed</span></code></p>
+<blockquote>
+<div><p><strong>Default:</strong> <code class="code docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Enables automated driver management for browser-based testing. The framework will automatically download and
+manage WebDriver binaries.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>chrome<span class="w"> </span>-d
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>Combining flags:</strong></p>
+<p>Multiple flags can be combined to enable different features:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run on Android with Slack and TestRail integrations</span>
+python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>android<span class="w"> </span>-s<span class="w"> </span>-r
+
+<span class="c1"># Run specific test on Chrome with Slack notifications</span>
+python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>chrome<span class="w"> </span>-t<span class="w"> </span>tests.web.test_login.TestLogin.test_valid_credentials<span class="w"> </span>-s
+
+<span class="c1"># Run on SauceLabs with all integrations and report on failure</span>
+python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>ios<span class="w"> </span>-l<span class="w"> </span>-s<span class="w"> </span>-r<span class="w"> </span>-f
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="environment_setup.html" class="btn btn-neutral float-left" title="Environment setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mobile_browser.html" class="btn btn-neutral float-right" title="QLTY for mobile browsers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, QLTY Automation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
