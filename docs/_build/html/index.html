@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QLTY Framework &mdash; QLTY Framework 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=76ec3859" />
+
+  
+    <link rel="shortcut icon" href="_static/qltyautomationlogo.jpg"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Environment setup" href="guides/environment_setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #131927" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            QLTY Framework
+              <img src="_static/qltyautomationlogo.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="guides/environment_setup.html">Environment setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/running_tests.html">Running tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="guides/mobile_browser.html">QLTY for mobile browsers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/extending_docs.html">Extending documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/saucelabs_integration.html">Saucelabs integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/managed_drivers.html">Managed drivers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_docs/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_docs/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_docs/integrations.html">Integrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_docs/selenium.html">Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_docs/qlty_utilities.html">QLTY Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #131927" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">QLTY Framework</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">QLTY Framework</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="qlty-framework">
+<h1>QLTY Framework<a class="headerlink" href="#qlty-framework" title="Link to this heading"></a></h1>
+<p>Welcome to the QLTY Framework documentation!</p>
+<p>This documentation site provides helpful information on how to set up
+your environment, common troubleshooting and most important: API documentation for the
+entire library!</p>
+<p>This project is under constant development and we will do our best effort
+to keep documentation up to date.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="guides/environment_setup.html">Environment setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/environment_setup.html#quick-start-automated-installation">Quick Start (Automated Installation)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/environment_setup.html#manual-installation">Manual Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/environment_setup.html#appium-installation">Appium installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/environment_setup.html#android-studio-installation">Android studio installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/environment_setup.html#xcode-installation">Xcode installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guides/running_tests.html">Running tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/running_tests.html#test-execution">Test execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/running_tests.html#configuration-with-local-settings-py">Configuration with local_settings.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/running_tests.html#command-line-arguments">Command line arguments</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="guides/mobile_browser.html">QLTY for mobile browsers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/mobile_browser.html#command-line-platform-option">Command line platform option</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/mobile_browser.html#running-appium-with-chromedriver-auto-download">Running appium with chromedriver auto download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/mobile_browser.html#code-organization">Code organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/mobile_browser.html#mobile-browser-capabilities">Mobile browser capabilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guides/extending_docs.html">Extending documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/extending_docs.html#sphinx-and-restructuredtext">Sphinx and reStructuredText</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/extending_docs.html#documentation-structure">Documentation structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/extending_docs.html#build-the-documentation">Build the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/extending_docs.html#clean-build">Clean build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/extending_docs.html#how-to-document-your-code">How to document your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/extending_docs.html#adding-new-modules-to-documentation">Adding new modules to documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/extending_docs.html#customizing-the-theme">Customizing the theme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guides/saucelabs_integration.html">Saucelabs integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/saucelabs_integration.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/saucelabs_integration.html#special-capabilities">Special capabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/saucelabs_integration.html#tunneling">Tunneling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guides/managed_drivers.html">Managed drivers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/managed_drivers.html#tests-organization">Tests organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/managed_drivers.html#creating-a-new-driver">Creating a new driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/managed_drivers.html#instantiating-your-controllers">Instantiating your controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/managed_drivers.html#terminating-your-drivers">Terminating your drivers</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_docs/core.html">Core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/core.html#test-reporter">Test reporter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/core.html#test-runner-utils">Test runner utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/core.html#qlty-test-case">QLTY test case</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_docs/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_docs/integrations.html">Integrations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/integrations.html#module-slack_integration">Slack integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/integrations.html#slack_integration.SlackIntegration"><code class="docutils literal notranslate"><span class="pre">SlackIntegration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#slack_integration.SlackIntegration.__init__"><code class="docutils literal notranslate"><span class="pre">SlackIntegration.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#slack_integration.SlackIntegration._create_payload"><code class="docutils literal notranslate"><span class="pre">SlackIntegration._create_payload()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#slack_integration.SlackIntegration._get_button_blocks"><code class="docutils literal notranslate"><span class="pre">SlackIntegration._get_button_blocks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#slack_integration.SlackIntegration._get_environment_url"><code class="docutils literal notranslate"><span class="pre">SlackIntegration._get_environment_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#slack_integration.SlackIntegration._get_platform_emoji"><code class="docutils literal notranslate"><span class="pre">SlackIntegration._get_platform_emoji()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#slack_integration.SlackIntegration._post_results"><code class="docutils literal notranslate"><span class="pre">SlackIntegration._post_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#slack_integration.SlackIntegration.report"><code class="docutils literal notranslate"><span class="pre">SlackIntegration.report()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/integrations.html#module-saucelabs_integration">Saucelabs integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/integrations.html#saucelabs_integration.SaucelabsHelper"><code class="docutils literal notranslate"><span class="pre">SaucelabsHelper</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#saucelabs_integration.SaucelabsHelper.get_saucelabs_appium_remote"><code class="docutils literal notranslate"><span class="pre">SaucelabsHelper.get_saucelabs_appium_remote()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#saucelabs_integration.SaucelabsHelper.post_result"><code class="docutils literal notranslate"><span class="pre">SaucelabsHelper.post_result()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/integrations.html#module-testrail_integration">TestRail integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/integrations.html#testrail_integration.TestRailIntegration"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#testrail_integration.TestRailIntegration.__init__"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#testrail_integration.TestRailIntegration._test_connection"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration._test_connection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#testrail_integration.TestRailIntegration.add_result_for_case"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration.add_result_for_case()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#testrail_integration.TestRailIntegration.create_test_run"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration.create_test_run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#testrail_integration.TestRailIntegration.update_run"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration.update_run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/integrations.html#module-mailtrap_integration">Mailtrap integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/integrations.html#mailtrap_integration.MailtrapIntegration"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#mailtrap_integration.MailtrapIntegration.BASE_URL"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration.BASE_URL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#mailtrap_integration.MailtrapIntegration.__init__"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#mailtrap_integration.MailtrapIntegration._extract_verification_link"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration._extract_verification_link()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#mailtrap_integration.MailtrapIntegration._get_message_content"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration._get_message_content()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#mailtrap_integration.MailtrapIntegration._get_messages"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration._get_messages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#mailtrap_integration.MailtrapIntegration.get_emails_for_recipient"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration.get_emails_for_recipient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/integrations.html#mailtrap_integration.MailtrapIntegration.get_verification_link"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration.get_verification_link()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_docs/selenium.html">Selenium</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/selenium.html#module-selenium_operations">Selenium operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.__init__"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations._bool_click"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations._bool_click()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations._swipe_android"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations._swipe_android()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations._swipe_ios"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations._swipe_ios()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations._text_to_be_present_in_elements"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations._text_to_be_present_in_elements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.browser_tap"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.browser_tap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.drag_and_drop"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.drag_and_drop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.drag_and_drop_by_offset"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.drag_and_drop_by_offset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.driver"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.driver</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.get_element"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.get_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.get_elements"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.get_elements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.swipe"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.swipe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.swipe_until_visible"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.swipe_until_visible()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.tap"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.tap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.tap_android_button"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.tap_android_button()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.tap_element_at"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.tap_element_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.try_fetch"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.try_fetch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.wait_for"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.wait_for()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.wait_for_element_to_not_be_visible"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.wait_for_element_to_not_be_visible()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.wait_for_text_in_elements"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.wait_for_text_in_elements()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/selenium.html#module-web_element_operations">Web element operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations"><code class="docutils literal notranslate"><span class="pre">WebElementOperations</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.__init__"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.controller"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.controller</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_browser_tap"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_browser_tap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_click_element"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_click_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_get_element"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_get_element_enabled"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_element_enabled()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_get_element_text"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_element_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_get_element_value"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_element_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_get_element_visibility"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_element_visibility()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_get_elements"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_elements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_swipe_until_visible"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_swipe_until_visible()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_wait_for_element_to_not_be_visible"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_wait_for_element_to_not_be_visible()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_wait_for_text_in_elements"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_wait_for_text_in_elements()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_docs/qlty_utilities.html">QLTY Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/qlty_utilities.html#module-argument_parser">Argument parser</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#argument_parser.QLTYArgumentParser"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/qlty_utilities.html#argument_parser.QLTYArgumentParser.__init__"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/qlty_utilities.html#argument_parser.QLTYArgumentParser._parse_arguments"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser._parse_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/qlty_utilities.html#argument_parser.QLTYArgumentParser._prepare_arguments"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser._prepare_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/qlty_utilities.html#argument_parser.QLTYArgumentParser._print_arguments"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser._print_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/qlty_utilities.html#argument_parser.QLTYArgumentParser._validate_arguments"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser._validate_arguments()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/qlty_utilities.html#module-selenium_utils">Selenium utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#selenium_utils.get_desktop_webdriver"><code class="docutils literal notranslate"><span class="pre">get_desktop_webdriver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#selenium_utils.initialize_driver"><code class="docutils literal notranslate"><span class="pre">initialize_driver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#selenium_utils.perform_action_on_picker_wheel"><code class="docutils literal notranslate"><span class="pre">perform_action_on_picker_wheel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#selenium_utils.perform_tap_back"><code class="docutils literal notranslate"><span class="pre">perform_tap_back()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#selenium_utils.perform_tap_based_on_cords"><code class="docutils literal notranslate"><span class="pre">perform_tap_based_on_cords()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#selenium_utils.perform_tap_location"><code class="docutils literal notranslate"><span class="pre">perform_tap_location()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#selenium_utils.switch_to_native_context"><code class="docutils literal notranslate"><span class="pre">switch_to_native_context()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#selenium_utils.wait_for_web_context"><code class="docutils literal notranslate"><span class="pre">wait_for_web_context()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/qlty_utilities.html#module-utils">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.ANDROID_SWIPE_OFFSETS"><code class="docutils literal notranslate"><span class="pre">ANDROID_SWIPE_OFFSETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.BUILD_ID"><code class="docutils literal notranslate"><span class="pre">BUILD_ID</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.CURRENT_TEST_RUN_ID"><code class="docutils literal notranslate"><span class="pre">CURRENT_TEST_RUN_ID</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.IOS_SWIPE_OFFSETS"><code class="docutils literal notranslate"><span class="pre">IOS_SWIPE_OFFSETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.dump_logs"><code class="docutils literal notranslate"><span class="pre">dump_logs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.dump_screenshot"><code class="docutils literal notranslate"><span class="pre">dump_screenshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.dump_test_results"><code class="docutils literal notranslate"><span class="pre">dump_test_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.exists"><code class="docutils literal notranslate"><span class="pre">exists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.get_gus_product_tag"><code class="docutils literal notranslate"><span class="pre">get_gus_product_tag()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.get_unique_build_id"><code class="docutils literal notranslate"><span class="pre">get_unique_build_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.get_uuid"><code class="docutils literal notranslate"><span class="pre">get_uuid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.is_browser_run"><code class="docutils literal notranslate"><span class="pre">is_browser_run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.setup_logger"><code class="docutils literal notranslate"><span class="pre">setup_logger()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_docs/qlty_utilities.html#module-config">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.CURRENT_PLATFORM"><code class="docutils literal notranslate"><span class="pre">CURRENT_PLATFORM</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.DESKTOP_BROWSER"><code class="docutils literal notranslate"><span class="pre">DESKTOP_BROWSER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.MANAGED_DRIVERS"><code class="docutils literal notranslate"><span class="pre">MANAGED_DRIVERS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.MOBILE_BROWSER"><code class="docutils literal notranslate"><span class="pre">MOBILE_BROWSER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.PROJECT_FRIENDLY_NAME"><code class="docutils literal notranslate"><span class="pre">PROJECT_FRIENDLY_NAME</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.REPORT_ON_FAIL"><code class="docutils literal notranslate"><span class="pre">REPORT_ON_FAIL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.RUNNING_ON_JENKINS"><code class="docutils literal notranslate"><span class="pre">RUNNING_ON_JENKINS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.SAUCELABS_INTEGRATION"><code class="docutils literal notranslate"><span class="pre">SAUCELABS_INTEGRATION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.SINGLE_TEST_NAME"><code class="docutils literal notranslate"><span class="pre">SINGLE_TEST_NAME</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.SLACK_REPORTING"><code class="docutils literal notranslate"><span class="pre">SLACK_REPORTING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.TESTRAIL_INTEGRATION"><code class="docutils literal notranslate"><span class="pre">TESTRAIL_INTEGRATION</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="guides/environment_setup.html" class="btn btn-neutral float-right" title="Environment setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, QLTY Automation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,571 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Integrations &mdash; QLTY Framework 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ec3859" />
+
+  
+    <link rel="shortcut icon" href="../_static/qltyautomationlogo.jpg"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Selenium" href="selenium.html" />
+    <link rel="prev" title="API" href="api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #131927" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QLTY Framework
+              <img src="../_static/qltyautomationlogo.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/environment_setup.html">Environment setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/running_tests.html">Running tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/mobile_browser.html">QLTY for mobile browsers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/extending_docs.html">Extending documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/saucelabs_integration.html">Saucelabs integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/managed_drivers.html">Managed drivers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Integrations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-slack_integration">Slack integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#slack_integration.SlackIntegration"><code class="docutils literal notranslate"><span class="pre">SlackIntegration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#slack_integration.SlackIntegration.__init__"><code class="docutils literal notranslate"><span class="pre">SlackIntegration.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#slack_integration.SlackIntegration._create_payload"><code class="docutils literal notranslate"><span class="pre">SlackIntegration._create_payload()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#slack_integration.SlackIntegration._get_button_blocks"><code class="docutils literal notranslate"><span class="pre">SlackIntegration._get_button_blocks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#slack_integration.SlackIntegration._get_environment_url"><code class="docutils literal notranslate"><span class="pre">SlackIntegration._get_environment_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#slack_integration.SlackIntegration._get_platform_emoji"><code class="docutils literal notranslate"><span class="pre">SlackIntegration._get_platform_emoji()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#slack_integration.SlackIntegration._post_results"><code class="docutils literal notranslate"><span class="pre">SlackIntegration._post_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#slack_integration.SlackIntegration.report"><code class="docutils literal notranslate"><span class="pre">SlackIntegration.report()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-saucelabs_integration">Saucelabs integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#saucelabs_integration.SaucelabsHelper"><code class="docutils literal notranslate"><span class="pre">SaucelabsHelper</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#saucelabs_integration.SaucelabsHelper.get_saucelabs_appium_remote"><code class="docutils literal notranslate"><span class="pre">SaucelabsHelper.get_saucelabs_appium_remote()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#saucelabs_integration.SaucelabsHelper.post_result"><code class="docutils literal notranslate"><span class="pre">SaucelabsHelper.post_result()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-testrail_integration">TestRail integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testrail_integration.TestRailIntegration"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#testrail_integration.TestRailIntegration.__init__"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testrail_integration.TestRailIntegration._test_connection"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration._test_connection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testrail_integration.TestRailIntegration.add_result_for_case"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration.add_result_for_case()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testrail_integration.TestRailIntegration.create_test_run"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration.create_test_run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testrail_integration.TestRailIntegration.update_run"><code class="docutils literal notranslate"><span class="pre">TestRailIntegration.update_run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mailtrap_integration">Mailtrap integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mailtrap_integration.MailtrapIntegration"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mailtrap_integration.MailtrapIntegration.BASE_URL"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration.BASE_URL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mailtrap_integration.MailtrapIntegration.__init__"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mailtrap_integration.MailtrapIntegration._extract_verification_link"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration._extract_verification_link()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mailtrap_integration.MailtrapIntegration._get_message_content"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration._get_message_content()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mailtrap_integration.MailtrapIntegration._get_messages"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration._get_messages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mailtrap_integration.MailtrapIntegration.get_emails_for_recipient"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration.get_emails_for_recipient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mailtrap_integration.MailtrapIntegration.get_verification_link"><code class="docutils literal notranslate"><span class="pre">MailtrapIntegration.get_verification_link()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="selenium.html">Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qlty_utilities.html">QLTY Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #131927" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QLTY Framework</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Integrations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api_docs/integrations.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="integrations">
+<h1>Integrations<a class="headerlink" href="#integrations" title="Link to this heading"></a></h1>
+<p>Documentation for all the possible integrations.</p>
+<section id="module-slack_integration">
+<span id="slack-integration"></span><h2>Slack integration<a class="headerlink" href="#module-slack_integration" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="slack_integration.SlackIntegration">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">slack_integration.</span></span><span class="sig-name descname"><span class="pre">SlackIntegration</span></span><a class="headerlink" href="#slack_integration.SlackIntegration" title="Link to this definition"></a></dt>
+<dd><p>Provides automated Slack channel messaging capabilities for test result reporting</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="slack_integration.SlackIntegration.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#slack_integration.SlackIntegration.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the integration with Slack client</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="slack_integration.SlackIntegration._create_payload">
+<span class="sig-name descname"><span class="pre">_create_payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testrail_run_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_run_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#slack_integration.SlackIntegration._create_payload" title="Link to this definition"></a></dt>
+<dd><p>Builds JSON payload containing test run information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results</strong> – Aggregated test run statistics</p></li>
+<li><p><strong>run_time</strong> – Human-readable test execution duration</p></li>
+<li><p><strong>testrail_run_id</strong> – Optional TestRail run ID for linking</p></li>
+<li><p><strong>test_run_id</strong> – Test run identifier string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary</p>
+</dd>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer or None</p>
+</dd>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String or None</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="slack_integration.SlackIntegration._get_button_blocks">
+<span class="sig-name descname"><span class="pre">_get_button_blocks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#slack_integration.SlackIntegration._get_button_blocks" title="Link to this definition"></a></dt>
+<dd><p>Generates action button blocks for Slack message based on
+active integration configurations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON payload with integration action buttons</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="slack_integration.SlackIntegration._get_environment_url">
+<span class="sig-name descname"><span class="pre">_get_environment_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#slack_integration.SlackIntegration._get_environment_url" title="Link to this definition"></a></dt>
+<dd><p>Returns the BASE URL for the current environment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BASE URL string or environment name as fallback</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="slack_integration.SlackIntegration._get_platform_emoji">
+<span class="sig-name descname"><span class="pre">_get_platform_emoji</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#slack_integration.SlackIntegration._get_platform_emoji" title="Link to this definition"></a></dt>
+<dd><p>Returns the appropriate emoji representing the current platform configuration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Platform emoji string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="slack_integration.SlackIntegration._post_results">
+<span class="sig-name descname"><span class="pre">_post_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#slack_integration.SlackIntegration._post_results" title="Link to this definition"></a></dt>
+<dd><p>Publishes message to Slack using REST API endpoint for the configured channel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>payload</strong> – Data formatted in Slack block kit structure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="slack_integration.SlackIntegration.report">
+<span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testrail_run_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_run_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#slack_integration.SlackIntegration.report" title="Link to this definition"></a></dt>
+<dd><p>Publishes test results to the configured Slack channel specified in <code class="code docutils literal notranslate"><span class="pre">settings.py</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results</strong> – Aggregated test run statistics</p></li>
+<li><p><strong>run_time</strong> – Human-readable test execution duration</p></li>
+<li><p><strong>testrail_run_id</strong> – Optional TestRail run ID for linking</p></li>
+<li><p><strong>test_run_id</strong> – Test run identifier string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary</p>
+</dd>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer or None</p>
+</dd>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String or None</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-saucelabs_integration">
+<span id="saucelabs-integration"></span><h2>Saucelabs integration<a class="headerlink" href="#module-saucelabs_integration" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="saucelabs_integration.SaucelabsHelper">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">saucelabs_integration.</span></span><span class="sig-name descname"><span class="pre">SaucelabsHelper</span></span><a class="headerlink" href="#saucelabs_integration.SaucelabsHelper" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="saucelabs_integration.SaucelabsHelper.get_saucelabs_appium_remote">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_saucelabs_appium_remote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_case</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#saucelabs_integration.SaucelabsHelper.get_saucelabs_appium_remote" title="Link to this definition"></a></dt>
+<dd><p>Configures and returns a webdriver instance for Saucelabs remote execution with
+appropriate metadata for test organization
+:param test_case: A QLTY test case instance
+:type: QLTYTestcase
+:param platform: Platform identifier for webdriver configuration
+:type: String
+:return: Configured webdriver instance for saucelabs execution
+:rtype: Webdriver</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="saucelabs_integration.SaucelabsHelper.post_result">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_case</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#saucelabs_integration.SaucelabsHelper.post_result" title="Link to this definition"></a></dt>
+<dd><p>Submits test case result to the Saucelabs job record</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>test_case</strong> (<em>QLTYTestCase</em>) – A QLTY test case for accessing webdriver</p></li>
+<li><p><strong>driver</strong> (<em>Webdriver</em>) – Webdriver for accessing script executor and posting result</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-testrail_integration">
+<span id="testrail-integration"></span><h2>TestRail integration<a class="headerlink" href="#module-testrail_integration" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="testrail_integration.TestRailIntegration">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testrail_integration.</span></span><span class="sig-name descname"><span class="pre">TestRailIntegration</span></span><a class="headerlink" href="#testrail_integration.TestRailIntegration" title="Link to this definition"></a></dt>
+<dd><p>Provides TestRail API integration for test result reporting.
+Enables creation of test runs and submission of test results to TestRail.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="testrail_integration.TestRailIntegration.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testrail_integration.TestRailIntegration.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the TestRail integration with API credentials from settings</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testrail_integration.TestRailIntegration._test_connection">
+<span class="sig-name descname"><span class="pre">_test_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testrail_integration.TestRailIntegration._test_connection" title="Link to this definition"></a></dt>
+<dd><p>Tests the connection to TestRail API by making a simple GET request</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If connection fails or credentials are invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testrail_integration.TestRailIntegration.add_result_for_case">
+<span class="sig-name descname"><span class="pre">add_result_for_case</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elapsed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testrail_integration.TestRailIntegration.add_result_for_case" title="Link to this definition"></a></dt>
+<dd><p>Adds a test result for a specific test case in a test run.
+This method should be called at the end of each test case execution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_id</strong> (<em>int</em>) – The ID of the test run</p></li>
+<li><p><strong>case_id</strong> (<em>int</em>) – The ID of the test case (e.g., 69 for case C69)</p></li>
+<li><p><strong>status</strong> (<em>str</em>) – The status of the test (passed, failed, blocked, retest, untested)</p></li>
+<li><p><strong>comment</strong> (<em>str</em>) – Comment or error message for the result (optional)</p></li>
+<li><p><strong>elapsed</strong> (<em>str</em>) – Time elapsed in seconds or time string (e.g., “1m 30s”) (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The created test result object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If adding result fails</p>
+</dd>
+</dl>
+<p>Status values:
+- ‘passed’ or 1: Test passed
+- ‘blocked’ or 2: Test blocked
+- ‘untested’ or 3: Test not executed
+- ‘retest’ or 4: Test needs retest
+- ‘failed’ or 5: Test failed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testrail_integration.TestRailIntegration.create_test_run">
+<span class="sig-name descname"><span class="pre">create_test_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testrail_integration.TestRailIntegration.create_test_run" title="Link to this definition"></a></dt>
+<dd><p>Creates a new test run in TestRail with specific test cases or all cases from the suite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of the test run</p></li>
+<li><p><strong>description</strong> (<em>str</em>) – Description of the test run (optional)</p></li>
+<li><p><strong>case_ids</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – List of specific test case IDs to include in the run (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The created test run object containing run_id</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If test run creation fails</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testrail_integration.TestRailIntegration.update_run">
+<span class="sig-name descname"><span class="pre">update_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testrail_integration.TestRailIntegration.update_run" title="Link to this definition"></a></dt>
+<dd><p>Updates a test run to include only specific test cases.
+This is useful for removing untested cases from the run after execution completes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_id</strong> (<em>int</em>) – The ID of the test run to update</p></li>
+<li><p><strong>case_ids</strong> (<em>list</em>) – List of test case IDs to include in the run</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated test run object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If update fails</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mailtrap_integration">
+<span id="mailtrap-integration"></span><h2>Mailtrap integration<a class="headerlink" href="#module-mailtrap_integration" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mailtrap_integration.MailtrapIntegration">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mailtrap_integration.</span></span><span class="sig-name descname"><span class="pre">MailtrapIntegration</span></span><a class="headerlink" href="#mailtrap_integration.MailtrapIntegration" title="Link to this definition"></a></dt>
+<dd><p>Provides Mailtrap email access capabilities for test automation.
+Enables retrieval and parsing of test emails sent through Mailtrap.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mailtrap_integration.MailtrapIntegration.BASE_URL">
+<span class="sig-name descname"><span class="pre">BASE_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://mailtrap.io/api'</span></em><a class="headerlink" href="#mailtrap_integration.MailtrapIntegration.BASE_URL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mailtrap_integration.MailtrapIntegration.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mailtrap_integration.MailtrapIntegration.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the Mailtrap helper with API credentials from settings</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mailtrap_integration.MailtrapIntegration._extract_verification_link">
+<span class="sig-name descname"><span class="pre">_extract_verification_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mailtrap_integration.MailtrapIntegration._extract_verification_link" title="Link to this definition"></a></dt>
+<dd><p>Extracts the verification/confirmation link from the email body</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>dict</em>) – The full message content</p></li>
+<li><p><strong>url_prefix</strong> (<em>str</em><em> or </em><em>None</em>) – Optional URL prefix to search for (e.g., “<a class="reference external" href="https://example.com/verify/">https://example.com/verify/</a>”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The verification link URL</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mailtrap_integration.MailtrapIntegration._get_message_content">
+<span class="sig-name descname"><span class="pre">_get_message_content</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mailtrap_integration.MailtrapIntegration._get_message_content" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the full content of a specific message including HTML and text bodies</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message_id</strong> (<em>int</em>) – The ID of the message to retrieve</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Full message content including body</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mailtrap_integration.MailtrapIntegration._get_messages">
+<span class="sig-name descname"><span class="pre">_get_messages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mailtrap_integration.MailtrapIntegration._get_messages" title="Link to this definition"></a></dt>
+<dd><p>Retrieves all messages from the Mailtrap inbox</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of messages</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mailtrap_integration.MailtrapIntegration.get_emails_for_recipient">
+<span class="sig-name descname"><span class="pre">get_emails_for_recipient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recipient_email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mailtrap_integration.MailtrapIntegration.get_emails_for_recipient" title="Link to this definition"></a></dt>
+<dd><p>Retrieves all emails sent to a specific recipient email address.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>recipient_email</strong> (<em>str</em>) – The email address of the recipient</p></li>
+<li><p><strong>include_content</strong> (<em>bool</em>) – Whether to fetch full content for each email (default: False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of emails sent to the recipient</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mailtrap_integration.MailtrapIntegration.get_verification_link">
+<span class="sig-name descname"><span class="pre">get_verification_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recipient_email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poll_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mailtrap_integration.MailtrapIntegration.get_verification_link" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the verification link from the latest email sent to the provided email address.</p>
+<p>This method polls the Mailtrap inbox for a new email to the specified recipient,
+retrieves the most recent message, and extracts the verification/confirmation link
+from the email body.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>recipient_email</strong> (<em>str</em>) – The email address of the recipient</p></li>
+<li><p><strong>max_wait</strong> (<em>int</em>) – Maximum time to wait for email in seconds (default: 30)</p></li>
+<li><p><strong>poll_interval</strong> (<em>int</em>) – Time between polling attempts in seconds (default: 2)</p></li>
+<li><p><strong>url_prefix</strong> (<em>str</em><em> or </em><em>None</em>) – Optional URL prefix to search for (e.g., “<a class="reference external" href="https://example.com/verify/">https://example.com/verify/</a>”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The verification link URL extracted from the email</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If no email is found or verification link cannot be extracted</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api.html" class="btn btn-neutral float-left" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="selenium.html" class="btn btn-neutral float-right" title="Selenium" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, QLTY Automation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

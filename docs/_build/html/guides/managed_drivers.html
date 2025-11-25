@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Managed drivers &mdash; QLTY Framework 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ec3859" />
+
+  
+    <link rel="shortcut icon" href="../_static/qltyautomationlogo.jpg"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Core" href="../api_docs/core.html" />
+    <link rel="prev" title="Saucelabs integration" href="saucelabs_integration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #131927" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QLTY Framework
+              <img src="../_static/qltyautomationlogo.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="environment_setup.html">Environment setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="running_tests.html">Running tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mobile_browser.html">QLTY for mobile browsers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending_docs.html">Extending documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="saucelabs_integration.html">Saucelabs integration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Managed drivers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tests-organization">Tests organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-new-driver">Creating a new driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#instantiating-your-controllers">Instantiating your controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#terminating-your-drivers">Terminating your drivers</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/integrations.html">Integrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/selenium.html">Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/qlty_utilities.html">QLTY Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #131927" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QLTY Framework</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Managed drivers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/managed_drivers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="managed-drivers">
+<h1>Managed drivers<a class="headerlink" href="#managed-drivers" title="Link to this heading"></a></h1>
+<p>This section covers the usage of <strong>managed drivers</strong> which allows the user to instantiate an amount of drivers for whatever
+platform is required.</p>
+<p>A simple use case for this feature is as follows:
+A test case requires you to create a new account through a native application (iOS or Android), after successful creation
+the application requires you to verify a link that was sent to the users email address.
+The user then needs to open either a desktop browser (chrome or firefox) or a mobile browser (mobile chrome, mobile firefox)
+to click on the link and continue with the registration.</p>
+<p>This is where <strong>managed drivers</strong> come in. To use this functionality you need to send the flag <code class="code docutils literal notranslate"><span class="pre">-d</span></code> or <code class="code docutils literal notranslate"><span class="pre">--managed</span></code> in
+your command line arguments.</p>
+<blockquote>
+<div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Setting this flag will make QLTY <strong>not</strong> create any drivers for your test run. Commonly, QLTY will create a driver for
+you for whatever platform you sent in your CLI arguments.
+This means that you are responsible for creating your drivers and setting the correct capabilities in your <code class="code docutils literal notranslate"><span class="pre">settings.py</span></code> file.</p>
+</div>
+</div></blockquote>
+<section id="tests-organization">
+<h2>Tests organization<a class="headerlink" href="#tests-organization" title="Link to this heading"></a></h2>
+<p>Usually QLTY uses the given platform to load the tests that are in this platform folder.
+This is still the case for using <strong>managed drivers</strong> regardless of whether the test case starts or ends in the given platform.</p>
+<p>A recommendation would be to place your tests on the directory for the platform where the majority of the test case takes place.
+In the given example, most of the registration happens in the native side (iOS or Android) so it would make sense to place them
+in the iOS or Android test directory.</p>
+</section>
+<section id="creating-a-new-driver">
+<h2>Creating a new driver<a class="headerlink" href="#creating-a-new-driver" title="Link to this heading"></a></h2>
+<p>As mentioned before with this feature you are now responsible of creating your own webdriver.
+Make sure that the proper capabilities for the drivers that you are going to be using are set up in your <code class="code docutils literal notranslate"><span class="pre">settings.py</span></code> file.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When running your tests on SauceLabs, creating a native driver will automatically request the device to Saucelabs.
+There is no support for creating native drivers both locally and in saucelabs at the same time.</p>
+</div>
+</div></blockquote>
+<p>To create a new driver:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">android_driver</span> <span class="o">=</span> <span class="n">initialize_driver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;android&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The current available platforms to create a new driver are: <code class="code docutils literal notranslate"><span class="pre">android</span></code>, <code class="code docutils literal notranslate"><span class="pre">ios</span></code>, <code class="code docutils literal notranslate"><span class="pre">android_web</span></code>, <code class="code docutils literal notranslate"><span class="pre">ios_web</span></code>,
+<code class="code docutils literal notranslate"><span class="pre">chrome</span></code> and <code class="code docutils literal notranslate"><span class="pre">firefox</span></code>.</p>
+<blockquote>
+<div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When running your tests on <cite>Saucelabs</cite> note that sessions will be automatically terminated if they have not received
+a command in 90 seconds. It is recommended that you create your driver when you are about to use it. If you create
+all your drivers at the beginning of the test case chances are that the first drivers will be terminated by the
+time you need them.</p>
+</div>
+</div></blockquote>
+</section>
+<section id="instantiating-your-controllers">
+<h2>Instantiating your controllers<a class="headerlink" href="#instantiating-your-controllers" title="Link to this heading"></a></h2>
+<p>In the code above you can notice that we kept a reference to the driver that we just created. This is required since we need
+to create our controllers and pass that driver.</p>
+<p>When running QLTY without the <strong>managed drivers</strong> feature, you would usually instantiate your controllers in the <code class="code docutils literal notranslate"><span class="pre">setUp()</span></code>
+method of your test class. This is possible due to the fact that at that point you already have a reference to the driver and
+the test case will only use a single driver for the entire test execution.</p>
+<p>With <strong>managed drivers</strong> we can no longer do that in the <code class="code docutils literal notranslate"><span class="pre">setUp()</span></code> method since QLTY does not know which drivers are going
+to be initialized nor which controllers are needed.</p>
+<p>That is why you need to register your controllers <strong>after</strong> you created your driver:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">android_driver</span> <span class="o">=</span> <span class="n">initialize_driver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;android&#39;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">controllers</span><span class="o">.</span><span class="n">register_controller</span><span class="p">(</span><span class="s1">&#39;homepage&#39;</span><span class="p">,</span> <span class="n">HomepageController</span><span class="p">(</span><span class="n">android_driver</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>You can now use your controllers and they will work on the driver that you used to register them.</p>
+</section>
+<section id="terminating-your-drivers">
+<h2>Terminating your drivers<a class="headerlink" href="#terminating-your-drivers" title="Link to this heading"></a></h2>
+<p>There is no need to terminate your drivers at the end of your test execution.
+QLTY registers every new driver to the current test case and when the test case is completed it will fetch the logs for whatever
+platform the driver is for and call the <code class="code docutils literal notranslate"><span class="pre">tearDown</span></code> method which essentially closes the session.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="saucelabs_integration.html" class="btn btn-neutral float-left" title="Saucelabs integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api_docs/core.html" class="btn btn-neutral float-right" title="Core" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, QLTY Automation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
