@@ -63,6 +63,20 @@ get_repo_name() {
     basename "$url" .git
 }
 
+# Function to convert HTTPS URL to SSH URL
+convert_to_ssh() {
+    local url="$1"
+    # Convert https://hostname/user/repo.git to git@hostname:user/repo.git
+    if [[ "$url" =~ ^https://([^/]+)/(.+)$ ]]; then
+        local hostname="${BASH_REMATCH[1]}"
+        local path="${BASH_REMATCH[2]}"
+        echo "git@${hostname}:${path}"
+    else
+        # Already SSH or unknown format, return as-is
+        echo "$url"
+    fi
+}
+
 # Function to show usage
 show_usage() {
     cat << EOF
@@ -72,11 +86,13 @@ Options:
     --repo URL          Client test repository URL (required)
     --framework URL     Framework repository URL (default: $FRAMEWORK_REPO)
     --install-dir DIR   Installation directory (default: $INSTALL_DIR)
+    --ssh               Use SSH for git clone (converts HTTPS URLs to SSH)
     --help              Show this help message
 
 Examples:
     $0 --repo https://github.com/yourusername/ClientTests.git
-    $0 --repo https://github.com/yourusername/QLTYFivable.git --install-dir ~/Projects
+    $0 --repo https://bitbucket.org/fivable/lms-testing.git --ssh
+    $0 --repo git@bitbucket.org:fivable/lms-testing.git
 
 Environment Variables:
     CLIENT_REPO         Can be used instead of --repo flag
@@ -85,6 +101,7 @@ EOF
 
 # Parse command line arguments
 CLIENT_REPO_FROM_ARG=""
+USE_SSH=false
 while [[ $# -gt 0 ]]; do
     case $1 in
         --repo)
@@ -100,6 +117,10 @@ while [[ $# -gt 0 ]]; do
             INSTALL_DIR="$2"
             shift 2
             ;;
+        --ssh)
+            USE_SSH=true
+            shift
+            ;;
         --help)
             show_usage
             exit 0
@@ -111,6 +132,12 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# Convert URLs to SSH if --ssh flag is set
+if [ "$USE_SSH" = true ]; then
+    CLIENT_REPO=$(convert_to_ssh "$CLIENT_REPO")
+    FRAMEWORK_REPO=$(convert_to_ssh "$FRAMEWORK_REPO")
+fi
 
 # Header
 echo ""
