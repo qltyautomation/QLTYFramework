@@ -10,7 +10,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/yourusername/QLTYFivable/main/install.sh | bash
 #
 #   # Direct installation with repo parameter:
-#   curl -fsSL https://raw.githubusercontent.com/yourusername/QLTYFramework/main/install.sh | bash -s -- --repo https://github.com/yourusername/ClientTests.git
+#   curl -fsSL https://raw.githubusercontent.com/qltyautomation/QLTYFramework/main/install.sh | bash -s -- --repo https://bitbucket.org/fivable/lms-testing.git
 #
 #   # Or locally:
 #   ./install.sh --repo https://github.com/yourusername/ClientTests.git
@@ -84,10 +84,12 @@ EOF
 }
 
 # Parse command line arguments
+CLIENT_REPO_FROM_ARG=""
 while [[ $# -gt 0 ]]; do
     case $1 in
         --repo)
             CLIENT_REPO="$2"
+            CLIENT_REPO_FROM_ARG="$2"
             shift 2
             ;;
         --framework)
@@ -135,7 +137,8 @@ print_info "Virtual Environment: $VENV_NAME"
 print_info "Installation Directory: $INSTALL_DIR"
 
 # Check if running from local directory or remote
-if [ -f "$(pwd)/test_runner.py" ]; then
+# Only skip clone if running locally (no --repo provided) AND test_runner.py exists
+if [ -z "$CLIENT_REPO_FROM_ARG" ] && [ -f "$(pwd)/test_runner.py" ]; then
     print_info "Running from local client directory, skipping clone..."
     SKIP_CLONE=true
     CURRENT_DIR="$(pwd)"
