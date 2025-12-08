@@ -209,7 +209,11 @@ if [ "$SKIP_CLONE" = false ]; then
                 print_info "Using existing QLTYFramework directory"
             fi
         else
-            print_info "Non-interactive mode: Using existing QLTYFramework directory"
+            # Non-interactive mode: remove and re-clone to ensure clean state
+            print_info "Non-interactive mode: Removing and re-cloning QLTYFramework..."
+            rm -rf QLTYFramework
+            git clone "$FRAMEWORK_REPO" QLTYFramework
+            print_success "QLTYFramework cloned"
         fi
     else
         git clone "$FRAMEWORK_REPO" QLTYFramework
@@ -231,7 +235,11 @@ if [ "$SKIP_CLONE" = false ]; then
                 print_info "Using existing $CLIENT_NAME directory"
             fi
         else
-            print_info "Non-interactive mode: Using existing $CLIENT_NAME directory"
+            # Non-interactive mode: remove and re-clone to ensure clean state
+            print_info "Non-interactive mode: Removing and re-cloning $CLIENT_NAME..."
+            rm -rf "$CLIENT_NAME"
+            git clone "$CLIENT_REPO" "$CLIENT_NAME"
+            print_success "$CLIENT_NAME cloned"
         fi
     else
         git clone "$CLIENT_REPO" "$CLIENT_NAME"
