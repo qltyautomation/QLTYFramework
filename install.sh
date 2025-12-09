@@ -6,14 +6,15 @@
 # This script sets up the QLTY test automation environment for any client project
 #
 # Usage:
-#   # From client wrapper script:
-#   curl -fsSL https://raw.githubusercontent.com/yourusername/QLTYFivable/main/install.sh | bash
-#
-#   # Direct installation with repo parameter:
+#   # Remote installation with HTTPS:
 #   curl -fsSL https://raw.githubusercontent.com/qltyautomation/QLTYFramework/main/install.sh | bash -s -- --repo https://bitbucket.org/fivable/lms-testing.git
 #
-#   # Or locally:
+#   # Remote installation with SSH (recommended for SSH key authentication):
+#   curl -fsSL https://raw.githubusercontent.com/qltyautomation/QLTYFramework/main/install.sh | bash -s -- --repo https://bitbucket.org/fivable/lms-testing.git --ssh
+#
+#   # Local installation:
 #   ./install.sh --repo https://github.com/yourusername/ClientTests.git
+#   ./install.sh --repo git@github.com:yourusername/ClientTests.git
 #
 ###############################################################################
 
