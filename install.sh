@@ -88,6 +88,7 @@ Options:
     --framework URL     Framework repository URL (default: $FRAMEWORK_REPO)
     --install-dir DIR   Installation directory (default: $INSTALL_DIR)
     --ssh               Use SSH for client repo clone (converts HTTPS URL to SSH)
+    --chromedriver      Download and install matching ChromeDriver
     --help              Show this help message
 
 Examples:
@@ -103,6 +104,7 @@ EOF
 # Parse command line arguments
 CLIENT_REPO_FROM_ARG=""
 USE_SSH=false
+INSTALL_CHROMEDRIVER=false
 while [[ $# -gt 0 ]]; do
     case $1 in
         --repo)
@@ -120,6 +122,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --ssh)
             USE_SSH=true
+            shift
+            ;;
+        --chromedriver)
+            INSTALL_CHROMEDRIVER=true
             shift
             ;;
         --help)
@@ -360,17 +366,29 @@ fi
 print_info "Checking drivers directory..."
 if [ -d "drivers" ]; then
     print_success "drivers directory found"
-
-    # List available drivers
-    if [ "$(ls -A drivers 2>/dev/null)" ]; then
-        print_info "Available drivers:"
-        ls -1 drivers/ | sed 's/^/  - /'
-    else
-        print_warning "drivers directory is empty"
-        print_info "You may need to download ChromeDriver or other WebDriver binaries"
-    fi
 else
-    print_warning "drivers directory not found"
+    print_warning "drivers directory not found, creating it..."
+    mkdir -p drivers
+fi
+
+# Install ChromeDriver if requested
+if [ "$INSTALL_CHROMEDRIVER" = true ]; then
+    print_info "Installing ChromeDriver..."
+    if [ -f "$FRAMEWORK_PATH/scripts/fetch_chromedriver.sh" ]; then
+        bash "$FRAMEWORK_PATH/scripts/fetch_chromedriver.sh" --output "$CURRENT_DIR/drivers"
+    else
+        print_warning "fetch_chromedriver.sh not found in $FRAMEWORK_PATH/scripts/"
+        print_info "You can manually run: fetch_chromedriver.sh --output ./drivers"
+    fi
+fi
+
+# List available drivers
+if [ -d "drivers" ] && [ "$(ls -A drivers 2>/dev/null)" ]; then
+    print_info "Available drivers:"
+    ls -1 drivers/ | sed 's/^/  - /'
+else
+    print_warning "No drivers found in drivers directory"
+    print_info "Use --chromedriver flag to auto-install ChromeDriver"
 fi
 
 # Print installation summary
