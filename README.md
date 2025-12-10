@@ -18,6 +18,9 @@ curl -fsSL https://raw.githubusercontent.com/qltyautomation/QLTYFramework/main/i
 
 # Using SSH (recommended for SSH key authentication)
 curl -fsSL https://raw.githubusercontent.com/qltyautomation/QLTYFramework/main/install.sh | bash -s -- --repo https://bitbucket.org/your-org/your-tests.git --ssh
+
+# With automatic ChromeDriver installation
+curl -fsSL https://raw.githubusercontent.com/qltyautomation/QLTYFramework/main/install.sh | bash -s -- --repo https://bitbucket.org/your-org/your-tests.git --ssh --chromedriver
 ```
 
 ### Install Options
@@ -26,8 +29,26 @@ curl -fsSL https://raw.githubusercontent.com/qltyautomation/QLTYFramework/main/i
 |--------|-------------|
 | `--repo URL` | Client test repository URL (required) |
 | `--ssh` | Use SSH for client repo clone (converts HTTPS URL to SSH) |
+| `--chromedriver` | Auto-download matching ChromeDriver for installed Chrome |
 | `--framework URL` | Custom framework repository URL |
 | `--install-dir DIR` | Custom installation directory (default: ~/QLTYAutomation) |
+
+### ChromeDriver Management
+
+The framework includes a utility to automatically download the correct ChromeDriver version:
+
+```bash
+# Check Chrome and ChromeDriver versions
+./scripts/fetch_chromedriver.sh --check
+
+# Download matching ChromeDriver to ./drivers
+./scripts/fetch_chromedriver.sh
+
+# Download to custom directory
+./scripts/fetch_chromedriver.sh --output /path/to/drivers
+```
+
+This is useful when Chrome auto-updates and you need a matching ChromeDriver.
 
 ### Manual Install
 
