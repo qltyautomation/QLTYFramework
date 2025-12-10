@@ -25,7 +25,7 @@ curl -fsSL https://raw.githubusercontent.com/qltyautomation/QLTYFramework/main/i
 | Option | Description |
 |--------|-------------|
 | `--repo URL` | Client test repository URL (required) |
-| `--ssh` | Use SSH for git clone (converts HTTPS URLs to SSH) |
+| `--ssh` | Use SSH for client repo clone (converts HTTPS URL to SSH) |
 | `--framework URL` | Custom framework repository URL |
 | `--install-dir DIR` | Custom installation directory (default: ~/QLTYAutomation) |
 

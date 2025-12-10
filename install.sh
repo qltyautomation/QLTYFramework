@@ -87,7 +87,7 @@ Options:
     --repo URL          Client test repository URL (required)
     --framework URL     Framework repository URL (default: $FRAMEWORK_REPO)
     --install-dir DIR   Installation directory (default: $INSTALL_DIR)
-    --ssh               Use SSH for git clone (converts HTTPS URLs to SSH)
+    --ssh               Use SSH for client repo clone (converts HTTPS URL to SSH)
     --help              Show this help message
 
 Examples:
@@ -134,10 +134,10 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Convert URLs to SSH if --ssh flag is set
+# Convert client repo URL to SSH if --ssh flag is set
+# Note: Framework repo uses HTTPS by default since it's public
 if [ "$USE_SSH" = true ]; then
     CLIENT_REPO=$(convert_to_ssh "$CLIENT_REPO")
-    FRAMEWORK_REPO=$(convert_to_ssh "$FRAMEWORK_REPO")
 fi
 
 # Header
