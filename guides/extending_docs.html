@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extending documentation &mdash; QLTY Framework 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ec3859" />
+
+  
+    <link rel="shortcut icon" href="../_static/qltyautomationlogo.jpg"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Saucelabs integration" href="saucelabs_integration.html" />
+    <link rel="prev" title="QLTY for mobile browsers" href="mobile_browser.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #131927" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QLTY Framework
+              <img src="../_static/qltyautomationlogo.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="environment_setup.html">Environment setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="running_tests.html">Running tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mobile_browser.html">QLTY for mobile browsers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Extending documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sphinx-and-restructuredtext">Sphinx and reStructuredText</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation-structure">Documentation structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-the-documentation">Build the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#clean-build">Clean build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-document-your-code">How to document your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-new-modules-to-documentation">Adding new modules to documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customizing-the-theme">Customizing the theme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="saucelabs_integration.html">Saucelabs integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managed_drivers.html">Managed drivers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/integrations.html">Integrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/selenium.html">Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/qlty_utilities.html">QLTY Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #131927" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QLTY Framework</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Extending documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/extending_docs.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="extending-documentation">
+<h1>Extending documentation<a class="headerlink" href="#extending-documentation" title="Link to this heading"></a></h1>
+<p>We are working hard to ensure all aspects of the framework are well-documented. If you identify any gaps
+in the documentation, you can help us fill them!</p>
+<section id="sphinx-and-restructuredtext">
+<h2>Sphinx and reStructuredText<a class="headerlink" href="#sphinx-and-restructuredtext" title="Link to this heading"></a></h2>
+<p>This documentation is generated by <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/quickstart.html">Sphinx</a>
+using <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reStructuredText</a> markup language. Please refer to their
+documentation for detailed syntax and features.</p>
+</section>
+<section id="documentation-structure">
+<h2>Documentation structure<a class="headerlink" href="#documentation-structure" title="Link to this heading"></a></h2>
+<p>All documentation sources are located in the <code class="code docutils literal notranslate"><span class="pre">docs/</span></code> directory with the following structure:</p>
+<p><code class="code docutils literal notranslate"><span class="pre">api_docs/</span></code> - Auto-generated API documentation for all QLTY modules, classes, and functions</p>
+<p><code class="code docutils literal notranslate"><span class="pre">guides/</span></code> - User guides covering environment setup, running tests, integrations, and features</p>
+<p><code class="code docutils literal notranslate"><span class="pre">images/</span></code> - Images and screenshots used in the documentation</p>
+<p><code class="code docutils literal notranslate"><span class="pre">_static/</span></code> - Custom CSS, JavaScript, and other static assets (including theme customization)</p>
+<p><code class="code docutils literal notranslate"><span class="pre">_build/html/</span></code> - Generated HTML output (not committed to version control)</p>
+</section>
+<section id="build-the-documentation">
+<h2>Build the documentation<a class="headerlink" href="#build-the-documentation" title="Link to this heading"></a></h2>
+<p>To build the documentation locally, navigate to the docs directory and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>docs
+sphinx-build<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build/html
+</pre></div>
+</div>
+<p>This generates HTML documentation in <code class="code docutils literal notranslate"><span class="pre">_build/html/</span></code>. Open <code class="code docutils literal notranslate"><span class="pre">_build/html/index.html</span></code> in your browser to view.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You need to have Sphinx installed in your Python environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>sphinx<span class="w"> </span>sphinx-rtd-theme
+</pre></div>
+</div>
+</div>
+</section>
+<section id="clean-build">
+<h2>Clean build<a class="headerlink" href="#clean-build" title="Link to this heading"></a></h2>
+<p>If you need to rebuild from scratch (recommended after structural changes):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>docs
+rm<span class="w"> </span>-rf<span class="w"> </span>_build/html
+sphinx-build<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build/html
+</pre></div>
+</div>
+</section>
+<section id="how-to-document-your-code">
+<h2>How to document your code<a class="headerlink" href="#how-to-document-your-code" title="Link to this heading"></a></h2>
+<p>We are using a sphinx module called <code class="code docutils literal notranslate"><span class="pre">autodoc</span></code> that retrieves all the docstring for a given module.
+Here is an example of how you can document a method in a module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves a list of elements that match the query. It first tries to verify that at least one element is</span>
+<span class="sd">    present in the view.</span>
+
+<span class="sd">    :param locator: A tuple of By or MobileBy and a string e.g.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            (By.XPATH, &#39;//android.widget.Button[@resource-id=&quot;oaapprove&quot;]&#39;)</span>
+
+<span class="sd">    :type locator: tuple</span>
+<span class="sd">    :return: A list of web elements that matched the query</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>Describe your method parameters by using <code class="code docutils literal notranslate"><span class="pre">:param</span> <span class="pre">arg_name:</span> <span class="pre">Description</span></code></p>
+<p>Describe your parameter type by using <code class="code docutils literal notranslate"><span class="pre">:type</span> <span class="pre">arg_name:</span> <span class="pre">parameter_type</span></code></p>
+<p>Describe your return value by using <code class="code docutils literal notranslate"><span class="pre">:return:</span> <span class="pre">Description</span></code></p>
+<p>And describe your return value type by using <code class="code docutils literal notranslate"><span class="pre">:rtype:</span> <span class="pre">return_parameter_type</span></code></p>
+<p>The text inside the docstring is interpreted as reStructuredText so any directives can be used like code blocks or lists</p>
+<p>The example above generates the following documentation:</p>
+<img alt="../_images/example_doc_output.png" class="align-center" src="../_images/example_doc_output.png" />
+<p>You can also add documentation to your class or module level variables by adding a colon <code class="code docutils literal notranslate"><span class="pre">:</span></code> right after the <code class="code docutils literal notranslate"><span class="pre">#</span></code> sign:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#: Defines if the test run should send a message through slack to a specific channel</span>
+<span class="n">SLACK_REPORTING</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-new-modules-to-documentation">
+<h2>Adding new modules to documentation<a class="headerlink" href="#adding-new-modules-to-documentation" title="Link to this heading"></a></h2>
+<p>To add a new module to the API documentation:</p>
+<ol class="arabic">
+<li><p><strong>Create the module</strong> in the appropriate directory within <code class="code docutils literal notranslate"><span class="pre">qlty/</span></code></p></li>
+<li><p><strong>Document your code</strong> using docstrings (see “How to document your code” section above)</p></li>
+<li><p><strong>Add to sys.path</strong> if needed. Edit <code class="code docutils literal notranslate"><span class="pre">docs/conf.py</span></code> to include new directories:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../qlty&#39;</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../qlty/classes&#39;</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../qlty/utilities&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Create or update RST file</strong> in <code class="code docutils literal notranslate"><span class="pre">docs/api_docs/</span></code> to reference your module:</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="gh">My New Module</span>
+<span class="gh">-------------</span>
+
+<span class="p">..</span> <span class="ow">automodule</span><span class="p">::</span> my_new_module
+   <span class="nc">:members:</span>
+   <span class="nc">:undoc-members:</span>
+   <span class="nc">:show-inheritance:</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Add to index</strong> by including your RST file in <code class="code docutils literal notranslate"><span class="pre">docs/index.rst</span></code> under the API Documentation section</p></li>
+<li><p><strong>Rebuild</strong> the documentation to see your changes</p></li>
+</ol>
+</section>
+<section id="customizing-the-theme">
+<h2>Customizing the theme<a class="headerlink" href="#customizing-the-theme" title="Link to this heading"></a></h2>
+<p>The documentation uses a custom theme based on Read the Docs. To modify the appearance:</p>
+<p><strong>Edit colors and styling</strong> in <code class="code docutils literal notranslate"><span class="pre">docs/_static/custom.css</span></code></p>
+<p><strong>Current brand colors:</strong></p>
+<ul class="simple">
+<li><p>Primary: <code class="code docutils literal notranslate"><span class="pre">#f62def</span></code> (pink/magenta)</p></li>
+<li><p>Secondary: <code class="code docutils literal notranslate"><span class="pre">#4750c8</span></code> (blue/purple)</p></li>
+<li><p>Background: <code class="code docutils literal notranslate"><span class="pre">#131927</span></code> (dark navy)</p></li>
+</ul>
+<p><strong>Add fonts or other assets</strong> by updating <code class="code docutils literal notranslate"><span class="pre">html_css_files</span></code> in <code class="code docutils literal notranslate"><span class="pre">docs/conf.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">html_css_files</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;custom.css&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>After making theme changes, rebuild the documentation to see your updates.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mobile_browser.html" class="btn btn-neutral float-left" title="QLTY for mobile browsers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="saucelabs_integration.html" class="btn btn-neutral float-right" title="Saucelabs integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, QLTY Automation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
