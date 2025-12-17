@@ -169,11 +169,20 @@ python<span class="w"> </span>test_runner.py<span class="w"> </span>--platform<s
 <li><p><strong>Single test</strong> <code class="code docutils literal notranslate"><span class="pre">-t</span></code> or <code class="code docutils literal notranslate"><span class="pre">--test</span></code></p>
 <blockquote>
 <div><p><strong>Default:</strong> <code class="code docutils literal notranslate"><span class="pre">None</span></code> (runs all tests)</p>
-<p>Execute a specific test case instead of running the entire test suite.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>chrome<span class="w"> </span>-t<span class="w"> </span>tests.mobile_web.test_homepage.TestHomepage.test_login
+<p>Execute a specific test case instead of running the entire test suite.
+Multiple formats are supported:</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run all tests in a class (simplest format)</span>
+python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>chrome<span class="w"> </span>-t<span class="w"> </span>TestHomepage
+
+<span class="c1"># Run a specific test method</span>
+python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>chrome<span class="w"> </span>-t<span class="w"> </span>TestHomepage.test_login
+
+<span class="c1"># Explicit module path (if needed)</span>
+python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>chrome<span class="w"> </span>-t<span class="w"> </span>test_homepage.TestHomepage.test_login
 </pre></div>
 </div>
+<p>The framework automatically converts class names to module names (e.g., <code class="docutils literal notranslate"><span class="pre">TestHomepage</span></code> → <code class="docutils literal notranslate"><span class="pre">test_homepage.TestHomepage</span></code>).</p>
 </div></blockquote>
 </li>
 <li><p><strong>Slack integration</strong> <code class="code docutils literal notranslate"><span class="pre">-s</span></code> or <code class="code docutils literal notranslate"><span class="pre">--slack</span></code></p>

@@ -147,13 +147,15 @@ class TestRunnerUtils:
             'failed_percentage': '0.0%',
         }
 
-        # Aggregate test result statistics
+        # Aggregate test result statistics by counting test case IDs
         for test_class, test_methods in test_results.items():
             for test_method, result in test_methods.items():
+                # Count test case IDs instead of test methods
+                case_count = len(result.get('test_case_ids', [])) or 1
                 if result['status'] == 'passed':
-                    results['passed_testcases'] += 1
+                    results['passed_testcases'] += case_count
                 elif result['status'] == 'failed':
-                    results['failed_testcases'] += 1
+                    results['failed_testcases'] += case_count
                 else:
                     logger.warning('Unrecognized result status: {}'.format(result['status']))
 

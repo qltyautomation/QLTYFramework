@@ -18,8 +18,10 @@ pip install -e .
 # Run all tests
 python -m qlty.qlty_tests -p [ios|android]
 
-# Run single test
-python -m qlty.qlty_tests -p ios -t TestClassName.test_method_name
+# Run single test (multiple formats supported)
+python -m qlty.qlty_tests -p chrome -t TestClassName                      # All tests in class
+python -m qlty.qlty_tests -p chrome -t TestClassName.test_method_name     # Specific test method
+python -m qlty.qlty_tests -p chrome -t test_module.TestClassName          # Explicit module path
 
 # Run with integrations
 python -m qlty.qlty_tests -p android -s     # Enable Slack
@@ -70,6 +72,7 @@ python -m qlty.qlty_tests -p ios -s -r      # Enable multiple integrations
 **qlty/classes/selenium/**
 - `selenium_operations.py`: WebDriver interaction wrappers
 - `web_element_operations.py`: Element manipulation utilities
+  - `op_scroll_to_element(locator_key)`: Scrolls element into viewport using JavaScript (desktop web only)
 
 **qlty/classes/integrations/**
 - `slack_integration.py`: Slack notification integration

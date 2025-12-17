@@ -90,12 +90,22 @@ command line arguments. These options can be activated by the short flag or the 
     **Default:** :code:`None` (runs all tests)
 
     Execute a specific test case instead of running the entire test suite.
+    Multiple formats are supported:
 
-    **Example:**
+    **Examples:**
 
     .. code-block:: bash
 
-        python test_runner.py -p chrome -t tests.mobile_web.test_homepage.TestHomepage.test_login
+        # Run all tests in a class (simplest format)
+        python test_runner.py -p chrome -t TestHomepage
+
+        # Run a specific test method
+        python test_runner.py -p chrome -t TestHomepage.test_login
+
+        # Explicit module path (if needed)
+        python test_runner.py -p chrome -t test_homepage.TestHomepage.test_login
+
+    The framework automatically converts class names to module names (e.g., ``TestHomepage`` → ``test_homepage.TestHomepage``).
 
 - **Slack integration** :code:`-s` or :code:`--slack`
 

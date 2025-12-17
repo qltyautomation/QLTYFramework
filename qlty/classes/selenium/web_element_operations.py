@@ -159,3 +159,20 @@ class WebElementOperations(SeleniumOperations):
         :rtype: WebElement
         """
         return self.controller.swipe_until_visible(self.controller.LOCATORS[locator_key], attempts)
+
+    def op_scroll_to_element(self, locator_key, timeout=settings.SELENIUM['TIMEOUT']):
+        """
+        Scrolls the page until the element identified by locator_key is visible in the viewport.
+        Uses JavaScript scrollIntoView for desktop web browsers.
+
+        :param locator_key: Dictionary key for the locators collection
+        :type locator_key: str
+        :param timeout: Maximum wait time in seconds to find the element, defaults to
+            settings.SELENIUM['TIMEOUT'] from settings.py
+        :type timeout: int
+        :return: Located web element after scrolling
+        :rtype: WebElement
+        """
+        element = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
+        self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
+        return element
