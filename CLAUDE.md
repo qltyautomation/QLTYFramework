@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-QLTYFramework is a mobile automation testing framework built on Appium for iOS and Android platforms. It provides a comprehensive testing solution with integrations for reporting, CI/CD, and cloud testing services.
+QLTYFramework is a test automation framework supporting both mobile (Appium for iOS/Android) and web (Selenium for Chrome/Firefox) platforms. It provides a comprehensive testing solution with integrations for reporting, CI/CD, and cloud testing services.
 
 ## Development Commands
 
@@ -38,6 +38,7 @@ python -m qlty.qlty_tests -p ios -s -r      # Enable multiple integrations
 - `-l, --saucelabs`: Run tests on SauceLabs
 - `-r, --testrail`: Enable TestRail integration for test result reporting
 - `-d, --managed`: Enable managed driver functionality
+- `--headless`: Run browser in headless mode (no UI) - useful for CI/CD pipelines
 
 ## Architecture
 
@@ -71,8 +72,23 @@ python -m qlty.qlty_tests -p ios -s -r      # Enable multiple integrations
 
 **qlty/classes/selenium/**
 - `selenium_operations.py`: WebDriver interaction wrappers
-- `web_element_operations.py`: Element manipulation utilities
-  - `op_scroll_to_element(locator_key)`: Scrolls element into viewport using JavaScript (desktop web only)
+- `web_element_operations.py`: Element manipulation utilities using `op_` prefix methods
+  - `op_click_element(locator_key)`: Waits for element to be clickable and clicks it
+  - `op_get_element(locator_key)`: Returns the WebElement for direct manipulation
+  - `op_get_elements(locator_key)`: Returns all matching WebElements
+  - `op_get_element_text(locator_key)`: Gets text content of element
+  - `op_get_element_value(locator_key)`: Gets value attribute of element
+  - `op_get_element_visibility(locator_key)`: Returns True if element is displayed
+  - `op_get_element_enabled(locator_key)`: Returns True if element is enabled
+  - `op_scroll_to_element(locator_key)`: Scrolls element into viewport (desktop web)
+  - `op_select_dropdown_by_text(locator_key, text)`: Selects dropdown option by visible text
+  - `op_select_dropdown_by_value(locator_key, value)`: Selects dropdown option by value attribute
+  - `op_get_selected_dropdown_text(locator_key)`: Gets currently selected dropdown option text
+  - `op_set_checkbox(locator_key, checked)`: Sets checkbox to checked/unchecked state
+  - `op_is_checkbox_checked(locator_key)`: Returns True if checkbox is selected
+  - `op_wait_for_text_in_elements(locator_key, text)`: Waits for text to appear in elements
+  - `op_wait_for_element_to_not_be_visible(locator_key)`: Waits for element to disappear
+  - `op_swipe_until_visible(locator_key)`: Swipes until element is visible (mobile)
 
 **qlty/classes/integrations/**
 - `slack_integration.py`: Slack notification integration

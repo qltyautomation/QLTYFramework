@@ -30,3 +30,5 @@ RUNNING_ON_JENKINS = False
 MANAGED_DRIVERS = False
 #: Execute tests using desktop browsers via Selenium only (no Appium)
 DESKTOP_BROWSER = False
+#: Run browser in headless mode (no UI)
+HEADLESS = False

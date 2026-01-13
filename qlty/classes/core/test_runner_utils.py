@@ -207,6 +207,15 @@ class TestRunnerUtils:
         :return: TestRail run ID
         :rtype: int
         """
+        # Check for failures and respect REPORT_ON_FAIL setting
+        totals = TestRunnerUtils.get_testrun_totals(test_results)
+        if totals['failed_testcases'] > 0:
+            if not config.REPORT_ON_FAIL:
+                logger.warning('Failed test results detected, skipping TestRail reporting')
+                return None
+            else:
+                logger.warning('Forcing TestRail reporting despite failed results')
+
         try:
             # Initialize TestRail integration
             logger.info('Initializing TestRail integration...')

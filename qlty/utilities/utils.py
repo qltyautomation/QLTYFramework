@@ -190,15 +190,6 @@ def dump_screenshot(results_dir, test_case, driver):
         logger.debug('Screenshot captured at: {}'.format(screenshot_path))
 
 
-def get_gus_product_tag():
-    """
-    Retrieves the GUS product tag identifier for current platform
-    :return: Product tag string for GUS integration
-    :rtype: str
-    """
-    return settings.GUS['PRODUCT_TAG'][str.upper(config.CURRENT_PLATFORM)]
-
-
 def exists(var):
     """
     Validates variable existence, useful for checking undefined attributes

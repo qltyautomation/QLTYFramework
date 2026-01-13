@@ -54,6 +54,9 @@ class QLTYArgumentParser:
         self.parser.add_argument('-d', '--managed', default=False,
                                  help='Use automated driver management', required=False,
                                  dest='managed_drivers', action='store_true')
+        self.parser.add_argument('--headless', default=False,
+                                 help='Run browser in headless mode (no UI)', required=False,
+                                 dest='headless', action='store_true')
 
     def _parse_arguments(self):
         """
@@ -71,6 +74,7 @@ class QLTYArgumentParser:
         config.SAUCELABS_INTEGRATION = args.saucelabs
         config.TESTRAIL_INTEGRATION = args.testrail
         config.MANAGED_DRIVERS = args.managed_drivers
+        config.HEADLESS = args.headless
         config.MOBILE_BROWSER = False
         config.DESKTOP_BROWSER = False
 

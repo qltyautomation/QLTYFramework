@@ -226,6 +226,32 @@ class SeleniumOperations:
             lambda x: method() == expected_result,
             message="Method result never matched the expected value")
 
+    def switch_to_new_window(self, original_window):
+        """
+        Switches to a newly opened browser window/tab, excluding the original window.
+
+        :param original_window: Handle of the original window to exclude from switching
+        :type original_window: str
+        :return: Handle of the new window that was switched to
+        :rtype: str
+        """
+        for window_handle in self.driver.window_handles:
+            if window_handle != original_window:
+                self.driver.switch_to.window(window_handle)
+                logger.debug(f'Switched to new window: {window_handle}')
+                return window_handle
+        raise RuntimeError('No new window found to switch to')
+
+    def get_current_url(self):
+        """
+        Returns the current URL using JavaScript, which doesn't wait for page load.
+        Useful when you need to check the URL of a slow-loading page immediately.
+
+        :return: Current page URL
+        :rtype: str
+        """
+        return self.driver.execute_script("return window.location.href;")
+
     def tap_element_at(self, web_element, x_offset, y_offset):
         """
         Performs a tap action at specific coordinates within an element's boundaries

@@ -1,6 +1,7 @@
 # Third party libraries
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as conditions
 # Project libraries
 import settings
@@ -26,17 +27,20 @@ class WebElementOperations(SeleniumOperations):
         super(WebElementOperations, self).__init__(driver)
         self.controller = controller
 
-    def op_click_element(self, locator_key):
+    def op_click_element(self, locator_key, timeout=settings.SELENIUM['TIMEOUT']):
         """
         Locates and clicks the element identified by locator_key
 
         :param locator_key: Dictionary key for the locators collection
         :type locator_key: str
+        :param timeout: Maximum wait time in seconds before raising an exception, defaults to
+            settings.SELENIUM['TIMEOUT'] from settings.py
+        :type timeout: int
         :return:
         """
         try:
             # Verify element is ready for interaction
-            WebDriverWait(self.driver, settings.SELENIUM['TIMEOUT'],
+            WebDriverWait(self.driver, timeout,
                           ignored_exceptions=StaleElementReferenceException).until(
                 conditions.element_to_be_clickable(self.controller.LOCATORS[locator_key]),
                 message='Element never became clickable:\nStrategy:{}\nSelector:{}'.format(
@@ -176,3 +180,85 @@ class WebElementOperations(SeleniumOperations):
         element = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
         self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
         return element
+
+    def op_select_dropdown_by_text(self, locator_key, text, timeout=settings.SELENIUM['TIMEOUT']):
+        """
+        Selects an option from a dropdown (select element) by visible text.
+
+        :param locator_key: Dictionary key for the locators collection
+        :type locator_key: str
+        :param text: Visible text of the option to select
+        :type text: str
+        :param timeout: Maximum wait time in seconds to find the element, defaults to
+            settings.SELENIUM['TIMEOUT'] from settings.py
+        :type timeout: int
+        """
+        dropdown_element = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
+        select = Select(dropdown_element)
+        select.select_by_visible_text(text)
+
+    def op_select_dropdown_by_value(self, locator_key, value, timeout=settings.SELENIUM['TIMEOUT']):
+        """
+        Selects an option from a dropdown (select element) by value attribute.
+
+        :param locator_key: Dictionary key for the locators collection
+        :type locator_key: str
+        :param value: Value attribute of the option to select
+        :type value: str
+        :param timeout: Maximum wait time in seconds to find the element, defaults to
+            settings.SELENIUM['TIMEOUT'] from settings.py
+        :type timeout: int
+        """
+        dropdown_element = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
+        select = Select(dropdown_element)
+        select.select_by_value(value)
+
+    def op_get_selected_dropdown_text(self, locator_key, timeout=settings.SELENIUM['TIMEOUT']):
+        """
+        Gets the visible text of the currently selected option in a dropdown.
+
+        :param locator_key: Dictionary key for the locators collection
+        :type locator_key: str
+        :param timeout: Maximum wait time in seconds to find the element, defaults to
+            settings.SELENIUM['TIMEOUT'] from settings.py
+        :type timeout: int
+        :return: Visible text of the selected option
+        :rtype: str
+        """
+        dropdown_element = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
+        select = Select(dropdown_element)
+        return select.first_selected_option.text
+
+    def op_set_checkbox(self, locator_key, checked=True, timeout=settings.SELENIUM['TIMEOUT']):
+        """
+        Sets a checkbox to checked or unchecked state.
+
+        :param locator_key: Dictionary key for the locators collection
+        :type locator_key: str
+        :param checked: Desired state - True for checked, False for unchecked
+        :type checked: bool
+        :param timeout: Maximum wait time in seconds to find the element, defaults to
+            settings.SELENIUM['TIMEOUT'] from settings.py
+        :type timeout: int
+        """
+        checkbox = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
+        is_checked = checkbox.is_selected()
+        if checked and not is_checked:
+            self.op_click_element(locator_key, timeout)
+        elif not checked and is_checked:
+            self.op_click_element(locator_key, timeout)
+
+    def op_is_checkbox_checked(self, locator_key, timeout=settings.SELENIUM['TIMEOUT']):
+        """
+        Checks whether a checkbox is currently checked.
+
+        :param locator_key: Dictionary key for the locators collection
+        :type locator_key: str
+        :param timeout: Maximum wait time in seconds to find the element, defaults to
+            settings.SELENIUM['TIMEOUT'] from settings.py
+        :type timeout: int
+        :return: True if checkbox is checked, False otherwise
+        :rtype: bool
+        """
+        checkbox = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
+        return checkbox.is_selected()
