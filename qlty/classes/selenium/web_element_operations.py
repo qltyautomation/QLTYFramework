@@ -1,5 +1,5 @@
 # Third party libraries
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import StaleElementReferenceException, ElementClickInterceptedException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as conditions
@@ -52,6 +52,11 @@ class WebElementOperations(SeleniumOperations):
             # Element may have changed between retrieval and click, re-fetch and retry
             logger.debug('Stale element detected during click, re-fetching element')
             self.controller.get_element(self.controller.LOCATORS[locator_key]).click()
+        except ElementClickInterceptedException:
+            # Element is obscured by another element, scroll into view and use JavaScript click
+            logger.debug('Click intercepted by overlapping element, using JavaScript click')
+            element = self.controller.get_element(self.controller.LOCATORS[locator_key])
+            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'}); arguments[0].click();", element)
 
     def op_get_element_text(self, locator_key):
         """

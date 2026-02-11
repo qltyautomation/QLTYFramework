@@ -106,6 +106,8 @@ def get_desktop_webdriver():
         service = Service("drivers/chromedriver")
         # Set up Chrome options
         options = Options()
+        options.add_argument('--disable-backgrounding-occluded-windows')
+        options.add_argument('--disable-renderer-backgrounding')
         if config.HEADLESS:
             logger.info('Running Chrome in headless mode')
             options.add_argument('--headless=new')
