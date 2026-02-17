@@ -1,0 +1,565 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QLTY Utilities &mdash; QLTY Framework 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ec3859" />
+
+  
+    <link rel="shortcut icon" href="../_static/qltyautomationlogo.jpg"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Selenium" href="selenium.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #131927" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QLTY Framework
+              <img src="../_static/qltyautomationlogo.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/environment_setup.html">Environment setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/running_tests.html">Running tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/mobile_browser.html">QLTY for mobile browsers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/extending_docs.html">Extending documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/saucelabs_integration.html">Saucelabs integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/managed_drivers.html">Managed drivers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integrations.html">Integrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selenium.html">Selenium</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">QLTY Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-argument_parser">Argument parser</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#argument_parser.QLTYArgumentParser"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#argument_parser.QLTYArgumentParser.__init__"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#argument_parser.QLTYArgumentParser._parse_arguments"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser._parse_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#argument_parser.QLTYArgumentParser._prepare_arguments"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser._prepare_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#argument_parser.QLTYArgumentParser._print_arguments"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser._print_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#argument_parser.QLTYArgumentParser._validate_arguments"><code class="docutils literal notranslate"><span class="pre">QLTYArgumentParser._validate_arguments()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-selenium_utils">Selenium utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#selenium_utils.get_desktop_webdriver"><code class="docutils literal notranslate"><span class="pre">get_desktop_webdriver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selenium_utils.initialize_driver"><code class="docutils literal notranslate"><span class="pre">initialize_driver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selenium_utils.perform_action_on_picker_wheel"><code class="docutils literal notranslate"><span class="pre">perform_action_on_picker_wheel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selenium_utils.perform_tap_back"><code class="docutils literal notranslate"><span class="pre">perform_tap_back()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selenium_utils.perform_tap_based_on_cords"><code class="docutils literal notranslate"><span class="pre">perform_tap_based_on_cords()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selenium_utils.perform_tap_location"><code class="docutils literal notranslate"><span class="pre">perform_tap_location()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selenium_utils.switch_to_native_context"><code class="docutils literal notranslate"><span class="pre">switch_to_native_context()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selenium_utils.wait_for_web_context"><code class="docutils literal notranslate"><span class="pre">wait_for_web_context()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-utils">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#utils.ANDROID_SWIPE_OFFSETS"><code class="docutils literal notranslate"><span class="pre">ANDROID_SWIPE_OFFSETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils.BUILD_ID"><code class="docutils literal notranslate"><span class="pre">BUILD_ID</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils.CURRENT_TEST_RUN_ID"><code class="docutils literal notranslate"><span class="pre">CURRENT_TEST_RUN_ID</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils.IOS_SWIPE_OFFSETS"><code class="docutils literal notranslate"><span class="pre">IOS_SWIPE_OFFSETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils.dump_logs"><code class="docutils literal notranslate"><span class="pre">dump_logs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils.dump_screenshot"><code class="docutils literal notranslate"><span class="pre">dump_screenshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils.dump_test_results"><code class="docutils literal notranslate"><span class="pre">dump_test_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils.exists"><code class="docutils literal notranslate"><span class="pre">exists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils.get_unique_build_id"><code class="docutils literal notranslate"><span class="pre">get_unique_build_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils.get_uuid"><code class="docutils literal notranslate"><span class="pre">get_uuid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils.is_browser_run"><code class="docutils literal notranslate"><span class="pre">is_browser_run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils.setup_logger"><code class="docutils literal notranslate"><span class="pre">setup_logger()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-config">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#config.BASE_URL"><code class="docutils literal notranslate"><span class="pre">BASE_URL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.CURRENT_PLATFORM"><code class="docutils literal notranslate"><span class="pre">CURRENT_PLATFORM</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.DESKTOP_BROWSER"><code class="docutils literal notranslate"><span class="pre">DESKTOP_BROWSER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.HEADLESS"><code class="docutils literal notranslate"><span class="pre">HEADLESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.MANAGED_DRIVERS"><code class="docutils literal notranslate"><span class="pre">MANAGED_DRIVERS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.MOBILE_BROWSER"><code class="docutils literal notranslate"><span class="pre">MOBILE_BROWSER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.PROJECT_FRIENDLY_NAME"><code class="docutils literal notranslate"><span class="pre">PROJECT_FRIENDLY_NAME</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.REPORT_ON_FAIL"><code class="docutils literal notranslate"><span class="pre">REPORT_ON_FAIL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.RUNNING_ON_JENKINS"><code class="docutils literal notranslate"><span class="pre">RUNNING_ON_JENKINS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.SAUCELABS_INTEGRATION"><code class="docutils literal notranslate"><span class="pre">SAUCELABS_INTEGRATION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.SINGLE_TEST_NAME"><code class="docutils literal notranslate"><span class="pre">SINGLE_TEST_NAME</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.SLACK_REPORTING"><code class="docutils literal notranslate"><span class="pre">SLACK_REPORTING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config.TESTRAIL_INTEGRATION"><code class="docutils literal notranslate"><span class="pre">TESTRAIL_INTEGRATION</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #131927" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QLTY Framework</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">QLTY Utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api_docs/qlty_utilities.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="qlty-utilities">
+<h1>QLTY Utilities<a class="headerlink" href="#qlty-utilities" title="Link to this heading"></a></h1>
+<p>Handy modules, methods and functions to help you with your tests</p>
+<section id="module-argument_parser">
+<span id="argument-parser"></span><h2>Argument parser<a class="headerlink" href="#module-argument_parser" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="argument_parser.QLTYArgumentParser">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">argument_parser.</span></span><span class="sig-name descname"><span class="pre">QLTYArgumentParser</span></span><a class="headerlink" href="#argument_parser.QLTYArgumentParser" title="Link to this definition"></a></dt>
+<dd><p>Command line argument parser for the QLTY test execution framework</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="argument_parser.QLTYArgumentParser.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#argument_parser.QLTYArgumentParser.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize argument parser and process command line inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="argument_parser.QLTYArgumentParser._parse_arguments">
+<span class="sig-name descname"><span class="pre">_parse_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#argument_parser.QLTYArgumentParser._parse_arguments" title="Link to this definition"></a></dt>
+<dd><p>Processes command line arguments and maps them to configuration settings</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="argument_parser.QLTYArgumentParser._prepare_arguments">
+<span class="sig-name descname"><span class="pre">_prepare_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#argument_parser.QLTYArgumentParser._prepare_arguments" title="Link to this definition"></a></dt>
+<dd><p>Configures all supported command line arguments for the parser</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="argument_parser.QLTYArgumentParser._print_arguments">
+<span class="sig-name descname"><span class="pre">_print_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#argument_parser.QLTYArgumentParser._print_arguments" title="Link to this definition"></a></dt>
+<dd><p>Outputs current configuration state for debugging purposes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="argument_parser.QLTYArgumentParser._validate_arguments">
+<span class="sig-name descname"><span class="pre">_validate_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#argument_parser.QLTYArgumentParser._validate_arguments" title="Link to this definition"></a></dt>
+<dd><p>Validates that required settings exist in settings.py for selected integrations</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-selenium_utils">
+<span id="selenium-utilities"></span><h2>Selenium utilities<a class="headerlink" href="#module-selenium_utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="selenium_utils.get_desktop_webdriver">
+<span class="sig-prename descclassname"><span class="pre">selenium_utils.</span></span><span class="sig-name descname"><span class="pre">get_desktop_webdriver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#selenium_utils.get_desktop_webdriver" title="Link to this definition"></a></dt>
+<dd><p>Creates desktop browser webdriver instance from drivers directory</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="selenium_utils.initialize_driver">
+<span class="sig-prename descclassname"><span class="pre">selenium_utils.</span></span><span class="sig-name descname"><span class="pre">initialize_driver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_case</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_driver_creation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_utils.initialize_driver" title="Link to this definition"></a></dt>
+<dd><p>Initializes appropriate driver based on platform and configuration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>test_case</strong> – A QLTY test case for retrieving class and method names</p></li>
+<li><p><strong>platform</strong> – Platform identifier string for webdriver selection</p></li>
+<li><p><strong>force_driver_creation</strong> – Override configuration to force driver initialization</p></li>
+</ul>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>QLTYTestcase</p>
+</dd>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="selenium_utils.perform_action_on_picker_wheel">
+<span class="sig-prename descclassname"><span class="pre">selenium_utils.</span></span><span class="sig-name descname"><span class="pre">perform_action_on_picker_wheel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">web_element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_utils.perform_action_on_picker_wheel" title="Link to this definition"></a></dt>
+<dd><p>Manipulates iOS picker wheel element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> (<em>WebDriver</em>) – Active driver instance</p></li>
+<li><p><strong>web_element</strong> (<em>WebElement</em>) – Target web element</p></li>
+<li><p><strong>direction</strong> (<em>str</em>) – Navigation direction: <code class="code docutils literal notranslate"><span class="pre">Next</span></code> or <code class="code docutils literal notranslate"><span class="pre">Previous</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="selenium_utils.perform_tap_back">
+<span class="sig-prename descclassname"><span class="pre">selenium_utils.</span></span><span class="sig-name descname"><span class="pre">perform_tap_back</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_utils.perform_tap_back" title="Link to this definition"></a></dt>
+<dd><p>Executes back navigation action</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="selenium_utils.perform_tap_based_on_cords">
+<span class="sig-prename descclassname"><span class="pre">selenium_utils.</span></span><span class="sig-name descname"><span class="pre">perform_tap_based_on_cords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_utils.perform_tap_based_on_cords" title="Link to this definition"></a></dt>
+<dd><p>Executes tap gesture using absolute viewport coordinates</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="selenium_utils.perform_tap_location">
+<span class="sig-prename descclassname"><span class="pre">selenium_utils.</span></span><span class="sig-name descname"><span class="pre">perform_tap_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_utils.perform_tap_location" title="Link to this definition"></a></dt>
+<dd><p>Executes tap gesture using percentage-based coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> (<em>WebDriver</em>) – Active driver instance</p></li>
+<li><p><strong>offset</strong> (<em>dict</em>) – Coordinate dictionary with offset_x and offset_y percentages</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="selenium_utils.switch_to_native_context">
+<span class="sig-prename descclassname"><span class="pre">selenium_utils.</span></span><span class="sig-name descname"><span class="pre">switch_to_native_context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_utils.switch_to_native_context" title="Link to this definition"></a></dt>
+<dd><p>Returns to native app context from web view</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>driver</strong> (<cite>WebDriver</cite>) – Active driver instance</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="selenium_utils.wait_for_web_context">
+<span class="sig-prename descclassname"><span class="pre">selenium_utils.</span></span><span class="sig-name descname"><span class="pre">wait_for_web_context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">webview_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_utils.wait_for_web_context" title="Link to this definition"></a></dt>
+<dd><p>Waits until specified web view becomes available and switches context to it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> (<em>WebDriver</em>) – Active driver instance</p></li>
+<li><p><strong>webview_name</strong> (<em>str</em>) – Target webview identifier</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-utils">
+<span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-utils" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="utils.ANDROID_SWIPE_OFFSETS">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">ANDROID_SWIPE_OFFSETS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'down':</span> <span class="pre">{'end_x':</span> <span class="pre">0.5,</span> <span class="pre">'end_y':</span> <span class="pre">0.45,</span> <span class="pre">'start_x':</span> <span class="pre">0.5,</span> <span class="pre">'start_y':</span> <span class="pre">0.9},</span> <span class="pre">'down_40_percent':</span> <span class="pre">{'end_x':</span> <span class="pre">0.5,</span> <span class="pre">'end_y':</span> <span class="pre">0.9,</span> <span class="pre">'start_x':</span> <span class="pre">0.5,</span> <span class="pre">'start_y':</span> <span class="pre">0.5},</span> <span class="pre">'up':</span> <span class="pre">{'end_x':</span> <span class="pre">0.5,</span> <span class="pre">'end_y':</span> <span class="pre">0,</span> <span class="pre">'start_x':</span> <span class="pre">0.5,</span> <span class="pre">'start_y':</span> <span class="pre">0.9},</span> <span class="pre">'up_10_percent':</span> <span class="pre">{'end_x':</span> <span class="pre">0.5,</span> <span class="pre">'end_y':</span> <span class="pre">0.7,</span> <span class="pre">'start_x':</span> <span class="pre">0.5,</span> <span class="pre">'start_y':</span> <span class="pre">0.8},</span> <span class="pre">'up_30_percent':</span> <span class="pre">{'end_x':</span> <span class="pre">0.5,</span> <span class="pre">'end_y':</span> <span class="pre">0.5,</span> <span class="pre">'start_x':</span> <span class="pre">0.5,</span> <span class="pre">'start_y':</span> <span class="pre">0.8}}</span></span><a class="headerlink" href="#utils.ANDROID_SWIPE_OFFSETS" title="Link to this definition"></a></dt>
+<dd><p>Predefined coordinate offsets for Android swipe gestures</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="utils.BUILD_ID">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">BUILD_ID</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'433c2d'</span></span><a class="headerlink" href="#utils.BUILD_ID" title="Link to this definition"></a></dt>
+<dd><p>Unique identifier for current test execution session</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="utils.CURRENT_TEST_RUN_ID">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">CURRENT_TEST_RUN_ID</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#utils.CURRENT_TEST_RUN_ID" title="Link to this definition"></a></dt>
+<dd><p>Global reference to current test session identifier</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="utils.IOS_SWIPE_OFFSETS">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">IOS_SWIPE_OFFSETS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'left':</span> <span class="pre">{'direction':</span> <span class="pre">'left'},</span> <span class="pre">'middle_swipe':</span> <span class="pre">{'end_x':</span> <span class="pre">0,</span> <span class="pre">'end_y':</span> <span class="pre">0.5,</span> <span class="pre">'start_x':</span> <span class="pre">1,</span> <span class="pre">'start_y':</span> <span class="pre">0.5},</span> <span class="pre">'up':</span> <span class="pre">{'direction':</span> <span class="pre">'up'}}</span></span><a class="headerlink" href="#utils.IOS_SWIPE_OFFSETS" title="Link to this definition"></a></dt>
+<dd><p>Predefined coordinate offsets for iOS swipe gestures</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dump_logs">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">dump_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.dump_logs" title="Link to this definition"></a></dt>
+<dd><p>Extracts and saves logs to the test method results directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results_dir</strong> (<em>str</em>) – Full path to test method results directory</p></li>
+<li><p><strong>driver</strong> (<em>WebDriver</em>) – Appium webdriver instance for log extraction</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dump_screenshot">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">dump_screenshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_case</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.dump_screenshot" title="Link to this definition"></a></dt>
+<dd><p>Captures and saves screenshot when test case fails</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results_dir</strong> (<em>str</em>) – Full path to test method results directory</p></li>
+<li><p><strong>test_case</strong> (<em>QLTYTestCase</em>) – A QLTY test case instance</p></li>
+<li><p><strong>driver</strong> (<em>WebDriver</em>) – Appium webdriver instance for screenshot capture</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dump_test_results">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">dump_test_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_case</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.dump_test_results" title="Link to this definition"></a></dt>
+<dd><p>Generates directory structure for storing individual test case results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>test_case</strong> (<em>QLTYTestCase</em>) – A QLTY test case instance</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Absolute path to the test method results directory</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.exists">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.exists" title="Link to this definition"></a></dt>
+<dd><p>Validates variable existence, useful for checking undefined attributes
+The variable must be passed as a reference using lambda to prevent immediate AttributeError:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">exists</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span><span class="n">my_variable</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>var</strong> – Variable reference to validate</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if variable exists, None otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.get_unique_build_id">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">get_unique_build_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utils.get_unique_build_id" title="Link to this definition"></a></dt>
+<dd><p>Generates a unique build identifier for this test execution session</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Unique build identifier string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.get_uuid">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">get_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utils.get_uuid" title="Link to this definition"></a></dt>
+<dd><p>Generates a unique identifier using Python’s uuid library</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Shortened unique 6-character identifier</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.is_browser_run">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">is_browser_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">platform</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.is_browser_run" title="Link to this definition"></a></dt>
+<dd><p>Determines if current test execution targets desktop browsers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>platform</strong> (<em>String</em>) – Platform type identifier string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if execution targets desktop browser</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.setup_logger">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">setup_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.setup_logger" title="Link to this definition"></a></dt>
+<dd><p>Creates and configures a logger instance with color formatting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Logger identifier prefix for the formatter</p></li>
+<li><p><strong>debug_level</strong> (<em>int</em>) – Logging verbosity level</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Configured logger instance for the calling module</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>logger</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-config">
+<span id="configuration"></span><h2>Configuration<a class="headerlink" href="#module-config" title="Link to this heading"></a></h2>
+<p>Framework configuration settings module
+Contains framework-wide parameters that apply across all test implementations</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="config.BASE_URL">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">BASE_URL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#config.BASE_URL" title="Link to this definition"></a></dt>
+<dd><p>Override base URL for target environment</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.CURRENT_PLATFORM">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">CURRENT_PLATFORM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#config.CURRENT_PLATFORM" title="Link to this definition"></a></dt>
+<dd><p>Current execution platform identifier</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.DESKTOP_BROWSER">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">DESKTOP_BROWSER</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#config.DESKTOP_BROWSER" title="Link to this definition"></a></dt>
+<dd><p>Execute tests using desktop browsers via Selenium only (no Appium)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.HEADLESS">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">HEADLESS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#config.HEADLESS" title="Link to this definition"></a></dt>
+<dd><p>Run browser in headless mode (no UI)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.MANAGED_DRIVERS">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">MANAGED_DRIVERS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#config.MANAGED_DRIVERS" title="Link to this definition"></a></dt>
+<dd><p>Use automated driver management for browser drivers</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.MOBILE_BROWSER">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">MOBILE_BROWSER</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#config.MOBILE_BROWSER" title="Link to this definition"></a></dt>
+<dd><p>Execute tests targeting mobile web browsers</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.PROJECT_FRIENDLY_NAME">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">PROJECT_FRIENDLY_NAME</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'QLTYMobileFramework/1.0'</span></span><a class="headerlink" href="#config.PROJECT_FRIENDLY_NAME" title="Link to this definition"></a></dt>
+<dd><p>Application identifier string</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.REPORT_ON_FAIL">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">REPORT_ON_FAIL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#config.REPORT_ON_FAIL" title="Link to this definition"></a></dt>
+<dd><p>Allow reporting functionality even when test cases fail</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.RUNNING_ON_JENKINS">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">RUNNING_ON_JENKINS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#config.RUNNING_ON_JENKINS" title="Link to this definition"></a></dt>
+<dd><p>Indicates execution within Jenkins CI environment</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.SAUCELABS_INTEGRATION">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">SAUCELABS_INTEGRATION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#config.SAUCELABS_INTEGRATION" title="Link to this definition"></a></dt>
+<dd><p>Enable SauceLabs cloud testing platform integration</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.SINGLE_TEST_NAME">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">SINGLE_TEST_NAME</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#config.SINGLE_TEST_NAME" title="Link to this definition"></a></dt>
+<dd><p>Specify individual test case to execute</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.SLACK_REPORTING">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">SLACK_REPORTING</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#config.SLACK_REPORTING" title="Link to this definition"></a></dt>
+<dd><p>Enable Slack notification integration for test results</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="config.TESTRAIL_INTEGRATION">
+<span class="sig-prename descclassname"><span class="pre">config.</span></span><span class="sig-name descname"><span class="pre">TESTRAIL_INTEGRATION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#config.TESTRAIL_INTEGRATION" title="Link to this definition"></a></dt>
+<dd><p>Enable TestRail test management integration for result reporting</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="selenium.html" class="btn btn-neutral float-left" title="Selenium" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, QLTY Automation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

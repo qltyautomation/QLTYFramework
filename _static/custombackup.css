@@ -1,0 +1,168 @@
+/* QLTY Framework Custom Theme
+   Primary: #f62def | Background: #131927 | Secondary: #4750c8 */
+
+/* ===== Navigation & Sidebar ===== */
+.wy-nav-side,
+.wy-nav-top {
+    background: #131927 !important;
+}
+
+.wy-side-nav-search {
+    background-color: #131927 !important;
+    border-bottom: solid 2px #f62def !important;
+}
+
+.wy-side-nav-search > a,
+.wy-side-nav-search .wy-dropdown > a {
+    color: #ffffff !important;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.wy-side-nav-search input[type="text"] {
+    border-color: #4750c8 !important;
+    background-color: #1a2332 !important;
+    color: #ffffff !important;
+}
+
+/* ===== Sidebar Menu ===== */
+.wy-menu-vertical p.caption {
+    color: #f62def !important;
+    font-weight: bold !important;
+    font-size: 1.05em !important;
+}
+
+.wy-menu-vertical li.toctree-l1 > a {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+.wy-menu-vertical li.toctree-l2 > a,
+.wy-menu-vertical li.toctree-l3 > a,
+.wy-menu-vertical li.toctree-l4 > a {
+    color: #b8c5d6 !important;
+}
+
+.wy-menu-vertical a:hover {
+    background-color: #1a2332 !important;
+    color: #f62def !important;
+}
+
+.wy-menu-vertical li.current > a {
+    background: #4750c8 !important;
+    border-right: solid 2px #f62def !important;
+}
+
+.wy-menu-vertical li.current a {
+    border-right: solid 1px #131927 !important;
+}
+
+/* ===== Links ===== */
+a {
+    color: #f62def !important;
+}
+
+a:hover {
+    color: #4750c8 !important;
+}
+
+a:visited {
+    color: #d426d1 !important;
+}
+
+/* ===== Content ===== */
+h1, h2, h3, h4, h5, h6 {
+    color: #4750c8 !important;
+}
+
+/* ===== Code ===== */
+.rst-content pre.literal-block,
+.rst-content div[class^='highlight'] {
+    background: #1a2332 !important;
+    border: 1px solid #4750c8 !important;
+    color: #e0e0e0 !important;
+}
+
+code.docutils.literal {
+    background: #1a2332 !important;
+    color: #f62def !important;
+    padding: 2px 5px;
+    border-radius: 3px;
+    border: 1px solid #4750c8 !important;
+}
+
+/* ===== Admonitions ===== */
+.rst-content .note {
+    background: #1a2332 !important;
+    border-left: solid 4px #4750c8 !important;
+}
+
+.rst-content .note .admonition-title {
+    background: #4750c8 !important;
+    color: white !important;
+}
+
+.rst-content .warning {
+    background: #2a1f1a !important;
+    border-left: solid 4px #ff9800 !important;
+}
+
+.rst-content .warning .admonition-title {
+    background: #ff9800 !important;
+    color: white !important;
+}
+
+/* ===== Tables ===== */
+.rst-content table.docutils thead {
+    background-color: #4750c8 !important;
+    color: #ffffff !important;
+}
+
+.rst-content table.docutils tbody tr:nth-child(odd) {
+    background-color: #1a2332 !important;
+}
+
+.rst-content table.docutils tbody tr:nth-child(even) {
+    background-color: #0f1419 !important;
+}
+
+/* ===== Buttons ===== */
+.btn-neutral {
+    background-color: #4750c8 !important;
+    color: #ffffff !important;
+}
+
+.btn-neutral:hover {
+    background-color: #f62def !important;
+}
+
+/* ===== Scrollbar ===== */
+.wy-side-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.wy-side-scroll::-webkit-scrollbar-track {
+    background: #131927;
+}
+
+.wy-side-scroll::-webkit-scrollbar-thumb {
+    background: #4750c8;
+    border-radius: 4px;
+}
+
+.wy-side-scroll::-webkit-scrollbar-thumb:hover {
+    background: #f62def;
+}
+
+/* ===== Version Badge ===== */
+.rst-versions {
+    background: #131927 !important;
+}
+
+.rst-versions a {
+    color: #b8c5d6 !important;
+}
+
+.rst-versions a:hover {
+    color: #f62def !important;
+}
