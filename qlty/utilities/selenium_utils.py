@@ -97,13 +97,35 @@ def initialize_driver(test_case, platform, force_driver_creation=True):
         return driver
 
 
+def ensure_chromedriver(chromedriver_path):
+    """
+    Checks if ChromeDriver exists at the given path and auto-fetches it if missing
+    """
+    if os.path.isfile(chromedriver_path):
+        return
+    logger.info('ChromeDriver not found at {}, attempting to fetch automatically'.format(chromedriver_path))
+    import subprocess
+    script_path = os.path.join(os.path.dirname(__file__), '..', '..', 'scripts', 'fetch_chromedriver.sh')
+    script_path = os.path.normpath(script_path)
+    if not os.path.isfile(script_path):
+        raise RuntimeError(
+            'ChromeDriver not found at {} and fetch script not found at {}'.format(
+                chromedriver_path, script_path))
+    result = subprocess.run(['bash', script_path], capture_output=True, text=True)
+    if result.returncode != 0:
+        logger.error('ChromeDriver fetch failed:\n{}'.format(result.stderr))
+        raise RuntimeError('ChromeDriver not found and auto-fetch failed')
+    logger.info('ChromeDriver fetched successfully')
+
+
 def get_desktop_webdriver():
     """
     Creates desktop browser webdriver instance from drivers directory
     """
     if config.CURRENT_PLATFORM == 'chrome':
-        # Set up service (path to your chromedriver)
-        service = Service("drivers/chromedriver")
+        chromedriver_path = "drivers/chromedriver"
+        ensure_chromedriver(chromedriver_path)
+        service = Service(chromedriver_path)
         # Set up Chrome options
         options = Options()
         options.add_argument('--disable-backgrounding-occluded-windows')
