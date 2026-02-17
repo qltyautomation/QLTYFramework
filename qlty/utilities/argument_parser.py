@@ -57,6 +57,9 @@ class QLTYArgumentParser:
         self.parser.add_argument('--headless', default=False,
                                  help='Run browser in headless mode (no UI)', required=False,
                                  dest='headless', action='store_true')
+        self.parser.add_argument('--base-url', default=None,
+                                 help='Override base URL for target environment', required=False,
+                                 dest='base_url')
 
     def _parse_arguments(self):
         """
@@ -75,6 +78,14 @@ class QLTYArgumentParser:
         config.TESTRAIL_INTEGRATION = args.testrail
         config.MANAGED_DRIVERS = args.managed_drivers
         config.HEADLESS = args.headless
+        config.BASE_URL = args.base_url
+
+        # Override environment base URL if --base-url was provided
+        if args.base_url:
+            env = settings.PROJECT_CONFIG.get('ENVIRONMENT', 'STAGING')
+            if env in settings.ENVIRONMENTS:
+                settings.ENVIRONMENTS[env]['BASE_URL'] = args.base_url
+
         config.MOBILE_BROWSER = False
         config.DESKTOP_BROWSER = False
 
@@ -97,6 +108,8 @@ class QLTYArgumentParser:
         logger.debug('Saucelabs Integration enabled: {}'.format(config.SAUCELABS_INTEGRATION))
         logger.debug('TestRail Integration enabled: {}'.format(config.TESTRAIL_INTEGRATION))
         logger.debug('Mobile browser mode: {}'.format(config.MOBILE_BROWSER))
+        if config.BASE_URL:
+            logger.debug('Base URL override: {}'.format(config.BASE_URL))
         logger.debug('Jenkins execution detected: {}'.format(config.RUNNING_ON_JENKINS))
 
     def _validate_arguments(self):
