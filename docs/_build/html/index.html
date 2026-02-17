@@ -113,6 +113,7 @@ to keep documentation up to date.</p>
 <li class="toctree-l2"><a class="reference internal" href="guides/running_tests.html#test-execution">Test execution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guides/running_tests.html#configuration-with-local-settings-py">Configuration with local_settings.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guides/running_tests.html#command-line-arguments">Command line arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/running_tests.html#chromedriver-management">ChromeDriver Management</a></li>
 </ul>
 </li>
 </ul>
@@ -222,10 +223,12 @@ to keep documentation up to date.</p>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.drag_and_drop"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.drag_and_drop()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.drag_and_drop_by_offset"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.drag_and_drop_by_offset()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.driver"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.driver</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.get_current_url"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.get_current_url()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.get_element"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.get_element()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.get_elements"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.get_elements()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.swipe"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.swipe()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.swipe_until_visible"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.swipe_until_visible()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.switch_to_new_window"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.switch_to_new_window()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.tap"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.tap()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.tap_android_button"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.tap_android_button()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#selenium_operations.SeleniumOperations.tap_element_at"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.tap_element_at()</span></code></a></li>
@@ -249,7 +252,12 @@ to keep documentation up to date.</p>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_get_element_value"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_element_value()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_get_element_visibility"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_element_visibility()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_get_elements"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_elements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_get_selected_dropdown_text"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_selected_dropdown_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_is_checkbox_checked"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_is_checkbox_checked()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_scroll_to_element"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_scroll_to_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_select_dropdown_by_text"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_select_dropdown_by_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_select_dropdown_by_value"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_select_dropdown_by_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_set_checkbox"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_set_checkbox()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_swipe_until_visible"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_swipe_until_visible()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_wait_for_element_to_not_be_visible"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_wait_for_element_to_not_be_visible()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api_docs/selenium.html#web_element_operations.WebElementOperations.op_wait_for_text_in_elements"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_wait_for_text_in_elements()</span></code></a></li>
@@ -291,7 +299,6 @@ to keep documentation up to date.</p>
 <li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.dump_screenshot"><code class="docutils literal notranslate"><span class="pre">dump_screenshot()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.dump_test_results"><code class="docutils literal notranslate"><span class="pre">dump_test_results()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.exists"><code class="docutils literal notranslate"><span class="pre">exists()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.get_gus_product_tag"><code class="docutils literal notranslate"><span class="pre">get_gus_product_tag()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.get_unique_build_id"><code class="docutils literal notranslate"><span class="pre">get_unique_build_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.get_uuid"><code class="docutils literal notranslate"><span class="pre">get_uuid()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#utils.is_browser_run"><code class="docutils literal notranslate"><span class="pre">is_browser_run()</span></code></a></li>
@@ -299,8 +306,10 @@ to keep documentation up to date.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api_docs/qlty_utilities.html#module-config">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.BASE_URL"><code class="docutils literal notranslate"><span class="pre">BASE_URL</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.CURRENT_PLATFORM"><code class="docutils literal notranslate"><span class="pre">CURRENT_PLATFORM</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.DESKTOP_BROWSER"><code class="docutils literal notranslate"><span class="pre">DESKTOP_BROWSER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.HEADLESS"><code class="docutils literal notranslate"><span class="pre">HEADLESS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.MANAGED_DRIVERS"><code class="docutils literal notranslate"><span class="pre">MANAGED_DRIVERS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.MOBILE_BROWSER"><code class="docutils literal notranslate"><span class="pre">MOBILE_BROWSER</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api_docs/qlty_utilities.html#config.PROJECT_FRIENDLY_NAME"><code class="docutils literal notranslate"><span class="pre">PROJECT_FRIENDLY_NAME</span></code></a></li>

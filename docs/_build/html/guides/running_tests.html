@@ -53,6 +53,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#test-execution">Test execution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configuration-with-local-settings-py">Configuration with local_settings.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#command-line-arguments">Command line arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chromedriver-management">ChromeDriver Management</a></li>
 </ul>
 </li>
 </ul>
@@ -281,6 +282,30 @@ manage WebDriver binaries.</p>
 </div>
 </div></blockquote>
 </li>
+<li><p><strong>Headless mode</strong> <code class="code docutils literal notranslate"><span class="pre">--headless</span></code></p>
+<blockquote>
+<div><p><strong>Default:</strong> <code class="code docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Runs the browser in headless mode (no visible UI). Useful for CI/CD pipelines where no display is available.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>chrome<span class="w"> </span>--headless
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Base URL override</strong> <code class="code docutils literal notranslate"><span class="pre">--base-url</span></code></p>
+<blockquote>
+<div><p><strong>Default:</strong> <code class="code docutils literal notranslate"><span class="pre">None</span></code> (uses the URL from <code class="code docutils literal notranslate"><span class="pre">settings.ENVIRONMENTS</span></code>)</p>
+<p>Overrides the base URL for the target environment at runtime. This allows pointing the test run at a different
+instance (e.g. production) without modifying <code class="code docutils literal notranslate"><span class="pre">settings.py</span></code>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>chrome<span class="w"> </span>--base-url<span class="w"> </span>https://production.example.com/
+
+<span class="c1"># Combined with single test execution</span>
+python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>chrome<span class="w"> </span>--base-url<span class="w"> </span>https://production.example.com/<span class="w"> </span>-t<span class="w"> </span>TestProductionDeployments
+</pre></div>
+</div>
+</div></blockquote>
+</li>
 </ul>
 <p><strong>Combining flags:</strong></p>
 <p>Multiple flags can be combined to enable different features:</p>
@@ -292,6 +317,26 @@ python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span clas
 
 <span class="c1"># Run on SauceLabs with all integrations and report on failure</span>
 python<span class="w"> </span>test_runner.py<span class="w"> </span>-p<span class="w"> </span>ios<span class="w"> </span>-l<span class="w"> </span>-s<span class="w"> </span>-r<span class="w"> </span>-f
+</pre></div>
+</div>
+</section>
+<section id="chromedriver-management">
+<h2>ChromeDriver Management<a class="headerlink" href="#chromedriver-management" title="Link to this heading"></a></h2>
+<p>The framework includes a utility to automatically download the correct ChromeDriver version
+matching your installed Chrome browser. This is useful when Chrome auto-updates and you need
+a matching ChromeDriver.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check Chrome and ChromeDriver versions</span>
+./scripts/fetch_chromedriver.sh<span class="w"> </span>--check
+
+<span class="c1"># Download matching ChromeDriver to ./drivers</span>
+./scripts/fetch_chromedriver.sh
+
+<span class="c1"># Download to custom directory</span>
+./scripts/fetch_chromedriver.sh<span class="w"> </span>--output<span class="w"> </span>/path/to/drivers
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">--chromedriver</span></code> flag can also be passed during installation to fetch ChromeDriver automatically:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/qltyautomation/QLTYFramework/main/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>--<span class="w"> </span>--repo<span class="w"> </span>https://bitbucket.org/your-org/your-tests.git<span class="w"> </span>--chromedriver
 </pre></div>
 </div>
 </section>

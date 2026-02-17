@@ -219,6 +219,34 @@ command line arguments. These options can be activated by the short flag or the 
 
         python test_runner.py -p chrome -d
 
+- **Headless mode** :code:`--headless`
+
+    **Default:** :code:`False`
+
+    Runs the browser in headless mode (no visible UI). Useful for CI/CD pipelines where no display is available.
+
+    **Example:**
+
+    .. code-block:: bash
+
+        python test_runner.py -p chrome --headless
+
+- **Base URL override** :code:`--base-url`
+
+    **Default:** :code:`None` (uses the URL from :code:`settings.ENVIRONMENTS`)
+
+    Overrides the base URL for the target environment at runtime. This allows pointing the test run at a different
+    instance (e.g. production) without modifying :code:`settings.py`.
+
+    **Example:**
+
+    .. code-block:: bash
+
+        python test_runner.py -p chrome --base-url https://production.example.com/
+
+        # Combined with single test execution
+        python test_runner.py -p chrome --base-url https://production.example.com/ -t TestProductionDeployments
+
 **Combining flags:**
 
 Multiple flags can be combined to enable different features:
@@ -233,3 +261,28 @@ Multiple flags can be combined to enable different features:
 
     # Run on SauceLabs with all integrations and report on failure
     python test_runner.py -p ios -l -s -r -f
+
+
+ChromeDriver Management
+=======================
+
+The framework includes a utility to automatically download the correct ChromeDriver version
+matching your installed Chrome browser. This is useful when Chrome auto-updates and you need
+a matching ChromeDriver.
+
+.. code-block:: bash
+
+    # Check Chrome and ChromeDriver versions
+    ./scripts/fetch_chromedriver.sh --check
+
+    # Download matching ChromeDriver to ./drivers
+    ./scripts/fetch_chromedriver.sh
+
+    # Download to custom directory
+    ./scripts/fetch_chromedriver.sh --output /path/to/drivers
+
+The ``--chromedriver`` flag can also be passed during installation to fetch ChromeDriver automatically:
+
+.. code-block:: bash
+
+    curl -fsSL https://raw.githubusercontent.com/qltyautomation/QLTYFramework/main/install.sh | bash -s -- --repo https://bitbucket.org/your-org/your-tests.git --chromedriver

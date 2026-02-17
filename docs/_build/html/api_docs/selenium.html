@@ -75,10 +75,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.drag_and_drop"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.drag_and_drop()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.drag_and_drop_by_offset"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.drag_and_drop_by_offset()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.driver"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.driver</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.get_current_url"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.get_current_url()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.get_element"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.get_element()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.get_elements"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.get_elements()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.swipe"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.swipe()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.swipe_until_visible"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.swipe_until_visible()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.switch_to_new_window"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.switch_to_new_window()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.tap"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.tap()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.tap_android_button"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.tap_android_button()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#selenium_operations.SeleniumOperations.tap_element_at"><code class="docutils literal notranslate"><span class="pre">SeleniumOperations.tap_element_at()</span></code></a></li>
@@ -102,7 +104,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_get_element_value"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_element_value()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_get_element_visibility"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_element_visibility()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_get_elements"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_elements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_get_selected_dropdown_text"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_get_selected_dropdown_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_is_checkbox_checked"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_is_checkbox_checked()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_scroll_to_element"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_scroll_to_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_select_dropdown_by_text"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_select_dropdown_by_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_select_dropdown_by_value"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_select_dropdown_by_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_set_checkbox"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_set_checkbox()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_swipe_until_visible"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_swipe_until_visible()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_wait_for_element_to_not_be_visible"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_wait_for_element_to_not_be_visible()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#web_element_operations.WebElementOperations.op_wait_for_text_in_elements"><code class="docutils literal notranslate"><span class="pre">WebElementOperations.op_wait_for_text_in_elements()</span></code></a></li>
@@ -221,7 +228,7 @@ the swipe at 25% of the viewport height</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selenium_operations.SeleniumOperations.browser_tap">
-<span class="sig-name descname"><span class="pre">browser_tap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4607851696'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_operations.SeleniumOperations.browser_tap" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">browser_tap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_operations.SeleniumOperations.browser_tap" title="Link to this definition"></a></dt>
 <dd><p>Performs a tap action on an element in mobile browser context
 :param locator: Tuple containing By strategy and selector string, for example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="s1">&#39;//android.widget.Button[@resource-id=&quot;oaapprove&quot;]&#39;</span><span class="p">)</span>
@@ -274,8 +281,23 @@ moving by the specified offset, and releasing.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="selenium_operations.SeleniumOperations.get_current_url">
+<span class="sig-name descname"><span class="pre">get_current_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#selenium_operations.SeleniumOperations.get_current_url" title="Link to this definition"></a></dt>
+<dd><p>Returns the current URL using JavaScript, which doesn’t wait for page load.
+Useful when you need to check the URL of a slow-loading page immediately.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current page URL</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="selenium_operations.SeleniumOperations.get_element">
-<span class="sig-name descname"><span class="pre">get_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4607851696'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_operations.SeleniumOperations.get_element" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_operations.SeleniumOperations.get_element" title="Link to this definition"></a></dt>
 <dd><p>Locates and returns a web element after confirming its presence in the DOM</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -354,6 +376,23 @@ Does not include implicit wait, assumes element is already loaded but not in vie
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="selenium_operations.SeleniumOperations.switch_to_new_window">
+<span class="sig-name descname"><span class="pre">switch_to_new_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">original_window</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_operations.SeleniumOperations.switch_to_new_window" title="Link to this definition"></a></dt>
+<dd><p>Switches to a newly opened browser window/tab, excluding the original window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>original_window</strong> (<em>str</em>) – Handle of the original window to exclude from switching</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Handle of the new window that was switched to</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="selenium_operations.SeleniumOperations.tap">
 <span class="sig-name descname"><span class="pre">tap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_operations.SeleniumOperations.tap" title="Link to this definition"></a></dt>
 <dd><p>Performs a reliable click operation on an element, retrying until successful.
@@ -405,7 +444,7 @@ Provide a function reference as the parameter.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selenium_operations.SeleniumOperations.wait_for">
-<span class="sig-name descname"><span class="pre">wait_for</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4607851696'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_operations.SeleniumOperations.wait_for" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">wait_for</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_operations.SeleniumOperations.wait_for" title="Link to this definition"></a></dt>
 <dd><p>Continuously evaluates the provided method until its result matches the expected value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -423,7 +462,7 @@ Provide a function reference as the parameter.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selenium_operations.SeleniumOperations.wait_for_element_to_not_be_visible">
-<span class="sig-name descname"><span class="pre">wait_for_element_to_not_be_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4607851696'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_operations.SeleniumOperations.wait_for_element_to_not_be_visible" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">wait_for_element_to_not_be_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#selenium_operations.SeleniumOperations.wait_for_element_to_not_be_visible" title="Link to this definition"></a></dt>
 <dd><p>Waits until the specified element is no longer visible in the viewport</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -485,7 +524,7 @@ custom controller methods for common operations.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="web_element_operations.WebElementOperations.op_browser_tap">
-<span class="sig-name descname"><span class="pre">op_browser_tap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4607851696'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_browser_tap" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">op_browser_tap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_browser_tap" title="Link to this definition"></a></dt>
 <dd><p>Performs a tap action on the element (browser-specific implementation)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -496,11 +535,15 @@ custom controller methods for common operations.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="web_element_operations.WebElementOperations.op_click_element">
-<span class="sig-name descname"><span class="pre">op_click_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_click_element" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">op_click_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_click_element" title="Link to this definition"></a></dt>
 <dd><p>Locates and clicks the element identified by locator_key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>locator_key</strong> (<em>str</em>) – Dictionary key for the locators collection</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator_key</strong> (<em>str</em>) – Dictionary key for the locators collection</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – Maximum wait time in seconds before raising an exception, defaults to
+settings.SELENIUM[‘TIMEOUT’] from settings.py</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
@@ -510,7 +553,7 @@ custom controller methods for common operations.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="web_element_operations.WebElementOperations.op_get_element">
-<span class="sig-name descname"><span class="pre">op_get_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4607851696'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_get_element" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">op_get_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_get_element" title="Link to this definition"></a></dt>
 <dd><p>Locates and returns the element identified by locator_key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -615,8 +658,50 @@ settings.SELENIUM[‘TIMEOUT’] from settings.py</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="web_element_operations.WebElementOperations.op_get_selected_dropdown_text">
+<span class="sig-name descname"><span class="pre">op_get_selected_dropdown_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_get_selected_dropdown_text" title="Link to this definition"></a></dt>
+<dd><p>Gets the visible text of the currently selected option in a dropdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator_key</strong> (<em>str</em>) – Dictionary key for the locators collection</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – Maximum wait time in seconds to find the element, defaults to
+settings.SELENIUM[‘TIMEOUT’] from settings.py</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Visible text of the selected option</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="web_element_operations.WebElementOperations.op_is_checkbox_checked">
+<span class="sig-name descname"><span class="pre">op_is_checkbox_checked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_is_checkbox_checked" title="Link to this definition"></a></dt>
+<dd><p>Checks whether a checkbox is currently checked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator_key</strong> (<em>str</em>) – Dictionary key for the locators collection</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – Maximum wait time in seconds to find the element, defaults to
+settings.SELENIUM[‘TIMEOUT’] from settings.py</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if checkbox is checked, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="web_element_operations.WebElementOperations.op_scroll_to_element">
-<span class="sig-name descname"><span class="pre">op_scroll_to_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4607851696'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_scroll_to_element" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">op_scroll_to_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_scroll_to_element" title="Link to this definition"></a></dt>
 <dd><p>Scrolls the page until the element identified by locator_key is visible in the viewport.
 Uses JavaScript scrollIntoView for desktop web browsers.</p>
 <dl class="field-list simple">
@@ -632,6 +717,54 @@ settings.SELENIUM[‘TIMEOUT’] from settings.py</p></li>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>WebElement</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="web_element_operations.WebElementOperations.op_select_dropdown_by_text">
+<span class="sig-name descname"><span class="pre">op_select_dropdown_by_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_select_dropdown_by_text" title="Link to this definition"></a></dt>
+<dd><p>Selects an option from a dropdown (select element) by visible text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator_key</strong> (<em>str</em>) – Dictionary key for the locators collection</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – Visible text of the option to select</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – Maximum wait time in seconds to find the element, defaults to
+settings.SELENIUM[‘TIMEOUT’] from settings.py</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="web_element_operations.WebElementOperations.op_select_dropdown_by_value">
+<span class="sig-name descname"><span class="pre">op_select_dropdown_by_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_select_dropdown_by_value" title="Link to this definition"></a></dt>
+<dd><p>Selects an option from a dropdown (select element) by value attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator_key</strong> (<em>str</em>) – Dictionary key for the locators collection</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – Value attribute of the option to select</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – Maximum wait time in seconds to find the element, defaults to
+settings.SELENIUM[‘TIMEOUT’] from settings.py</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="web_element_operations.WebElementOperations.op_set_checkbox">
+<span class="sig-name descname"><span class="pre">op_set_checkbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checked=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_set_checkbox" title="Link to this definition"></a></dt>
+<dd><p>Sets a checkbox to checked or unchecked state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator_key</strong> (<em>str</em>) – Dictionary key for the locators collection</p></li>
+<li><p><strong>checked</strong> (<em>bool</em>) – Desired state - True for checked, False for unchecked</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – Maximum wait time in seconds to find the element, defaults to
+settings.SELENIUM[‘TIMEOUT’] from settings.py</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -659,7 +792,7 @@ Does not include implicit wait, assumes element is already loaded but not in vie
 
 <dl class="py method">
 <dt class="sig sig-object py" id="web_element_operations.WebElementOperations.op_wait_for_element_to_not_be_visible">
-<span class="sig-name descname"><span class="pre">op_wait_for_element_to_not_be_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4607851696'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_wait_for_element_to_not_be_visible" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">op_wait_for_element_to_not_be_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=&lt;MagicMock</span> <span class="pre">name='mock.SELENIUM.__getitem__()'</span> <span class="pre">id='4377865792'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_element_operations.WebElementOperations.op_wait_for_element_to_not_be_visible" title="Link to this definition"></a></dt>
 <dd><p>Waits until the element is no longer visible in the viewport</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
