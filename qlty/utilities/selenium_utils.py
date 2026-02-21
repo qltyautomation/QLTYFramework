@@ -133,7 +133,7 @@ def get_desktop_webdriver():
         if config.HEADLESS:
             logger.info('Running Chrome in headless mode')
             options.add_argument('--headless=new')
-            options.add_argument('--window-size=1920,1080')
+            options.add_argument('--window-size=1920,1200')
             options.add_argument('--disable-gpu')
         return webdriver.Chrome(service=service, options=options)
     elif config.CURRENT_PLATFORM == 'firefox':

@@ -1,12 +1,16 @@
 # Third party libraries
-from selenium.common.exceptions import StaleElementReferenceException, ElementClickInterceptedException
+from selenium.common.exceptions import (
+    StaleElementReferenceException, NoSuchElementException, ElementClickInterceptedException
+)
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as conditions
 # Project libraries
 import settings
+from qlty import config
 from qlty.classes.selenium.selenium_operations import SeleniumOperations
-from qlty.utilities.utils import setup_logger
+from qlty.utilities.utils import setup_logger, is_browser_run
 
 logger = setup_logger(__name__, settings.DEBUG_LEVEL)
 
@@ -47,16 +51,22 @@ class WebElementOperations(SeleniumOperations):
                     self.controller.LOCATORS[locator_key][0], self.controller.LOCATORS[locator_key][1]))
             logger.debug('Element [{}] is ready for interaction, performing click'.format(
                 self.controller.LOCATORS[locator_key][1]))
-            self.controller.get_element(self.controller.LOCATORS[locator_key]).click()
+            element = self.controller.get_element(self.controller.LOCATORS[locator_key])
+            self._scroll_into_view(element)
+            element.click()
         except StaleElementReferenceException:
             # Element may have changed between retrieval and click, re-fetch and retry
             logger.debug('Stale element detected during click, re-fetching element')
-            self.controller.get_element(self.controller.LOCATORS[locator_key]).click()
-        except ElementClickInterceptedException:
-            # Element is obscured by another element, scroll into view and use JavaScript click
-            logger.debug('Click intercepted by overlapping element, using JavaScript click')
             element = self.controller.get_element(self.controller.LOCATORS[locator_key])
-            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'}); arguments[0].click();", element)
+            self._scroll_into_view(element)
+            element.click()
+        except ElementClickInterceptedException:
+            # Element is obscured by another element, fall back to JS click
+            logger.debug('Click intercepted on [{}], falling back to JavaScript click'.format(
+                self.controller.LOCATORS[locator_key][1]))
+            element = self.controller.get_element(self.controller.LOCATORS[locator_key])
+            self._scroll_into_view(element)
+            self.driver.execute_script("arguments[0].click();", element)
 
     def op_get_element_text(self, locator_key):
         """
@@ -169,6 +179,20 @@ class WebElementOperations(SeleniumOperations):
         """
         return self.controller.swipe_until_visible(self.controller.LOCATORS[locator_key], attempts)
 
+    def _scroll_into_view(self, element):
+        """
+        Scrolls an element into the visible center of the viewport.
+        Only applies on desktop web platforms (Chrome/Firefox).
+
+        :param element: WebElement to scroll into view
+        :type element: WebElement
+        """
+        if is_browser_run(config.CURRENT_PLATFORM):
+            self.driver.execute_script(
+                "arguments[0].scrollIntoView({block: 'center', behavior: 'instant'});",
+                element
+            )
+
     def op_scroll_to_element(self, locator_key, timeout=settings.SELENIUM['TIMEOUT']):
         """
         Scrolls the page until the element identified by locator_key is visible in the viewport.
@@ -183,7 +207,7 @@ class WebElementOperations(SeleniumOperations):
         :rtype: WebElement
         """
         element = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
-        self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
+        self._scroll_into_view(element)
         return element
 
     def op_select_dropdown_by_text(self, locator_key, text, timeout=settings.SELENIUM['TIMEOUT']):
@@ -199,6 +223,8 @@ class WebElementOperations(SeleniumOperations):
         :type timeout: int
         """
         dropdown_element = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
+        self._scroll_into_view(dropdown_element)
+        self._wait_for_dropdown_option(dropdown_element, 'text', text, timeout)
         select = Select(dropdown_element)
         select.select_by_visible_text(text)
 
@@ -215,6 +241,8 @@ class WebElementOperations(SeleniumOperations):
         :type timeout: int
         """
         dropdown_element = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
+        self._scroll_into_view(dropdown_element)
+        self._wait_for_dropdown_option(dropdown_element, 'value', value, timeout)
         select = Select(dropdown_element)
         select.select_by_value(value)
 
@@ -247,10 +275,7 @@ class WebElementOperations(SeleniumOperations):
         :type timeout: int
         """
         checkbox = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
-        is_checked = checkbox.is_selected()
-        if checked and not is_checked:
-            self.op_click_element(locator_key, timeout)
-        elif not checked and is_checked:
+        if checked != checkbox.is_selected():
             self.op_click_element(locator_key, timeout)
 
     def op_is_checkbox_checked(self, locator_key, timeout=settings.SELENIUM['TIMEOUT']):
@@ -267,3 +292,26 @@ class WebElementOperations(SeleniumOperations):
         """
         checkbox = self.controller.get_element(self.controller.LOCATORS[locator_key], timeout)
         return checkbox.is_selected()
+
+    def _wait_for_dropdown_option(self, dropdown_element, match_by, match_value, timeout):
+        """
+        Waits until a specific option is present inside a <select> element.
+        Handles dropdowns whose options are populated asynchronously.
+
+        :param dropdown_element: The <select> WebElement
+        :param match_by: 'text' to match by visible text, 'value' to match by value attribute
+        :param match_value: The text or value to look for
+        :param timeout: Maximum wait time in seconds
+        """
+        def option_present():
+            try:
+                if match_by == 'text':
+                    xpath = f".//option[normalize-space(.)='{match_value}']"
+                else:
+                    xpath = f".//option[@value='{match_value}']"
+                dropdown_element.find_element(By.XPATH, xpath)
+                return True
+            except NoSuchElementException:
+                return False
+
+        self.wait_for(option_present, True, timeout=timeout)
