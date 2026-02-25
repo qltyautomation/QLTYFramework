@@ -54,6 +54,8 @@ Command line arguments
 Test execution can be customized in many ways and integrations can also be enabled or disabled through
 command line arguments. These options can be activated by the short flag or the full command name.
 
+.. _arg-platform:
+
 - **Platform** :code:`-p` or :code:`--platform` **(REQUIRED)**
 
     **Options:** :code:`ios`, :code:`android`, :code:`android_web`, :code:`ios_web`, :code:`chrome`, :code:`firefox`
@@ -85,6 +87,8 @@ command line arguments. These options can be activated by the short flag or the 
         def test_offline_visit(self):
             # Test implementation
 
+.. _arg-test:
+
 - **Single test** :code:`-t` or :code:`--test`
 
     **Default:** :code:`None` (runs all tests)
@@ -106,6 +110,8 @@ command line arguments. These options can be activated by the short flag or the 
         python test_runner.py -p chrome -t test_homepage.TestHomepage.test_login
 
     The framework automatically converts class names to module names (e.g., ``TestHomepage`` → ``test_homepage.TestHomepage``).
+
+.. _arg-slack:
 
 - **Slack integration** :code:`-s` or :code:`--slack`
 
@@ -134,6 +140,8 @@ command line arguments. These options can be activated by the short flag or the 
 
         python test_runner.py -p android -s
 
+.. _arg-testrail:
+
 - **TestRail integration** :code:`-r` or :code:`--testrail`
 
     **Default:** :code:`False`
@@ -157,6 +165,8 @@ command line arguments. These options can be activated by the short flag or the 
     .. code-block:: bash
 
         python test_runner.py -p android -r
+
+.. _arg-saucelabs:
 
 - **SauceLabs integration** :code:`-l` or :code:`--saucelabs`
 
@@ -188,6 +198,8 @@ command line arguments. These options can be activated by the short flag or the 
 
         python test_runner.py -p android -l
 
+.. _arg-report-on-fail:
+
 - **Report on fail** :code:`-f` or :code:`--report-on-fail`
 
     **Default:** :code:`False`
@@ -206,6 +218,8 @@ command line arguments. These options can be activated by the short flag or the 
         Without this flag, Slack reports are only sent when all tests pass. Use :code:`-f` to receive notifications
         for both passing and failing test runs.
 
+.. _arg-managed:
+
 - **Managed drivers** :code:`-d` or :code:`--managed`
 
     **Default:** :code:`False`
@@ -219,6 +233,8 @@ command line arguments. These options can be activated by the short flag or the 
 
         python test_runner.py -p chrome -d
 
+.. _arg-headless:
+
 - **Headless mode** :code:`--headless`
 
     **Default:** :code:`False`
@@ -230,6 +246,8 @@ command line arguments. These options can be activated by the short flag or the 
     .. code-block:: bash
 
         python test_runner.py -p chrome --headless
+
+.. _arg-env:
 
 - **Environment selection** :code:`--env`
 
