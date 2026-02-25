@@ -97,7 +97,8 @@ class TestReporter:
             'test_case_ids': [],
             'message': '',
             'feature_name': feature_name,
-            'test_target': test_target
+            'test_target': test_target,
+            'results_dir': None
         }
 
     def get_results(self, results):

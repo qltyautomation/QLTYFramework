@@ -268,7 +268,20 @@ class TestRunnerUtils:
                                 comment = 'Test: {}'.format(test_identifier)
 
                             # Submit result to TestRail
-                            testrail.add_result_for_case(run_id, case_id, status, comment, elapsed)
+                            testrail_result = testrail.add_result_for_case(run_id, case_id, status, comment, elapsed)
+
+                            # Attach screenshots and logs to the result
+                            result_id = testrail_result.get('id')
+                            results_dir = result.get('results_dir')
+                            if result_id and results_dir:
+                                for filename in ['screenshot.png', 'system.log', 'page_source.txt']:
+                                    file_path = os.path.join(results_dir, filename)
+                                    if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+                                        try:
+                                            testrail.add_attachment_to_result(result_id, file_path)
+                                        except Exception as attach_err:
+                                            logger.warning('Failed to attach {} for case {}: {}'.format(
+                                                filename, case_id, str(attach_err)))
 
                         except Exception as e:
                             logger.error('Failed to add result for case {}: {}'.format(case_id, str(e)))

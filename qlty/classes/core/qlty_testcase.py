@@ -59,6 +59,11 @@ class QLTYTestCase(unittest.TestCase):
         # Generate test results directory
         if self.collect_logs:
             method_results_dir = dump_test_results(self)
+            # Store results directory path for TestRail attachment uploads
+            test_class = self.__class__.__qualname__
+            test_method = self._testMethodName
+            if test_class in test_reporter.test_results and test_method in test_reporter.test_results[test_class]:
+                test_reporter.test_results[test_class][test_method]['results_dir'] = method_results_dir
 
         # Process each webdriver associated with test case
         for driver in self.drivers:

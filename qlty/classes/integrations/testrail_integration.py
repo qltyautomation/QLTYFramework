@@ -1,4 +1,5 @@
 # Native libraries
+import os
 import requests
 import base64
 # Project libraries
@@ -205,4 +206,39 @@ class TestRailIntegration:
             return test_run
         except requests.exceptions.RequestException as e:
             logger.error(f"Failed to update test run {run_id}: {e}")
+            raise
+
+    def add_attachment_to_result(self, result_id, file_path):
+        """
+        Attaches a file to a specific test result in TestRail.
+        Supports screenshots, logs, and other artifacts for debugging.
+
+        :param result_id: The ID of the test result (returned by add_result_for_case)
+        :type result_id: int
+        :param file_path: Absolute path to the file to attach
+        :type file_path: str
+        :return: The attachment response object
+        :rtype: dict
+        :raises Exception: If attachment upload fails
+        """
+        url = f"{self.base_url}/index.php?/api/v2/add_attachment_to_result/{result_id}"
+
+        # Multipart uploads require removing Content-Type header
+        # so requests can set the correct multipart boundary automatically
+        upload_headers = {k: v for k, v in self.headers.items() if k != 'Content-Type'}
+
+        filename = os.path.basename(file_path)
+
+        try:
+            with open(file_path, 'rb') as f:
+                response = requests.post(
+                    url,
+                    headers=upload_headers,
+                    files={'attachment': (filename, f)}
+                )
+            response.raise_for_status()
+            logger.debug(f"Attachment '{filename}' uploaded to result {result_id}")
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"Failed to attach '{filename}' to result {result_id}: {e}")
             raise
