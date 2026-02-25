@@ -1,3 +1,5 @@
+# Standard libraries
+import time
 # Third party libraries
 from selenium.common.exceptions import (
     StaleElementReferenceException, NoSuchElementException, ElementClickInterceptedException
@@ -61,12 +63,7 @@ class WebElementOperations(SeleniumOperations):
             self._scroll_into_view(element)
             element.click()
         except ElementClickInterceptedException:
-            # Element is obscured by another element, fall back to JS click
-            logger.debug('Click intercepted on [{}], falling back to JavaScript click'.format(
-                self.controller.LOCATORS[locator_key][1]))
-            element = self.controller.get_element(self.controller.LOCATORS[locator_key])
-            self._scroll_into_view(element)
-            self.driver.execute_script("arguments[0].click();", element)
+            raise
 
     def op_get_element_text(self, locator_key):
         """
@@ -192,6 +189,8 @@ class WebElementOperations(SeleniumOperations):
                 "arguments[0].scrollIntoView({block: 'center', behavior: 'instant'});",
                 element
             )
+            # Allow the browser to complete the scroll reflow before interacting
+            time.sleep(0.2)
 
     def op_scroll_to_element(self, locator_key, timeout=settings.SELENIUM['TIMEOUT']):
         """
