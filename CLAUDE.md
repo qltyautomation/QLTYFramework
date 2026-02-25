@@ -23,6 +23,9 @@ python -m qlty.qlty_tests -p chrome -t TestClassName                      # All 
 python -m qlty.qlty_tests -p chrome -t TestClassName.test_method_name     # Specific test method
 python -m qlty.qlty_tests -p chrome -t test_module.TestClassName          # Explicit module path
 
+# Run against a specific environment
+python -m qlty.qlty_tests -p chrome -t TestClassName --env production
+
 # Run with integrations
 python -m qlty.qlty_tests -p android -s     # Enable Slack
 python -m qlty.qlty_tests -p ios -l         # Enable SauceLabs
@@ -39,6 +42,7 @@ python -m qlty.qlty_tests -p ios -s -r      # Enable multiple integrations
 - `-r, --testrail`: Enable TestRail integration for test result reporting
 - `-d, --managed`: Enable managed driver functionality
 - `--headless`: Run browser in headless mode (no UI) - useful for CI/CD pipelines
+- `--env`: Target environment key from `settings.ENVIRONMENTS` (e.g. `staging`, `production`). Defaults to `PROJECT_CONFIG['ENVIRONMENT']` if omitted
 
 ## Architecture
 
@@ -47,7 +51,7 @@ python -m qlty.qlty_tests -p ios -s -r      # Enable multiple integrations
 **qlty/config.py**: Framework-wide configuration settings
 - Platform selection
 - Integration toggles (Slack, SauceLabs, TestRail)
-- Environment configurations
+- Environment selection (`CURRENT_ENVIRONMENT` - resolved from `--env` flag or `PROJECT_CONFIG['ENVIRONMENT']`)
 
 **qlty/qlty_tests.py**: Main test runner entry point
 - Orchestrates test discovery and execution
@@ -135,8 +139,22 @@ TEST_RUN_ID = None
 PROJECT_CONFIG = {
     'PROJECT_NAME': 'YourProject',
     'RELEASE': '1.0',
-    'ENVIRONMENT': 'QA',
+    'ENVIRONMENT': 'STAGING',  # Default environment (used when --env is omitted)
     'SOURCE_REPO': 'https://github.com/...'
+}
+
+# Environment configurations (keyed by environment name, selected via --env flag)
+ENVIRONMENTS = {
+    'STAGING': {
+        'BASE_URL': 'https://staging.example.com/',
+        'USERNAME': os.getenv('STAGING_USERNAME'),
+        'PASSWORD': os.getenv('STAGING_PASSWORD'),
+    },
+    'PRODUCTION': {
+        'BASE_URL': 'https://production.example.com/',
+        'USERNAME': os.getenv('PROD_USERNAME'),
+        'PASSWORD': os.getenv('PROD_PASSWORD'),
+    }
 }
 
 # Selenium/Appium configuration
@@ -172,8 +190,13 @@ Create test classes extending `QLTYTestCase`:
 from qlty.classes.core.qlty_testcase import QLTYTestCase
 from qlty.classes.core.test_target import TestTarget
 from qlty.qlty_tests import test_reporter
+import settings
+import qlty.config as config
 
 class MyTestClass(QLTYTestCase):
+    # Use config.CURRENT_ENVIRONMENT to read from the selected environment
+    base_url = settings.ENVIRONMENTS[config.CURRENT_ENVIRONMENT]['BASE_URL']
+
     def setUp(self):
         super().setUp()
         # Register with reporter
@@ -186,6 +209,7 @@ class MyTestClass(QLTYTestCase):
 
     def test_my_feature(self):
         driver = self.get_driver()
+        driver.get(self.base_url)
         # Test implementation
 ```
 
@@ -197,4 +221,6 @@ class MyTestClass(QLTYTestCase):
 - Main test runner function is `qlty()` in `qlty_tests.py`
 - JAR files in `qlty/jars/` are included for Java-based integrations
 - Platform detection uses `config.CURRENT_PLATFORM`
+- Environment selection uses `config.CURRENT_ENVIRONMENT` (set via `--env` flag or defaults to `PROJECT_CONFIG['ENVIRONMENT']`)
+- Tests should access environment data via `settings.ENVIRONMENTS[config.CURRENT_ENVIRONMENT]` instead of hardcoding environment keys
 - Managed drivers mode bypasses default driver initialization

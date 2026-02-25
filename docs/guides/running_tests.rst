@@ -231,21 +231,53 @@ command line arguments. These options can be activated by the short flag or the 
 
         python test_runner.py -p chrome --headless
 
-- **Base URL override** :code:`--base-url`
+- **Environment selection** :code:`--env`
 
-    **Default:** :code:`None` (uses the URL from :code:`settings.ENVIRONMENTS`)
+    **Default:** Value of :code:`PROJECT_CONFIG['ENVIRONMENT']` in :code:`settings.py` (typically :code:`STAGING`)
 
-    Overrides the base URL for the target environment at runtime. This allows pointing the test run at a different
-    instance (e.g. production) without modifying :code:`settings.py`.
+    Selects which environment configuration to use from :code:`settings.ENVIRONMENTS`. The value is case-insensitive
+    and will be uppercased automatically. The framework validates that the specified environment key exists in
+    :code:`settings.ENVIRONMENTS` and exits with an error listing available environments if it does not.
 
-    **Example:**
+    **Required configuration in settings.py:**
+
+    .. code-block:: python
+
+        ENVIRONMENTS = {
+            'STAGING': {
+                'BASE_URL': 'https://staging.example.com/',
+                'USERNAME': os.getenv('STAGING_USERNAME'),
+                'PASSWORD': os.getenv('STAGING_PASSWORD'),
+            },
+            'PRODUCTION': {
+                'BASE_URL': 'https://production.example.com/',
+                'USERNAME': os.getenv('PROD_USERNAME'),
+                'PASSWORD': os.getenv('PROD_PASSWORD'),
+            }
+        }
+
+    Tests access environment data dynamically via :code:`config.CURRENT_ENVIRONMENT`:
+
+    .. code-block:: python
+
+        import settings
+        import qlty.config as config
+
+        class MyTestClass(QLTYTestCase):
+            base_url = settings.ENVIRONMENTS[config.CURRENT_ENVIRONMENT]['BASE_URL']
+
+    **Examples:**
 
     .. code-block:: bash
 
-        python test_runner.py -p chrome --base-url https://production.example.com/
+        # Uses default environment (from PROJECT_CONFIG['ENVIRONMENT'])
+        python test_runner.py -p chrome -t TestHomepage
 
-        # Combined with single test execution
-        python test_runner.py -p chrome --base-url https://production.example.com/ -t TestProductionDeployments
+        # Explicitly target staging
+        python test_runner.py -p chrome -t TestHomepage --env staging
+
+        # Target production
+        python test_runner.py -p chrome -t TestProductionDeployments --env production
 
 **Combining flags:**
 

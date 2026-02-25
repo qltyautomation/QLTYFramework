@@ -32,5 +32,5 @@ MANAGED_DRIVERS = False
 DESKTOP_BROWSER = False
 #: Run browser in headless mode (no UI)
 HEADLESS = False
-#: Override base URL for target environment
-BASE_URL = None
+#: Selected environment key from settings.ENVIRONMENTS
+CURRENT_ENVIRONMENT = None

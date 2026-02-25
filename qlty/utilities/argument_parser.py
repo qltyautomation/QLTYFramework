@@ -57,9 +57,9 @@ class QLTYArgumentParser:
         self.parser.add_argument('--headless', default=False,
                                  help='Run browser in headless mode (no UI)', required=False,
                                  dest='headless', action='store_true')
-        self.parser.add_argument('--base-url', default=None,
-                                 help='Override base URL for target environment', required=False,
-                                 dest='base_url')
+        self.parser.add_argument('--env', default=None,
+                                 help='Target environment key from settings.ENVIRONMENTS (e.g. staging, production)',
+                                 required=False, dest='environment')
 
     def _parse_arguments(self):
         """
@@ -78,13 +78,14 @@ class QLTYArgumentParser:
         config.TESTRAIL_INTEGRATION = args.testrail
         config.MANAGED_DRIVERS = args.managed_drivers
         config.HEADLESS = args.headless
-        config.BASE_URL = args.base_url
 
-        # Override environment base URL if --base-url was provided
-        if args.base_url:
-            env = settings.PROJECT_CONFIG.get('ENVIRONMENT', 'STAGING')
-            if env in settings.ENVIRONMENTS:
-                settings.ENVIRONMENTS[env]['BASE_URL'] = args.base_url
+        # Set current environment from --env argument or default from settings
+        if args.environment:
+            config.CURRENT_ENVIRONMENT = args.environment.upper()
+        else:
+            config.CURRENT_ENVIRONMENT = settings.PROJECT_CONFIG.get('ENVIRONMENT', 'STAGING').upper()
+        # Keep PROJECT_CONFIG in sync with selected environment
+        settings.PROJECT_CONFIG['ENVIRONMENT'] = config.CURRENT_ENVIRONMENT
 
         config.MOBILE_BROWSER = False
         config.DESKTOP_BROWSER = False
@@ -108,8 +109,7 @@ class QLTYArgumentParser:
         logger.debug('Saucelabs Integration enabled: {}'.format(config.SAUCELABS_INTEGRATION))
         logger.debug('TestRail Integration enabled: {}'.format(config.TESTRAIL_INTEGRATION))
         logger.debug('Mobile browser mode: {}'.format(config.MOBILE_BROWSER))
-        if config.BASE_URL:
-            logger.debug('Base URL override: {}'.format(config.BASE_URL))
+        logger.debug('Target environment: {}'.format(config.CURRENT_ENVIRONMENT))
         logger.debug('Jenkins execution detected: {}'.format(config.RUNNING_ON_JENKINS))
 
     def _validate_arguments(self):
@@ -123,6 +123,14 @@ class QLTYArgumentParser:
             logger.info('Reporting enabled regardless of test execution outcome')
 
         missing_settings = False
+
+        # Validate selected environment exists in settings
+        if config.CURRENT_ENVIRONMENT not in settings.ENVIRONMENTS:
+            available = ', '.join(settings.ENVIRONMENTS.keys())
+            logger.error("Environment '{}' not found in settings.ENVIRONMENTS. Available: [{}]".format(
+                config.CURRENT_ENVIRONMENT, available))
+            missing_settings = True
+
         # Validate platform capabilities configuration
         # Verify capabilities structure exists
         if exists(lambda: settings.SELENIUM['CAPABILITIES']) is None:
