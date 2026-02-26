@@ -71,7 +71,7 @@ class TestRailIntegration:
             logger.error(f"Failed to connect to TestRail API: {e}")
             raise
 
-    def create_test_run(self, name, description=None, case_ids=None):
+    def create_test_run(self, name, description=None, case_ids=None, suite_id=None):
         """
         Creates a new test run in TestRail with specific test cases or all cases from the suite.
 
@@ -81,6 +81,8 @@ class TestRailIntegration:
         :type description: str
         :param case_ids: List of specific test case IDs to include in the run (optional)
         :type case_ids: list[int]
+        :param suite_id: Override suite ID for this run (optional, defaults to settings.TESTRAIL['SUITE_ID'])
+        :type suite_id: int or str or None
         :return: The created test run object containing run_id
         :rtype: dict
         :raises Exception: If test run creation fails
@@ -89,7 +91,7 @@ class TestRailIntegration:
 
         payload = {
             'name': name,
-            'suite_id': self.suite_id
+            'suite_id': suite_id if suite_id is not None else self.suite_id
         }
 
         # If specific case IDs provided, include only those; otherwise include all

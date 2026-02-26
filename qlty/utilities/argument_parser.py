@@ -81,9 +81,9 @@ class QLTYArgumentParser:
 
         # Set current environment from --env argument or default from settings
         if args.environment:
-            config.CURRENT_ENVIRONMENT = args.environment.upper()
+            config.CURRENT_ENVIRONMENT = args.environment
         else:
-            config.CURRENT_ENVIRONMENT = settings.PROJECT_CONFIG.get('ENVIRONMENT', 'STAGING').upper()
+            config.CURRENT_ENVIRONMENT = settings.PROJECT_CONFIG.get('ENVIRONMENT', 'STAGING')
         # Keep PROJECT_CONFIG in sync with selected environment
         settings.PROJECT_CONFIG['ENVIRONMENT'] = config.CURRENT_ENVIRONMENT
 

@@ -23,7 +23,7 @@ class TestReporter:
     external_case_ids = {}
 
     def register_test_case(self, test_case, case_ids: list[int], feature_name: string,
-                           test_target: TestTarget):
+                           test_target: TestTarget, suite_id=None):
         """
         Registers test case with associated metadata for reporting
 
@@ -35,9 +35,11 @@ class TestReporter:
         :type feature_name: String
         :param test_target: Test execution target (UI or API)
         :type test_target: Enum[TestTarget]
+        :param suite_id: TestRail suite ID override (optional, defaults to settings.TESTRAIL['SUITE_ID'])
+        :type suite_id: int or None
         """
         # Register test case in results
-        self._add_test_case(test_case, feature_name, test_target)
+        self._add_test_case(test_case, feature_name, test_target, suite_id)
         # Associate external tracking identifiers with test case
         self._add_external_test_case_ids(test_case, case_ids)
 
@@ -77,12 +79,14 @@ class TestReporter:
             if test_case_result._outcome.success:
                 self.test_results[test_class][test_method_name]['status'] = 'passed'
 
-    def _add_test_case(self, test_case, feature_name, test_target):
+    def _add_test_case(self, test_case, feature_name, test_target, suite_id=None):
         """
         Creates new test case entry in results dictionary
 
         :param test_case: Test case instance extending unittest TestCase
         :type test_case: QLTYTestCase
+        :param suite_id: TestRail suite ID override (optional)
+        :type suite_id: int or None
         """
         if self.test_results.get(test_case.__class__.__qualname__) is None:
             # Initialize test class entry if not present
@@ -95,6 +99,7 @@ class TestReporter:
             'end_time': None,
             'duration': None,
             'test_case_ids': [],
+            'suite_id': suite_id,
             'message': '',
             'feature_name': feature_name,
             'test_target': test_target,
