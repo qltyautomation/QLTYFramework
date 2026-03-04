@@ -210,6 +210,61 @@ class TestRailIntegration:
             logger.error(f"Failed to update test run {run_id}: {e}")
             raise
 
+    @staticmethod
+    def resolve_case_ids(case_map, config):
+        """
+        Resolve which TestRail case IDs apply based on a case map and a configuration object.
+        Filters out None values and evaluates conditional entries against config flags.
+
+        :param case_map: Dictionary with 'core' (always-included cases), 'suite_id', and
+                         conditional entries keyed by field name. Each conditional entry has:
+                         - 'case_id': int or None
+                         - 'config_key': str (flag name to check on config)
+                         - 'inverted': bool (optional, include when config value is falsy)
+                         - 'config_list': str (optional, include when config list is non-empty)
+        :type case_map: dict
+        :param config: Object with a get_value(key, default=None) method
+        :return: List of applicable TestRail case IDs
+        :rtype: list[int]
+        """
+        case_ids = []
+
+        # Core fields (always included)
+        for case_id in case_map['core'].values():
+            if case_id is not None:
+                case_ids.append(case_id)
+
+        # Conditional fields
+        for key, mapping in case_map.items():
+            if key in ('core', 'suite_id'):
+                continue
+
+            case_id = mapping.get('case_id')
+            if case_id is None:
+                continue
+
+            # List-based: include if the config list is non-empty
+            if 'config_list' in mapping:
+                config_list = config.get_value(mapping['config_list'], [])
+                if config_list:
+                    case_ids.append(case_id)
+                continue
+
+            # Flag-based: check config key
+            config_key = mapping.get('config_key', '')
+            inverted = mapping.get('inverted', False)
+
+            if inverted:
+                raw_value = config.get_value(config_key, False)
+                if not raw_value:
+                    case_ids.append(case_id)
+            else:
+                raw_value = config.get_value(config_key)
+                if raw_value:
+                    case_ids.append(case_id)
+
+        return case_ids
+
     def add_attachment_to_result(self, result_id, file_path):
         """
         Attaches a file to a specific test result in TestRail.
