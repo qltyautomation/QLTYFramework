@@ -41,14 +41,12 @@ class TestRunnerUtils:
         """
 
         # Submit test results to TestRail first if enabled (to get run_id for Slack)
-        testrail_run_ids = None
+        testrail_run_id = None
         if config.TESTRAIL_INTEGRATION:
-            testrail_run_ids = TestRunnerUtils._report_to_testrail(test_results, test_run_id, test_run_elapsed_time)
+            testrail_run_id = TestRunnerUtils._report_to_testrail(test_results, test_run_id, test_run_elapsed_time)
 
         # Dispatch Slack notification if enabled (with TestRail run_id if available)
         if config.SLACK_REPORTING:
-            # Slack expects a single run ID — use the first one from the list
-            testrail_run_id = testrail_run_ids[0] if testrail_run_ids else None
             SlackIntegration().report(
                 TestRunnerUtils.get_testrun_totals(test_results),
                 TestRunnerUtils.get_readable_run_time(test_run_elapsed_time),
@@ -199,7 +197,7 @@ class TestRunnerUtils:
     def _report_to_testrail(test_results, test_run_id, test_run_elapsed_time):
         """
         Submits test results to TestRail test management system.
-        Groups test cases by suite ID and creates separate test runs per suite.
+        Creates a single test run containing all test case IDs.
 
         :param test_results: Collection of test execution results
         :type test_results: dict
@@ -207,8 +205,8 @@ class TestRunnerUtils:
         :type test_run_id: str
         :param test_run_elapsed_time: Total test run duration in seconds
         :type test_run_elapsed_time: float
-        :return: List of TestRail run IDs created
-        :rtype: list[int]
+        :return: TestRail run ID, or None if reporting was skipped
+        :rtype: int or None
         """
         # Check for failures and respect REPORT_ON_FAIL setting
         totals = TestRunnerUtils.get_testrun_totals(test_results)
@@ -224,28 +222,21 @@ class TestRunnerUtils:
             logger.info('Initializing TestRail integration...')
             testrail = TestRailIntegration()
 
-            # Group case IDs by suite ID (None = default suite from settings)
-            from collections import defaultdict
-            suite_cases = defaultdict(list)
-
+            # Collect all case IDs across all test results
+            all_case_ids = []
             for test_class, test_methods in test_results.items():
                 for test_method, result in test_methods.items():
                     if result.get('test_case_ids') and len(result['test_case_ids']) > 0:
-                        suite_id = result.get('suite_id')  # None means default suite
-                        suite_cases[suite_id].extend(result['test_case_ids'])
+                        all_case_ids.extend(result['test_case_ids'])
 
-            # Deduplicate per suite while preserving order
-            for suite_id in suite_cases:
-                suite_cases[suite_id] = list(dict.fromkeys(suite_cases[suite_id]))
+            # Deduplicate while preserving order
+            all_case_ids = list(dict.fromkeys(all_case_ids))
 
-            if not suite_cases:
+            if not all_case_ids:
                 logger.warning('No test cases with TestRail IDs found, skipping reporting')
                 return None
 
-            # Log suite grouping
-            for suite_id, case_ids in suite_cases.items():
-                suite_label = 'default (suite {})'.format(settings.TESTRAIL['SUITE_ID']) if suite_id is None else 'suite {}'.format(suite_id)
-                logger.debug('Suite {}: {} case(s) — {}'.format(suite_label, len(case_ids), case_ids))
+            logger.debug('{} case(s) to report: {}'.format(len(all_case_ids), all_case_ids))
 
             # test_run_id already contains: PROJECT | PLATFORM | [TIME] - USER
             run_name = test_run_id
@@ -280,68 +271,51 @@ class TestRunnerUtils:
 
             run_description = '\n'.join(description_lines)
 
-            # Create one test run per suite and submit results
-            run_ids = []
-            for suite_id, case_ids in suite_cases.items():
-                suite_label = 'default' if suite_id is None else 'suite {}'.format(suite_id)
-                logger.info('Creating TestRail run for {} with {} case(s)'.format(suite_label, len(case_ids)))
+            # Create a single test run with all case IDs
+            logger.info('Creating TestRail run with {} case(s)'.format(len(all_case_ids)))
+            test_run = testrail.create_test_run(run_name, run_description, case_ids=all_case_ids)
+            run_id = test_run['id']
 
-                test_run = testrail.create_test_run(run_name, run_description, case_ids=case_ids, suite_id=suite_id)
-                run_id = test_run['id']
-                run_ids.append(run_id)
+            # Submit results for each test case
+            for test_class, test_methods in test_results.items():
+                for test_method, result in test_methods.items():
+                    if not result.get('test_case_ids') or len(result['test_case_ids']) == 0:
+                        continue
 
-                # Build set of case IDs in this suite for fast lookup
-                suite_case_set = set(case_ids)
+                    for case_id in result['test_case_ids']:
+                        try:
+                            status = result['status']
+                            comment = result.get('message', '')
+                            elapsed = TestRunnerUtils.get_readable_run_time(result['duration']) if result.get('duration') else None
 
-                # Submit results for test cases belonging to this suite
-                for test_class, test_methods in test_results.items():
-                    for test_method, result in test_methods.items():
-                        if not result.get('test_case_ids') or len(result['test_case_ids']) == 0:
-                            continue
+                            test_identifier = '{}.{}'.format(test_class, test_method)
+                            if comment:
+                                comment = 'Test: {}\n\n{}'.format(test_identifier, comment)
+                            else:
+                                comment = 'Test: {}'.format(test_identifier)
 
-                        # Only submit if this result belongs to the current suite
-                        result_suite_id = result.get('suite_id')
-                        if result_suite_id != suite_id:
-                            continue
+                            testrail_result = testrail.add_result_for_case(run_id, case_id, status, comment, elapsed)
 
-                        for case_id in result['test_case_ids']:
-                            if case_id not in suite_case_set:
-                                continue
+                            # Attach screenshots and logs to the result
+                            result_id = testrail_result.get('id')
+                            results_dir = result.get('results_dir')
+                            if result_id and results_dir:
+                                for filename in ['screenshot.png', 'system.log', 'page_source.txt']:
+                                    file_path = os.path.join(results_dir, filename)
+                                    if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+                                        try:
+                                            testrail.add_attachment_to_result(result_id, file_path)
+                                        except Exception as attach_err:
+                                            logger.warning('Failed to attach {} for case {}: {}'.format(
+                                                filename, case_id, str(attach_err)))
 
-                            try:
-                                status = result['status']
-                                comment = result.get('message', '')
-                                elapsed = TestRunnerUtils.get_readable_run_time(result['duration']) if result.get('duration') else None
+                        except Exception as e:
+                            logger.error('Failed to add result for case {}: {}'.format(case_id, str(e)))
 
-                                test_identifier = '{}.{}'.format(test_class, test_method)
-                                if comment:
-                                    comment = 'Test: {}\n\n{}'.format(test_identifier, comment)
-                                else:
-                                    comment = 'Test: {}'.format(test_identifier)
-
-                                testrail_result = testrail.add_result_for_case(run_id, case_id, status, comment, elapsed)
-
-                                # Attach screenshots and logs to the result
-                                result_id = testrail_result.get('id')
-                                results_dir = result.get('results_dir')
-                                if result_id and results_dir:
-                                    for filename in ['screenshot.png', 'system.log', 'page_source.txt']:
-                                        file_path = os.path.join(results_dir, filename)
-                                        if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
-                                            try:
-                                                testrail.add_attachment_to_result(result_id, file_path)
-                                            except Exception as attach_err:
-                                                logger.warning('Failed to attach {} for case {}: {}'.format(
-                                                    filename, case_id, str(attach_err)))
-
-                            except Exception as e:
-                                logger.error('Failed to add result for case {}: {}'.format(case_id, str(e)))
-
-                logger.info('View results at: {}/index.php?/runs/view/{}'.format(
-                    settings.TESTRAIL['BASE_URL'].rstrip('/'), run_id))
-
-            logger.info('TestRail reporting completed successfully — {} run(s) created'.format(len(run_ids)))
-            return run_ids
+            logger.info('View results at: {}/index.php?/runs/view/{}'.format(
+                settings.TESTRAIL['BASE_URL'].rstrip('/'), run_id))
+            logger.info('TestRail reporting completed successfully')
+            return run_id
 
         except Exception as e:
             logger.error('TestRail integration failed: {}'.format(str(e)))

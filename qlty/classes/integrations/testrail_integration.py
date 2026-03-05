@@ -71,7 +71,7 @@ class TestRailIntegration:
             logger.error(f"Failed to connect to TestRail API: {e}")
             raise
 
-    def create_test_run(self, name, description=None, case_ids=None, suite_id=None):
+    def create_test_run(self, name, description=None, case_ids=None):
         """
         Creates a new test run in TestRail with specific test cases or all cases from the suite.
 
@@ -81,8 +81,6 @@ class TestRailIntegration:
         :type description: str
         :param case_ids: List of specific test case IDs to include in the run (optional)
         :type case_ids: list[int]
-        :param suite_id: Override suite ID for this run (optional, defaults to settings.TESTRAIL['SUITE_ID'])
-        :type suite_id: int or str or None
         :return: The created test run object containing run_id
         :rtype: dict
         :raises Exception: If test run creation fails
@@ -91,7 +89,7 @@ class TestRailIntegration:
 
         payload = {
             'name': name,
-            'suite_id': suite_id if suite_id is not None else self.suite_id
+            'suite_id': self.suite_id
         }
 
         # If specific case IDs provided, include only those; otherwise include all
@@ -216,7 +214,7 @@ class TestRailIntegration:
         Resolve which TestRail case IDs apply based on a case map and a configuration object.
         Filters out None values and evaluates conditional entries against config flags.
 
-        :param case_map: Dictionary with 'core' (always-included cases), 'suite_id', and
+        :param case_map: Dictionary with 'core' (always-included cases) and
                          conditional entries keyed by field name. Each conditional entry has:
                          - 'case_id': int or None
                          - 'config_key': str (flag name to check on config)
@@ -236,7 +234,7 @@ class TestRailIntegration:
 
         # Conditional fields
         for key, mapping in case_map.items():
-            if key in ('core', 'suite_id'):
+            if key == 'core':
                 continue
 
             case_id = mapping.get('case_id')

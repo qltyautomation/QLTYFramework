@@ -37,7 +37,7 @@ class MailTMIntegration:
         Fetches available domains, creates an account, and authenticates automatically.
         """
         self._domain = self._get_domain()
-        login = f"qlty.{uuid.uuid4().hex[:6]}"
+        login = f"qlty{uuid.uuid4().hex[:8]}"
         self._password = uuid.uuid4().hex
         self.email = f"{login}@{self._domain}"
 
@@ -57,11 +57,11 @@ class MailTMIntegration:
         logger.info(f"Found {len(messages)} emails for {self.email}")
         return messages
 
-    def get_verification_link(self, max_wait=30, poll_interval=2, url_prefix=None):
+    def get_verification_link(self, max_wait=15, poll_interval=2, url_prefix=None):
         """
         Polls for a verification email and extracts the confirmation link.
 
-        :param max_wait: Maximum time to wait for email in seconds (default: 30)
+        :param max_wait: Maximum time to wait for email in seconds (default: 15)
         :type max_wait: int
         :param poll_interval: Time between polling attempts in seconds (default: 2)
         :type poll_interval: int
