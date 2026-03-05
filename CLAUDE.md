@@ -43,6 +43,7 @@ python -m qlty.qlty_tests -p ios -s -r      # Enable multiple integrations
 - `-d, --managed`: Enable managed driver functionality
 - `--headless`: Run browser in headless mode (no UI) - useful for CI/CD pipelines
 - `--env`: Target environment key from `settings.ENVIRONMENTS` (e.g. `staging`, `production`). Defaults to `PROJECT_CONFIG['ENVIRONMENT']` if omitted
+- `--exclude`: Exclude test classes by name, comma-separated (e.g. `--exclude TestDynamic,TestOther`)
 
 ## Architecture
 

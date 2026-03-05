@@ -65,6 +65,23 @@ def _setup():
     _execute()
 
 
+def _filter_excluded_tests(test_suite):
+    """
+    Recursively removes test cases whose class name is in config.EXCLUDE_TESTS.
+
+    :param test_suite: unittest.TestSuite to filter
+    :return: Filtered unittest.TestSuite
+    """
+    filtered = unittest.TestSuite()
+    for test in test_suite:
+        if isinstance(test, unittest.TestSuite):
+            filtered.addTests(_filter_excluded_tests(test))
+        else:
+            if test.__class__.__name__ not in config.EXCLUDE_TESTS:
+                filtered.addTest(test)
+    return filtered
+
+
 def _execute():
     if config.SINGLE_TEST_NAME:
         logger.debug('Loading individual test: {}'.format(config.SINGLE_TEST_NAME))
@@ -83,6 +100,11 @@ def _execute():
     else:
         logger.debug('Loading full test collection')
         test_suite = unittest.TestLoader().discover(os.path.join(os.getcwd(), 'tests'))
+
+    # Apply exclusion filter if --exclude was specified
+    if config.EXCLUDE_TESTS:
+        test_suite = _filter_excluded_tests(test_suite)
+        logger.debug('Excluded test classes: {}'.format(', '.join(config.EXCLUDE_TESTS)))
 
     # Begin timing test execution
     test_run_start_time = time.time()

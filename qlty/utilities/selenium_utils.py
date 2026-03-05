@@ -99,23 +99,27 @@ def initialize_driver(test_case, platform, force_driver_creation=True):
 
 def ensure_chromedriver(chromedriver_path):
     """
-    Checks if ChromeDriver exists at the given path and auto-fetches it if missing
+    Ensures a compatible ChromeDriver is available at the given path.
+    Always runs the fetch script to verify version compatibility with installed Chrome.
+    The script exits early if the existing ChromeDriver already matches.
     """
-    if os.path.isfile(chromedriver_path):
-        return
-    logger.info('ChromeDriver not found at {}, attempting to fetch automatically'.format(chromedriver_path))
     import subprocess
     script_path = os.path.join(os.path.dirname(__file__), '..', '..', 'scripts', 'fetch_chromedriver.sh')
     script_path = os.path.normpath(script_path)
     if not os.path.isfile(script_path):
+        if os.path.isfile(chromedriver_path):
+            logger.warning('Fetch script not found at {}, using existing ChromeDriver without version check'.format(
+                script_path))
+            return
         raise RuntimeError(
             'ChromeDriver not found at {} and fetch script not found at {}'.format(
                 chromedriver_path, script_path))
+    logger.info('Verifying ChromeDriver compatibility')
     result = subprocess.run(['bash', script_path], capture_output=True, text=True)
     if result.returncode != 0:
         logger.error('ChromeDriver fetch failed:\n{}'.format(result.stderr))
-        raise RuntimeError('ChromeDriver not found and auto-fetch failed')
-    logger.info('ChromeDriver fetched successfully')
+        raise RuntimeError('ChromeDriver version check failed. Run scripts/fetch_chromedriver.sh --check for details')
+    logger.info('ChromeDriver is ready')
 
 
 def get_desktop_webdriver():

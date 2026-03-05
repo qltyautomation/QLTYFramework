@@ -60,6 +60,9 @@ class QLTYArgumentParser:
         self.parser.add_argument('--env', default=None,
                                  help='Target environment key from settings.ENVIRONMENTS (e.g. staging, production)',
                                  required=False, dest='environment')
+        self.parser.add_argument('--exclude', default=None,
+                                 help='Exclude test classes by name, comma-separated (e.g. TestDynamic,TestOther)',
+                                 required=False, dest='exclude_tests')
 
     def _parse_arguments(self):
         """
@@ -87,6 +90,12 @@ class QLTYArgumentParser:
         # Keep PROJECT_CONFIG in sync with selected environment
         settings.PROJECT_CONFIG['ENVIRONMENT'] = config.CURRENT_ENVIRONMENT
 
+        # Parse comma-separated exclusion list
+        if args.exclude_tests:
+            config.EXCLUDE_TESTS = [name.strip() for name in args.exclude_tests.split(',')]
+        else:
+            config.EXCLUDE_TESTS = []
+
         config.MOBILE_BROWSER = False
         config.DESKTOP_BROWSER = False
 
@@ -110,6 +119,8 @@ class QLTYArgumentParser:
         logger.debug('TestRail Integration enabled: {}'.format(config.TESTRAIL_INTEGRATION))
         logger.debug('Mobile browser mode: {}'.format(config.MOBILE_BROWSER))
         logger.debug('Target environment: {}'.format(config.CURRENT_ENVIRONMENT))
+        if config.EXCLUDE_TESTS:
+            logger.debug('Excluded test classes: {}'.format(', '.join(config.EXCLUDE_TESTS)))
         logger.debug('Jenkins execution detected: {}'.format(config.RUNNING_ON_JENKINS))
 
     def _validate_arguments(self):

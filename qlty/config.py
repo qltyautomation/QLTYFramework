@@ -34,3 +34,5 @@ DESKTOP_BROWSER = False
 HEADLESS = False
 #: Selected environment key from settings.ENVIRONMENTS
 CURRENT_ENVIRONMENT = None
+#: List of test class names to exclude from execution
+EXCLUDE_TESTS = []

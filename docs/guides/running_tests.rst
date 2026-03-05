@@ -297,6 +297,32 @@ command line arguments. These options can be activated by the short flag or the 
         # Target production
         python test_runner.py -p chrome -t TestProductionDeployments --env production
 
+.. _arg-exclude:
+
+- **Exclude tests** :code:`--exclude`
+
+    **Default:** :code:`None` (no tests excluded)
+
+    Excludes specific test classes from execution by name. Accepts a comma-separated list of class names.
+    Useful for running the full test suite while skipping certain tests (e.g., production-only tests when
+    running against staging).
+
+    The filter applies to both full suite discovery and single test execution. It matches against the
+    test class name exactly (case-sensitive).
+
+    **Examples:**
+
+    .. code-block:: bash
+
+        # Run all tests except one class
+        python test_runner.py -p chrome --exclude TestDynamicRegistration
+
+        # Exclude multiple test classes
+        python test_runner.py -p chrome --exclude TestDynamicRegistration,TestProductionDeployments
+
+        # Combine with other flags for a full staging run
+        python test_runner.py -p chrome --env staging -r -s -f --exclude TestDynamicRegistration
+
 **Combining flags:**
 
 Multiple flags can be combined to enable different features:
