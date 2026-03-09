@@ -44,6 +44,8 @@ python -m qlty.qlty_tests -p ios -s -r      # Enable multiple integrations
 - `--headless`: Run browser in headless mode (no UI) - useful for CI/CD pipelines
 - `--env`: Target environment key from `settings.ENVIRONMENTS` (e.g. `staging`, `production`). Defaults to `PROJECT_CONFIG['ENVIRONMENT']` if omitted
 - `--exclude`: Exclude test classes by name, comma-separated (e.g. `--exclude TestDynamic,TestOther`)
+- `--tag`: Run only tests with this tag (e.g. `--tag production`). Bypasses `DEFAULT_EXCLUDE_TAGS`
+- `--exclude-tag`: Exclude tests with this tag (e.g. `--exclude-tag production`)
 
 ## Architecture
 
@@ -188,7 +190,7 @@ JENKINS = {'JOBS': {...}}
 Create test classes extending `QLTYTestCase`:
 
 ```python
-from qlty.classes.core.qlty_testcase import QLTYTestCase
+from qlty.classes.core.qlty_testcase import QLTYTestCase, tag
 from qlty.classes.core.test_target import TestTarget
 from qlty.qlty_tests import test_reporter
 import settings
@@ -212,6 +214,36 @@ class MyTestClass(QLTYTestCase):
         driver = self.get_driver()
         driver.get(self.base_url)
         # Test implementation
+```
+
+### Test Tagging
+
+Use the `@tag()` decorator to tag test classes for filtering:
+
+```python
+from qlty.classes.core.qlty_testcase import QLTYTestCase, tag
+
+@tag('production')
+class TestProductionFeature(QLTYTestCase):
+    ...
+
+@tag('smoke', 'fast')
+class TestQuickChecks(QLTYTestCase):
+    ...
+```
+
+**Filtering behavior (full suite runs only, `-t` bypasses tag filtering):**
+1. `--tag production`: Run ONLY test classes tagged with `production`
+2. `--exclude-tag production`: Exclude test classes tagged with `production`
+3. No flag: Auto-exclude classes tagged with any tag in `settings.PROJECT_CONFIG['DEFAULT_EXCLUDE_TAGS']`
+
+**`DEFAULT_EXCLUDE_TAGS`** in `settings.PROJECT_CONFIG` lists tags that are excluded from default runs. This avoids needing `--exclude` for environment-specific tests:
+
+```python
+PROJECT_CONFIG = {
+    'PROJECT_NAME': 'YourProject',
+    'DEFAULT_EXCLUDE_TAGS': ['production'],  # Auto-excluded unless --tag is used
+}
 ```
 
 ### Important Notes

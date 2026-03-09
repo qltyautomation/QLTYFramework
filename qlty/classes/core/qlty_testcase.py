@@ -13,6 +13,32 @@ import qlty.config as config
 logger = setup_logger(__name__, settings.DEBUG_LEVEL)
 
 
+def tag(*tags):
+    """
+    Decorator that tags a test class for filtering.
+    Tagged classes can be included or excluded via --tag and --exclude-tag CLI flags.
+    Tags listed in settings.PROJECT_CONFIG['DEFAULT_EXCLUDE_TAGS'] are auto-excluded
+    from default runs unless overridden by --tag.
+
+    Usage::
+
+        @tag('production')
+        class TestDynamicRegistration(QLTYTestCase):
+            ...
+
+        @tag('smoke', 'fast')
+        class TestLogin(QLTYTestCase):
+            ...
+
+    :param tags: One or more tag strings
+    :type tags: str
+    """
+    def decorator(cls):
+        cls._tags = set(tags)
+        return cls
+    return decorator
+
+
 class QLTYTestCase(unittest.TestCase):
     """
     Base test case class for QLTY test implementations

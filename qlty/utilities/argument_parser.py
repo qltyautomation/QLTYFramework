@@ -63,6 +63,12 @@ class QLTYArgumentParser:
         self.parser.add_argument('--exclude', default=None,
                                  help='Exclude test classes by name, comma-separated (e.g. TestDynamic,TestOther)',
                                  required=False, dest='exclude_tests')
+        self.parser.add_argument('--tag', default=None,
+                                 help='Run only tests with this tag (e.g. production, smoke)',
+                                 required=False, dest='include_tag')
+        self.parser.add_argument('--exclude-tag', default=None,
+                                 help='Exclude tests with this tag (e.g. production)',
+                                 required=False, dest='exclude_tag')
 
     def _parse_arguments(self):
         """
@@ -96,6 +102,10 @@ class QLTYArgumentParser:
         else:
             config.EXCLUDE_TESTS = []
 
+        # Tag-based filtering
+        config.INCLUDE_TAG = args.include_tag
+        config.EXCLUDE_TAG = args.exclude_tag
+
         config.MOBILE_BROWSER = False
         config.DESKTOP_BROWSER = False
 
@@ -121,6 +131,10 @@ class QLTYArgumentParser:
         logger.debug('Target environment: {}'.format(config.CURRENT_ENVIRONMENT))
         if config.EXCLUDE_TESTS:
             logger.debug('Excluded test classes: {}'.format(', '.join(config.EXCLUDE_TESTS)))
+        if config.INCLUDE_TAG:
+            logger.debug('Include tag: {}'.format(config.INCLUDE_TAG))
+        if config.EXCLUDE_TAG:
+            logger.debug('Exclude tag: {}'.format(config.EXCLUDE_TAG))
         logger.debug('Jenkins execution detected: {}'.format(config.RUNNING_ON_JENKINS))
 
     def _validate_arguments(self):

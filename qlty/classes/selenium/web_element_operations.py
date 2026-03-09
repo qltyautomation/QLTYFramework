@@ -144,6 +144,18 @@ class WebElementOperations(SeleniumOperations):
         """
         return self.controller.wait_for_text_in_elements(self.controller.LOCATORS[locator_key], text)
 
+    def op_wait_for_element_to_be_visible(self, locator_key, timeout=settings.SELENIUM['TIMEOUT']):
+        """
+        Waits until the element is visible in the viewport
+
+        :param locator_key: Dictionary key for the locators collection
+        :type locator_key: str
+        :param timeout: Maximum wait time in seconds before raising an exception, defaults to
+            settings.SELENIUM['TIMEOUT'] from settings.py
+        :type timeout: int
+        """
+        return self.controller.wait_for_element_to_be_visible(self.controller.LOCATORS[locator_key], timeout)
+
     def op_wait_for_element_to_not_be_visible(self, locator_key, timeout=settings.SELENIUM['TIMEOUT']):
         """
         Waits until the element is no longer visible in the viewport

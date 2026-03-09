@@ -323,6 +323,76 @@ command line arguments. These options can be activated by the short flag or the 
         # Combine with other flags for a full staging run
         python test_runner.py -p chrome --env staging -r -s -f --exclude TestDynamicRegistration
 
+.. _arg-tag:
+
+- **Tag filter** :code:`--tag`
+
+    **Default:** :code:`None`
+
+    Run only test classes decorated with the specified tag. Use the :code:`@tag()` decorator on test classes
+    to assign tags:
+
+    .. code-block:: python
+
+        from qlty.classes.core.qlty_testcase import QLTYTestCase, tag
+
+        @tag('production')
+        class TestProductionFeature(QLTYTestCase):
+            ...
+
+        @tag('smoke', 'fast')
+        class TestQuickChecks(QLTYTestCase):
+            ...
+
+    When :code:`--tag` is used, only classes whose tags contain the specified value are included.
+    This bypasses :code:`DEFAULT_EXCLUDE_TAGS`.
+
+    Only applies to full suite runs — using :code:`-t` to run a specific test bypasses all tag filtering.
+
+    **Examples:**
+
+    .. code-block:: bash
+
+        # Run only production-tagged tests
+        python test_runner.py -p chrome --tag production --env production
+
+        # Run only smoke tests
+        python test_runner.py -p chrome --tag smoke
+
+.. _arg-exclude-tag:
+
+- **Exclude tag** :code:`--exclude-tag`
+
+    **Default:** :code:`None`
+
+    Exclude test classes decorated with the specified tag. The inverse of :code:`--tag`.
+
+    **Example:**
+
+    .. code-block:: bash
+
+        # Run all tests except those tagged 'slow'
+        python test_runner.py -p chrome --exclude-tag slow
+
+.. _default-exclude-tags:
+
+- **Default exclude tags** :code:`PROJECT_CONFIG['DEFAULT_EXCLUDE_TAGS']`
+
+    Tags listed in :code:`settings.PROJECT_CONFIG['DEFAULT_EXCLUDE_TAGS']` are automatically excluded
+    from full suite runs when neither :code:`--tag` nor :code:`--exclude-tag` is specified.
+    This avoids needing :code:`--exclude` for environment-specific tests.
+
+    **Configuration in settings.py:**
+
+    .. code-block:: python
+
+        PROJECT_CONFIG = {
+            'DEFAULT_EXCLUDE_TAGS': ['production'],  # Auto-excluded from default runs
+        }
+
+    With this configuration, :code:`@tag('production')` classes are skipped during default runs
+    but included when using :code:`--tag production`.
+
 **Combining flags:**
 
 Multiple flags can be combined to enable different features:

@@ -94,6 +94,24 @@ class SeleniumOperations:
             message="No elements contained the specified text:\n Strategy:{}\n Selector:{}\nExpected Text:{}".format(
                 locator[0], locator[1], text))
 
+    def wait_for_element_to_be_visible(self, locator, timeout=settings.SELENIUM['TIMEOUT']):
+        """
+        Waits until the specified element is visible in the viewport
+
+        :param locator: Tuple containing locator strategy and value, for example:
+
+            .. code-block:: python
+
+                (By.XPATH, '//android.widget.Button[@resource-id="oaapprove"]')
+
+        :type locator: tuple
+        :param timeout: Maximum wait time in seconds before raising an exception, defaults to :code:`settings.SELENIUM['TIMEOUT']`
+        :type timeout: int
+        """
+        WebDriverWait(self.driver, timeout).until(
+            conditions.visibility_of_element_located([locator[0], locator[1]]),
+            message='Element never became visible:\nStrategy:{}\nSelector:{}'.format(locator[0], locator[1]))
+
     def wait_for_element_to_not_be_visible(self, locator, timeout=settings.SELENIUM['TIMEOUT']):
         """
         Waits until the specified element is no longer visible in the viewport

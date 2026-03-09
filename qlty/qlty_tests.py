@@ -82,6 +82,40 @@ def _filter_excluded_tests(test_suite):
     return filtered
 
 
+def _filter_by_tags(test_suite):
+    """
+    Recursively filters test cases based on class-level tags set by the @tag() decorator.
+
+    Filtering logic:
+        1. If --tag is set: keep ONLY test classes whose _tags contain the specified tag
+        2. Else if --exclude-tag is set: exclude test classes whose _tags contain the specified tag
+        3. Else: auto-exclude test classes tagged with any tag in DEFAULT_EXCLUDE_TAGS
+
+    :param test_suite: unittest.TestSuite to filter
+    :return: Filtered unittest.TestSuite
+    """
+    filtered = unittest.TestSuite()
+    for test in test_suite:
+        if isinstance(test, unittest.TestSuite):
+            filtered.addTests(_filter_by_tags(test))
+        else:
+            test_tags = getattr(test.__class__, '_tags', set())
+            if config.INCLUDE_TAG:
+                # Include ONLY classes with the specified tag
+                if config.INCLUDE_TAG in test_tags:
+                    filtered.addTest(test)
+            elif config.EXCLUDE_TAG:
+                # Exclude classes with the specified tag
+                if config.EXCLUDE_TAG not in test_tags:
+                    filtered.addTest(test)
+            else:
+                # Auto-exclude classes tagged with any DEFAULT_EXCLUDE_TAGS
+                default_exclude = set(settings.PROJECT_CONFIG.get('DEFAULT_EXCLUDE_TAGS', []))
+                if not test_tags.intersection(default_exclude):
+                    filtered.addTest(test)
+    return filtered
+
+
 def _execute():
     if config.SINGLE_TEST_NAME:
         logger.debug('Loading individual test: {}'.format(config.SINGLE_TEST_NAME))
@@ -105,6 +139,18 @@ def _execute():
     if config.EXCLUDE_TESTS:
         test_suite = _filter_excluded_tests(test_suite)
         logger.debug('Excluded test classes: {}'.format(', '.join(config.EXCLUDE_TESTS)))
+
+    # Apply tag-based filtering (only for full suite runs, not single tests)
+    if not config.SINGLE_TEST_NAME:
+        test_suite = _filter_by_tags(test_suite)
+        if config.INCLUDE_TAG:
+            logger.debug('Filtering to tests tagged: {}'.format(config.INCLUDE_TAG))
+        elif config.EXCLUDE_TAG:
+            logger.debug('Excluding tests tagged: {}'.format(config.EXCLUDE_TAG))
+        else:
+            default_exclude = settings.PROJECT_CONFIG.get('DEFAULT_EXCLUDE_TAGS', [])
+            if default_exclude:
+                logger.debug('Auto-excluding tests tagged: {}'.format(', '.join(default_exclude)))
 
     # Begin timing test execution
     test_run_start_time = time.time()

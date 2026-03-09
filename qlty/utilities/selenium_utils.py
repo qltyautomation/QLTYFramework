@@ -139,9 +139,14 @@ def get_desktop_webdriver():
             options.add_argument('--headless=new')
             options.add_argument('--window-size=1920,1200')
             options.add_argument('--disable-gpu')
-        return webdriver.Chrome(service=service, options=options)
+        driver = webdriver.Chrome(service=service, options=options)
+        if not config.HEADLESS:
+            driver.maximize_window()
+        return driver
     elif config.CURRENT_PLATFORM == 'firefox':
-        return desktop_webdriver.Firefox()
+        driver = desktop_webdriver.Firefox()
+        driver.maximize_window()
+        return driver
     else:
         raise RuntimeError('Only Chrome desktop driver is currently supported')
 

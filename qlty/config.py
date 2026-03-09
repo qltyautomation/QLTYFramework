@@ -36,3 +36,7 @@ HEADLESS = False
 CURRENT_ENVIRONMENT = None
 #: List of test class names to exclude from execution
 EXCLUDE_TESTS = []
+#: Run only tests with this tag (e.g. 'production', 'smoke')
+INCLUDE_TAG = None
+#: Exclude tests with this tag
+EXCLUDE_TAG = None
