@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Environment setup &mdash; QLTY Framework 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ec3859" />
+
+  
+    <link rel="shortcut icon" href="../_static/qltyautomationlogo.jpg"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Running tests" href="running_tests.html" />
+    <link rel="prev" title="QLTY Framework" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #131927" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QLTY Framework
+              <img src="../_static/qltyautomationlogo.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Environment setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start-automated-installation">Quick Start (Automated Installation)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manual-installation">Manual Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#appium-installation">Appium installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#android-studio-installation">Android studio installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#xcode-installation">Xcode installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="running_tests.html">Running tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mobile_browser.html">QLTY for mobile browsers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending_docs.html">Extending documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="saucelabs_integration.html">Saucelabs integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managed_drivers.html">Managed drivers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/integrations.html">Integrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/selenium.html">Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/qlty_utilities.html">QLTY Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #131927" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QLTY Framework</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Environment setup</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/environment_setup.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="environment-setup">
+<h1>Environment setup<a class="headerlink" href="#environment-setup" title="Link to this heading"></a></h1>
+<p>This section will guide you through the process of setting up your machine for local development</p>
+<section id="quick-start-automated-installation">
+<h2>Quick Start (Automated Installation)<a class="headerlink" href="#quick-start-automated-installation" title="Link to this heading"></a></h2>
+<p>The easiest way to get started is using the automated installation script. This will set up your entire environment automatically.</p>
+<p><strong>One-line installation:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/qltyautomation/QLTYFramework/main/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>--<span class="w"> </span>--repo<span class="w"> </span>YOUR_TEST_REPO_URL
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">YOUR_TEST_REPO_URL</span></code> with your test repository URL (e.g., <code class="docutils literal notranslate"><span class="pre">https://github.com/yourorg/yourproject.git</span></code>)</p>
+<p><strong>What the script does:</strong></p>
+<ul class="simple">
+<li><p>Installs Python 3 and Node.js (if not already installed)</p></li>
+<li><p>Sets up virtualenv and virtualenvwrapper</p></li>
+<li><p>Creates and activates a virtual environment</p></li>
+<li><p>Clones your test repository</p></li>
+<li><p>Installs all dependencies (QLTY Framework + requirements)</p></li>
+<li><p>Configures your environment</p></li>
+</ul>
+<p><strong>Local installation script:</strong></p>
+<p>If your test repository already has an <code class="docutils literal notranslate"><span class="pre">install.sh</span></code> file, you can run it directly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/path/to/your/test/repo
+chmod<span class="w"> </span>+x<span class="w"> </span>install.sh
+./install.sh
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After installation, you’ll need to configure your <code class="docutils literal notranslate"><span class="pre">local_settings.py</span></code> file with your API keys and credentials.
+See the <code class="docutils literal notranslate"><span class="pre">SETUP.md</span></code> file in your test repository for details.</p>
+</div>
+</section>
+<section id="manual-installation">
+<h2>Manual Installation<a class="headerlink" href="#manual-installation" title="Link to this heading"></a></h2>
+<p>If you prefer to set up your environment manually, follow these steps:</p>
+<ol class="arabic">
+<li><dl>
+<dt>Install python 3 through homebrew</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew<span class="w"> </span>install<span class="w"> </span>python3
+</pre></div>
+</div>
+<p>It is recommended to use homebrew as it will create the required system links too</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Install node through homebrew</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew<span class="w"> </span>install<span class="w"> </span>node
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Install python virtual environment manager</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3<span class="w"> </span>install<span class="w"> </span>virtualenv
+</pre></div>
+</div>
+<p>Virtual environment manager helps us separate python installations and their dependencies</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Install python virtual environment wrapper</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3<span class="w"> </span>install<span class="w"> </span>virtualenvwrapper
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Add virtual environment configuration variables</dt><dd><p>Edit your <code class="code docutils literal notranslate"><span class="pre">.bash_profile</span></code> or <code class="code docutils literal notranslate"><span class="pre">.zshrc</span></code> depending on which terminal you use and add
+the following environment variables:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">WORKON_HOME</span><span class="o">=</span>~/.virtualenvs
+<span class="nb">export</span><span class="w"> </span><span class="nv">VIRTUALENVWRAPPER_PYTHON</span><span class="o">=</span>/usr/local/bin/python3
+<span class="nb">source</span><span class="w"> </span>/usr/local/bin/virtualenvwrapper.sh
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Reopen your terminal or recompile your bash profile</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>~/.zshrc
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Create a virtual environment for the project</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkvirtualenv<span class="w"> </span>qlty-myproject<span class="w"> </span>--python<span class="o">=</span>python3
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Activate your virtual environment</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>workon<span class="w"> </span>qlty-myproject
+</pre></div>
+</div>
+<p>Make sure that you always work on your virtual environment</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Clone your test repository</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>YOUR_TEST_REPO_URL
+<span class="nb">cd</span><span class="w"> </span>YOUR_TEST_REPO
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>From the root directory of your test repo, install the requirements</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You need to have your SSH keys added to your GitHub account if using SSH URLs.
+Please follow <a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">this guide</a> on how to add your SSH keys to your GitHub account</p>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Configure your local settings</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>local_settings.py.example<span class="w"> </span>local_settings.py
+</pre></div>
+</div>
+<p>Then edit <code class="docutils literal notranslate"><span class="pre">local_settings.py</span></code> and add your API keys and credentials</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Install Appium with node package manager</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>appium
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ol>
+</section>
+<section id="appium-installation">
+<h2>Appium installation<a class="headerlink" href="#appium-installation" title="Link to this heading"></a></h2>
+<p>Please refer to <a class="reference external" href="http://appium.io/docs/en/2.0/quickstart/install/">Appium - Getting started</a> for the latest version on how to install and setup your machine for Appium
+If you want to validate your installation you can use <code class="code docutils literal notranslate"><span class="pre">appium-doctor</span></code> as shown here <span class="xref std std-ref">Appium doctor</span>.</p>
+</section>
+<section id="android-studio-installation">
+<h2>Android studio installation<a class="headerlink" href="#android-studio-installation" title="Link to this heading"></a></h2>
+<p>You will require a working installation of Android studio in order to use android emulators and real devices.</p>
+<p>You can get the latest <a class="reference external" href="https://developer.android.com/studio">android studio</a> version here.</p>
+</section>
+<section id="xcode-installation">
+<h2>Xcode installation<a class="headerlink" href="#xcode-installation" title="Link to this heading"></a></h2>
+<p>If you are going to work with iOS simulators, real devices or safari mobile you need to install Xcode on you machine.</p>
+<p>Xcode gets installed through the Mac App store, <a class="reference external" href="https://developer.apple.com/xcode/">here</a> is the link.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="QLTY Framework" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="running_tests.html" class="btn btn-neutral float-right" title="Running tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, QLTY Automation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
