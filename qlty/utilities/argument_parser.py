@@ -149,12 +149,31 @@ class QLTYArgumentParser:
 
         missing_settings = False
 
-        # Validate selected environment exists in settings
+        # Resolve environment: use existing entry or auto-generate from domain
         if config.CURRENT_ENVIRONMENT not in settings.ENVIRONMENTS:
+            env_key = config.CURRENT_ENVIRONMENT
             available = ', '.join(settings.ENVIRONMENTS.keys())
-            logger.error("Environment '{}' not found in settings.ENVIRONMENTS. Available: [{}]".format(
-                config.CURRENT_ENVIRONMENT, available))
-            missing_settings = True
+            logger.info("Environment '{}' not found in settings.ENVIRONMENTS. "
+                        "Available: [{}]".format(env_key, available))
+
+            # Treat the --env value as a domain and auto-generate the config
+            base_url = 'https://{}/'.format(env_key)
+            admin_user = os.getenv('FIVABLE_ADMIN_USERNAME')
+            admin_pass = os.getenv('FIVABLE_ADMIN_PASSWORD')
+
+            if not admin_user or not admin_pass:
+                logger.error(
+                    "Auto-generating environment for '{}' requires "
+                    "FIVABLE_ADMIN_USERNAME and FIVABLE_ADMIN_PASSWORD environment variables".format(env_key))
+                missing_settings = True
+            else:
+                settings.ENVIRONMENTS[env_key] = {
+                    'BASE_URL': base_url,
+                    'ADMIN_USERNAME': admin_user,
+                    'ADMIN_PASSWORD': admin_pass,
+                }
+                logger.info("Auto-generated environment '{}': BASE_URL={}, "
+                            "ADMIN_USERNAME={}".format(env_key, base_url, admin_user))
 
         # Validate platform capabilities configuration
         # Verify capabilities structure exists

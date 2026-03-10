@@ -57,13 +57,13 @@ class MailTMIntegration:
         logger.info(f"Found {len(messages)} emails for {self.email}")
         return messages
 
-    def get_verification_link(self, max_wait=15, poll_interval=2, url_prefix=None):
+    def get_verification_link(self, max_wait=60, poll_interval=6, url_prefix=None):
         """
         Polls for a verification email and extracts the confirmation link.
 
-        :param max_wait: Maximum time to wait for email in seconds (default: 15)
+        :param max_wait: Maximum time to wait for email in seconds (default: 60)
         :type max_wait: int
-        :param poll_interval: Time between polling attempts in seconds (default: 2)
+        :param poll_interval: Time between polling attempts in seconds (default: 6)
         :type poll_interval: int
         :param url_prefix: Optional URL prefix to search for (e.g., 'https://example.com/verify/')
         :type url_prefix: str or None
@@ -71,31 +71,53 @@ class MailTMIntegration:
         :rtype: str
         :raises Exception: If no email is found or verification link cannot be extracted
         """
-        logger.info(f"Waiting for verification email to: {self.email}")
+        logger.info(f"Polling for verification email to: {self.email} "
+                     f"(max_wait={max_wait}s, poll_interval={poll_interval}s)")
 
         start_time = time.time()
         message = None
+        attempt = 0
 
         while (time.time() - start_time) < max_wait:
-            messages = self._get_messages()
+            attempt += 1
+            elapsed = round(time.time() - start_time, 1)
+
+            try:
+                messages = self._get_messages()
+            except requests.exceptions.RequestException as e:
+                logger.warning(f"Attempt {attempt} ({elapsed}s): API error polling messages: {e}")
+                time.sleep(poll_interval)
+                continue
 
             if messages:
                 message = messages[0]
-                logger.info(f"Found email with subject: {message.get('subject', 'N/A')}")
+                logger.info(f"Attempt {attempt} ({elapsed}s): "
+                            f"Email received — subject: {message.get('subject', 'N/A')}, "
+                            f"from: {message.get('from', {}).get('address', 'N/A')}")
                 break
 
-            logger.debug(f"No email found yet, waiting {poll_interval} seconds...")
+            logger.info(f"Attempt {attempt} ({elapsed}s): No email yet for {self.email}")
             time.sleep(poll_interval)
 
         if not message:
-            raise Exception(f"No email found for {self.email} after {max_wait} seconds")
+            elapsed = round(time.time() - start_time, 1)
+            raise Exception(
+                f"No email found for {self.email} after {attempt} attempts over {elapsed}s "
+                f"(max_wait={max_wait}s, poll_interval={poll_interval}s)"
+            )
 
         full_message = self._get_message_content(message['id'])
+        logger.debug(f"Email body length: html={len(full_message.get('html', []))}, "
+                     f"text={len(full_message.get('text', ''))}")
 
         verification_link = self._extract_verification_link(full_message, url_prefix=url_prefix)
 
         if not verification_link:
-            raise Exception(f"Could not extract verification link from email {message['id']}")
+            body_preview = (full_message.get('text', '') or '')[:500]
+            raise Exception(
+                f"Could not extract verification link from email {message['id']}. "
+                f"url_prefix={url_prefix!r}, body preview: {body_preview}"
+            )
 
         logger.info(f"Verification link found: {verification_link}")
         return verification_link
