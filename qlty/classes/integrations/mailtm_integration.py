@@ -5,7 +5,7 @@ import html
 import time
 import uuid
 # Project libraries
-from qlty.utilities.utils import setup_logger
+from qlty.utilities.utils import setup_logger, get_test_email
 import settings
 
 # Initialize the logger
@@ -37,7 +37,7 @@ class MailTMIntegration:
         Fetches available domains, creates an account, and authenticates automatically.
         """
         self._domain = self._get_domain()
-        login = f"qlty{uuid.uuid4().hex[:8]}"
+        login = get_test_email().split('@')[0]
         self._password = uuid.uuid4().hex
         self.email = f"{login}@{self._domain}"
 

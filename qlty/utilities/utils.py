@@ -108,6 +108,16 @@ def get_uuid():
     return '{}'.format(str(uuid.uuid4())[:6])
 
 
+def get_test_email():
+    """
+    Generates a unique email address for test use.
+
+    :return: Email address in the format qlty{uuid}@example.com
+    :rtype: str
+    """
+    return 'qlty{}@example.com'.format(get_uuid())
+
+
 #: Unique identifier for current test execution session
 BUILD_ID = get_uuid()
 
