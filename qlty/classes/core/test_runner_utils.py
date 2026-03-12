@@ -28,7 +28,7 @@ class TestRunnerUtils:
     running_on_ios_web_message = 'Safari for iOS only, skipping'
 
     @staticmethod
-    def report(test_results, test_run_id, test_run_elapsed_time):
+    def report(test_results, test_run_id, test_run_elapsed_time, log_path=None):
         """
         Distributes results to enabled integration systems
 
@@ -38,12 +38,14 @@ class TestRunnerUtils:
         :type test_run_id: str
         :param test_run_elapsed_time: Total test run duration
         :type test_run_elapsed_time: datetime
+        :param log_path: Path to the captured console output log file (optional)
+        :type log_path: str
         """
 
         # Submit test results to TestRail first if enabled (to get run_id for Slack)
         testrail_run_id = None
         if config.TESTRAIL_INTEGRATION:
-            testrail_run_id = TestRunnerUtils._report_to_testrail(test_results, test_run_id, test_run_elapsed_time)
+            testrail_run_id = TestRunnerUtils._report_to_testrail(test_results, test_run_id, test_run_elapsed_time, log_path)
 
         # Dispatch Slack notification if enabled (with TestRail run_id if available)
         if config.SLACK_REPORTING:
@@ -194,7 +196,7 @@ class TestRunnerUtils:
         return result
 
     @staticmethod
-    def _report_to_testrail(test_results, test_run_id, test_run_elapsed_time):
+    def _report_to_testrail(test_results, test_run_id, test_run_elapsed_time, log_path=None):
         """
         Submits test results to TestRail test management system.
         Creates a single test run containing all test case IDs.
@@ -205,6 +207,8 @@ class TestRunnerUtils:
         :type test_run_id: str
         :param test_run_elapsed_time: Total test run duration in seconds
         :type test_run_elapsed_time: float
+        :param log_path: Path to the captured console output log file (optional)
+        :type log_path: str
         :return: TestRail run ID, or None if reporting was skipped
         :rtype: int or None
         """
@@ -311,6 +315,13 @@ class TestRunnerUtils:
 
                         except Exception as e:
                             logger.error('Failed to add result for case {}: {}'.format(case_id, str(e)))
+
+            # Attach console output log to the TestRail run
+            if log_path and os.path.exists(log_path) and os.path.getsize(log_path) > 0:
+                try:
+                    testrail.add_attachment_to_run(run_id, log_path)
+                except Exception as attach_err:
+                    logger.warning('Failed to attach console log to run {}: {}'.format(run_id, attach_err))
 
             logger.info('View results at: {}/index.php?/runs/view/{}'.format(
                 settings.TESTRAIL['BASE_URL'].rstrip('/'), run_id))

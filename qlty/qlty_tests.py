@@ -2,6 +2,9 @@
 import time
 import os
 import re
+import sys
+import logging
+import tempfile
 import unittest
 # Project libraries
 from qlty.classes.core.test_runner_utils import TestRunnerUtils
@@ -116,6 +119,49 @@ def _filter_by_tags(test_suite):
     return filtered
 
 
+class _TeeStream:
+    """Writes to both the original stream and a log file."""
+    def __init__(self, original, log_file):
+        self.original = original
+        self.log_file = log_file
+
+    def write(self, data):
+        self.original.write(data)
+        self.log_file.write(data)
+
+    def flush(self):
+        self.original.flush()
+        self.log_file.flush()
+
+
+def _start_log_capture():
+    """
+    Starts capturing all console output (logger + unittest) to a temp file.
+    Returns the log file path and a cleanup function.
+    """
+    log_path = os.path.join(tempfile.gettempdir(), 'qlty_test_run.log')
+    log_file = open(log_path, 'w')
+
+    # Add a FileHandler to the root logger to capture all logger output
+    file_handler = logging.FileHandler(log_path, mode='a')
+    file_handler.setFormatter(logging.Formatter(
+        '%(asctime)s - %(levelname)s | :%(name)s:%(message)s', datefmt='%m/%d %H:%M:%S'
+    ))
+    logging.getLogger().addHandler(file_handler)
+
+    # Tee stderr to capture unittest TextTestRunner output
+    tee = _TeeStream(sys.stderr, log_file)
+    sys.stderr = tee
+
+    def cleanup():
+        sys.stderr = tee.original
+        logging.getLogger().removeHandler(file_handler)
+        file_handler.close()
+        log_file.close()
+
+    return log_path, cleanup
+
+
 def _execute():
     if config.SINGLE_TEST_NAME:
         logger.debug('Loading individual test: {}'.format(config.SINGLE_TEST_NAME))
@@ -152,6 +198,9 @@ def _execute():
             if default_exclude:
                 logger.debug('Auto-excluding tests tagged: {}'.format(', '.join(default_exclude)))
 
+    # Start capturing console output to a log file
+    log_path, stop_capture = _start_log_capture()
+
     # Begin timing test execution
     test_run_start_time = time.time()
     logger.debug('Starting test execution')
@@ -160,20 +209,24 @@ def _execute():
         logger.debug('Test execution completed successfully')
     except Exception as error:
         logger.critical('Test execution encountered an error: {}'.format(str(error)))
+        stop_capture()
         exit(1)
 
     # Calculate total execution duration
     test_run_elapsed_time = time.time() - test_run_start_time
 
-    _report(results, test_run_elapsed_time)
+    # Stop capture before reporting so the log file is complete
+    stop_capture()
+
+    _report(results, test_run_elapsed_time, log_path)
 
 
-def _report(results, test_run_elapsed_time):
+def _report(results, test_run_elapsed_time, log_path=None):
     # Collect all test case results including failures and errors
     test_reporter.get_results(results)
     # Generate and distribute reports
     logger.debug('Generating test reports for results :\n{}'.format(test_reporter.test_results))
-    TestRunnerUtils.report(test_reporter.test_results, settings.TEST_RUN_ID, test_run_elapsed_time)
+    TestRunnerUtils.report(test_reporter.test_results, settings.TEST_RUN_ID, test_run_elapsed_time, log_path)
 
 
 def qlty():

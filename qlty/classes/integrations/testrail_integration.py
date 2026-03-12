@@ -263,6 +263,37 @@ class TestRailIntegration:
 
         return case_ids
 
+    def add_attachment_to_run(self, run_id, file_path):
+        """
+        Attaches a file to a test run in TestRail.
+
+        :param run_id: The ID of the test run
+        :type run_id: int
+        :param file_path: Absolute path to the file to attach
+        :type file_path: str
+        :return: The attachment response object
+        :rtype: dict
+        :raises Exception: If attachment upload fails
+        """
+        url = f"{self.base_url}/index.php?/api/v2/add_attachment_to_run/{run_id}"
+
+        upload_headers = {k: v for k, v in self.headers.items() if k != 'Content-Type'}
+        filename = os.path.basename(file_path)
+
+        try:
+            with open(file_path, 'rb') as f:
+                response = requests.post(
+                    url,
+                    headers=upload_headers,
+                    files={'attachment': (filename, f)}
+                )
+            response.raise_for_status()
+            logger.info(f"Attached '{filename}' to run {run_id}")
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"Failed to attach '{filename}' to run {run_id}: {e}")
+            raise
+
     def add_attachment_to_result(self, result_id, file_path):
         """
         Attaches a file to a specific test result in TestRail.
