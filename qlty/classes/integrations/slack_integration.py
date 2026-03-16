@@ -7,6 +7,7 @@ import urllib.parse
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 # Project libraries
+from qlty.classes.integrations.base_integration import Integration
 from qlty.utilities.utils import setup_logger
 from qlty.utilities.utils import get_unique_build_id
 import qlty.config as config
@@ -16,7 +17,7 @@ import settings
 logger = setup_logger(__name__, settings.DEBUG_LEVEL)
 
 
-class SlackIntegration:
+class SlackIntegration(Integration):
     """
     Provides automated Slack channel messaging capabilities for test result reporting
     """
@@ -26,6 +27,12 @@ class SlackIntegration:
         Initialize the integration with Slack client
         """
         self.client = WebClient(token=settings.SLACK['SLACK_AUTH_TOKEN'])
+
+    def on_run_start(self):
+        """Validates Slack credentials and channel access before tests run."""
+        logger.info('Validating Slack integration...')
+        response = self.client.auth_test()
+        logger.info('Slack connected as: {}'.format(response['user']))
 
     def report(self, results, run_time, testrail_run_id=None, test_run_id=None):
         """
@@ -50,6 +57,25 @@ class SlackIntegration:
                 logger.warning('Forcing slack notification despite failed results')
 
         self._post_results(self._create_payload(results, run_time, testrail_run_id, test_run_id))
+
+    def on_run_end(self, test_results, test_run_id, elapsed_time, log_path=None, context=None):
+        """
+        Lifecycle hook called after all tests complete.
+        Sends test results to Slack. Reads testrail_run_id from context if available.
+
+        :param test_results: Collection of test execution results
+        :param test_run_id: Unique test run identifier
+        :param elapsed_time: Total test run duration in seconds
+        :param log_path: Path to the captured console output log file (unused by Slack)
+        :param context: Shared context dict — reads 'testrail_run_id' if present
+        """
+        from qlty.classes.core.test_runner_utils import TestRunnerUtils
+
+        totals = TestRunnerUtils.get_testrun_totals(test_results)
+        run_time = TestRunnerUtils.get_readable_run_time(elapsed_time)
+        testrail_run_id = context.get('testrail_run_id') if context else None
+
+        self.report(totals, run_time, testrail_run_id, test_run_id)
 
     def _create_payload(self, results, run_time, testrail_run_id=None, test_run_id=None):
         """

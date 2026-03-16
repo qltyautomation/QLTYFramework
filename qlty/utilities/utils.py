@@ -98,6 +98,20 @@ def setup_logger(name, debug_level):
 logger = setup_logger(__name__, settings.DEBUG_LEVEL)
 
 
+def camel_to_snake(name):
+    """
+    Converts CamelCase class name to snake_case module name.
+
+    Example: TestRegistration -> test_registration
+
+    :param name: CamelCase string
+    :return: snake_case string
+    """
+    import re
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+
+
 def get_uuid():
     """
     Generates a unique identifier using Python's uuid library

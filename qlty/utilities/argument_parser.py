@@ -175,6 +175,11 @@ class QLTYArgumentParser:
                 logger.info("Auto-generated environment '{}': BASE_URL={}, "
                             "ADMIN_USERNAME={}".format(env_key, base_url, admin_user))
 
+        # Validate test name if provided
+        if config.SINGLE_TEST_NAME and not config.SINGLE_TEST_NAME.strip('.'):
+            logger.error('Test name cannot be empty')
+            missing_settings = True
+
         # Validate platform capabilities configuration
         # Verify capabilities structure exists
         if exists(lambda: settings.SELENIUM['CAPABILITIES']) is None:

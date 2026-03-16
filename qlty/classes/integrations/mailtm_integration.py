@@ -1,10 +1,8 @@
 # Native libraries
 import requests
-import re
-import html
-import time
 import uuid
 # Project libraries
+from qlty.classes.integrations.email_integration import EmailIntegration
 from qlty.utilities.utils import setup_logger, get_test_email
 import settings
 
@@ -12,7 +10,7 @@ import settings
 logger = setup_logger(__name__, settings.DEBUG_LEVEL)
 
 
-class MailTMIntegration:
+class MailTMIntegration(EmailIntegration):
     """
     Provides disposable email capabilities for test automation using mail.tm.
     No API key or configuration required. Creates temporary email accounts
@@ -53,7 +51,7 @@ class MailTMIntegration:
         :return: List of message summaries
         :rtype: list
         """
-        messages = self._get_messages()
+        messages = self._fetch_messages()
         logger.info(f"Found {len(messages)} emails for {self.email}")
         return messages
 
@@ -71,56 +69,60 @@ class MailTMIntegration:
         :rtype: str
         :raises Exception: If no email is found or verification link cannot be extracted
         """
-        logger.info(f"Polling for verification email to: {self.email} "
-                     f"(max_wait={max_wait}s, poll_interval={poll_interval}s)")
+        return self.poll_for_verification_link(
+            max_wait=max_wait,
+            poll_interval=poll_interval,
+            url_prefix=url_prefix,
+        )
 
-        start_time = time.time()
-        message = None
-        attempt = 0
+    def _fetch_messages(self):
+        """
+        Retrieves messages from the mail.tm inbox.
 
-        while (time.time() - start_time) < max_wait:
-            attempt += 1
-            elapsed = round(time.time() - start_time, 1)
+        :return: List of message summaries
+        :rtype: list
+        """
+        try:
+            response = requests.get(f"{self.BASE_URL}/messages", headers=self._get_auth_headers())
+            response.raise_for_status()
+            data = response.json()
+            messages = data.get('hydra:member', [])
+            logger.debug(f"Retrieved {len(messages)} messages")
+            return messages
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Failed to retrieve messages: {e}")
+            raise
 
-            try:
-                messages = self._get_messages()
-            except requests.exceptions.RequestException as e:
-                logger.warning(f"Attempt {attempt} ({elapsed}s): API error polling messages: {e}")
-                time.sleep(poll_interval)
-                continue
+    def _get_message_body(self, message_id):
+        """
+        Retrieves the full content of a message and returns normalized body.
 
-            if messages:
-                message = messages[0]
-                logger.info(f"Attempt {attempt} ({elapsed}s): "
-                            f"Email received — subject: {message.get('subject', 'N/A')}, "
-                            f"from: {message.get('from', {}).get('address', 'N/A')}")
-                break
-
-            logger.info(f"Attempt {attempt} ({elapsed}s): No email yet for {self.email}")
-            time.sleep(poll_interval)
-
-        if not message:
-            elapsed = round(time.time() - start_time, 1)
-            raise Exception(
-                f"No email found for {self.email} after {attempt} attempts over {elapsed}s "
-                f"(max_wait={max_wait}s, poll_interval={poll_interval}s)"
+        :param message_id: The message ID
+        :type message_id: str
+        :return: Dict with 'html' and 'text' string keys
+        :rtype: dict
+        """
+        try:
+            response = requests.get(
+                f"{self.BASE_URL}/messages/{message_id}",
+                headers=self._get_auth_headers()
             )
+            response.raise_for_status()
+            message = response.json()
+            logger.debug(f"Retrieved message {message_id}")
 
-        full_message = self._get_message_content(message['id'])
-        logger.debug(f"Email body length: html={len(full_message.get('html', []))}, "
-                     f"text={len(full_message.get('text', ''))}")
+            # mail.tm returns html as a list of strings
+            html_body = message.get('html', [''])
+            if isinstance(html_body, list):
+                html_body = ''.join(html_body)
 
-        verification_link = self._extract_verification_link(full_message, url_prefix=url_prefix)
-
-        if not verification_link:
-            body_preview = (full_message.get('text', '') or '')[:500]
-            raise Exception(
-                f"Could not extract verification link from email {message['id']}. "
-                f"url_prefix={url_prefix!r}, body preview: {body_preview}"
-            )
-
-        logger.info(f"Verification link found: {verification_link}")
-        return verification_link
+            return {
+                'html': html_body,
+                'text': message.get('text', ''),
+            }
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Failed to retrieve message {message_id}: {e}")
+            raise
 
     def _get_domain(self):
         """
@@ -189,105 +191,3 @@ class MailTMIntegration:
         :rtype: dict
         """
         return {'Authorization': f'Bearer {self._token}'}
-
-    def _get_messages(self):
-        """
-        Retrieves messages from the inbox.
-
-        :return: List of message summaries
-        :rtype: list
-        """
-        try:
-            response = requests.get(f"{self.BASE_URL}/messages", headers=self._get_auth_headers())
-            response.raise_for_status()
-            data = response.json()
-            messages = data.get('hydra:member', [])
-            logger.debug(f"Retrieved {len(messages)} messages")
-            return messages
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Failed to retrieve messages: {e}")
-            raise
-
-    def _get_message_content(self, message_id):
-        """
-        Retrieves the full content of a specific message.
-
-        :param message_id: The message ID
-        :type message_id: str
-        :return: Full message content
-        :rtype: dict
-        """
-        try:
-            response = requests.get(
-                f"{self.BASE_URL}/messages/{message_id}",
-                headers=self._get_auth_headers()
-            )
-            response.raise_for_status()
-            message = response.json()
-            logger.debug(f"Retrieved message {message_id}")
-            return message
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Failed to retrieve message {message_id}: {e}")
-            raise
-
-    def _extract_verification_link(self, message, url_prefix=None):
-        """
-        Extracts the verification/confirmation link from the email body.
-
-        :param message: The full message content from mail.tm API
-        :type message: dict
-        :param url_prefix: Optional URL prefix to search for
-        :type url_prefix: str or None
-        :return: The verification link URL, or None if not found
-        :rtype: str or None
-        """
-        # mail.tm provides html and text in the message response
-        html_body = message.get('html', [''])
-        # html field is a list of strings
-        if isinstance(html_body, list):
-            html_body = ''.join(html_body)
-        text_body = message.get('text', '')
-
-        if url_prefix:
-            escaped_prefix = re.escape(url_prefix)
-            prefix_pattern = escaped_prefix + r'[^\s<>"\']*'
-
-            match = re.search(prefix_pattern, html_body)
-            if match:
-                link = match.group(0).rstrip('",;\'')
-                link = html.unescape(link)
-                logger.info(f"Found verification link with prefix: {link}")
-                return link
-
-            match = re.search(prefix_pattern, text_body)
-            if match:
-                link = match.group(0).rstrip('",;\'')
-                link = html.unescape(link)
-                logger.info(f"Found verification link with prefix: {link}")
-                return link
-
-            logger.warning(f"Could not find link with prefix: {url_prefix}")
-            return None
-
-        patterns = [
-            r'https?://[^\s<>"\']+(?:verify|confirm|activate|token)[^\s<>"\']*',
-            r'href=["\']([^"\']*(?:verify|confirm|activate|token)[^"\']*)["\']',
-        ]
-
-        for pattern in patterns:
-            match = re.search(pattern, html_body, re.IGNORECASE)
-            if match:
-                link = match.group(1) if match.lastindex else match.group(0)
-                link = link.replace('href=', '').replace('"', '').replace("'", '')
-                link = html.unescape(link)
-                return link
-
-            match = re.search(pattern, text_body, re.IGNORECASE)
-            if match:
-                link = match.group(1) if match.lastindex else match.group(0)
-                link = link.replace('href=', '').replace('"', '').replace("'", '')
-                link = html.unescape(link)
-                return link
-
-        logger.warning("Could not find verification link using standard patterns")
-        return None

@@ -1,7 +1,6 @@
 # Native libraries
 import time
 import os
-import re
 import sys
 import logging
 import tempfile
@@ -15,57 +14,52 @@ import qlty.config as config
 from qlty.utilities.argument_parser import QLTYArgumentParser
 
 
-def _camel_to_snake(name):
-    """
-    Converts CamelCase class name to snake_case module name.
-
-    Example: TestRegistration -> test_registration
-
-    :param name: CamelCase string
-    :return: snake_case string
-    """
-    # Insert underscore before uppercase letters and convert to lowercase
-    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
-
-
-def _format_single_test_name(test_name):
-    """
-    Formats single test name to fully qualified module path.
-
-    Accepts formats:
-        - TestClass.test_method -> module.TestClass.test_method
-        - TestClass -> module.TestClass
-        - module.TestClass.test_method (already formatted, returned as-is)
-
-    :param test_name: Test name from command line
-    :return: Fully qualified test name for unittest loader
-    """
-    parts = test_name.split('.')
-
-    # If first part starts with uppercase, it's a class name that needs module prefix
-    if parts[0][0].isupper():
-        module_name = _camel_to_snake(parts[0])
-        return module_name + '.' + test_name
-
-    # Already has module name prefix, return as-is
-    return test_name
-
 # Instance for collecting test case results
 test_reporter = TestReporter()
 # Logging instance for console output
 logger = setup_logger(__name__, settings.DEBUG_LEVEL)
+# Log capture state (initialized in _setup)
+_log_path = None
+_stop_capture = lambda: None
 
 
 def _setup():
     logger.info('Initializing test execution session')
+
+    # Reset reporter state so a second qlty() call in the same process starts clean
+    test_reporter.test_results = {}
+    test_reporter.external_case_ids = {}
+
     logger.info('Processing command line parameters')
     QLTYArgumentParser()
 
+    # Start capturing console output to a log file
+    global _log_path, _stop_capture
+    _log_path, _stop_capture = _start_log_capture()
+
     # Generate unique identifier for this test session
     settings.TEST_RUN_ID = TestRunnerUtils.generate_test_run_id()
-    # Begin test execution
-    _execute()
+
+    # Register lifecycle integrations and validate their config
+    _register_integrations()
+
+
+def _register_integrations():
+    """Register enabled integrations and validate their config before tests run."""
+    from qlty.classes.integrations import registry
+
+    registry.clear()
+
+    if config.TESTRAIL_INTEGRATION:
+        from qlty.classes.integrations.testrail_integration import TestRailIntegration
+        registry.register(TestRailIntegration())
+
+    if config.SLACK_REPORTING:
+        from qlty.classes.integrations.slack_integration import SlackIntegration
+        registry.register(SlackIntegration())
+
+    # Validate all integrations — failed ones are deregistered
+    registry.on_run_start()
 
 
 def _filter_excluded_tests(test_suite):
@@ -85,7 +79,7 @@ def _filter_excluded_tests(test_suite):
     return filtered
 
 
-def _filter_by_tags(test_suite):
+def _filter_by_tags(test_suite, _default_exclude=None):
     """
     Recursively filters test cases based on class-level tags set by the @tag() decorator.
 
@@ -97,10 +91,13 @@ def _filter_by_tags(test_suite):
     :param test_suite: unittest.TestSuite to filter
     :return: Filtered unittest.TestSuite
     """
+    if _default_exclude is None:
+        _default_exclude = set(settings.PROJECT_CONFIG.get('DEFAULT_EXCLUDE_TAGS', []))
+
     filtered = unittest.TestSuite()
     for test in test_suite:
         if isinstance(test, unittest.TestSuite):
-            filtered.addTests(_filter_by_tags(test))
+            filtered.addTests(_filter_by_tags(test, _default_exclude))
         else:
             test_tags = getattr(test.__class__, '_tags', set())
             if config.INCLUDE_TAG:
@@ -113,8 +110,7 @@ def _filter_by_tags(test_suite):
                     filtered.addTest(test)
             else:
                 # Auto-exclude classes tagged with any DEFAULT_EXCLUDE_TAGS
-                default_exclude = set(settings.PROJECT_CONFIG.get('DEFAULT_EXCLUDE_TAGS', []))
-                if not test_tags.intersection(default_exclude):
+                if not test_tags.intersection(_default_exclude):
                     filtered.addTest(test)
     return filtered
 
@@ -124,14 +120,21 @@ class _TeeStream:
     def __init__(self, original, log_file):
         self.original = original
         self.log_file = log_file
+        self._active = True
 
     def write(self, data):
         self.original.write(data)
-        self.log_file.write(data)
+        if self._active:
+            self.log_file.write(data)
 
     def flush(self):
         self.original.flush()
-        self.log_file.flush()
+        if self._active:
+            self.log_file.flush()
+
+    def stop(self):
+        """Stop writing to the log file."""
+        self._active = False
 
 
 def _start_log_capture():
@@ -154,7 +157,7 @@ def _start_log_capture():
     sys.stderr = tee
 
     def cleanup():
-        sys.stderr = tee.original
+        tee.stop()
         logging.getLogger().removeHandler(file_handler)
         file_handler.close()
         log_file.close()
@@ -166,7 +169,7 @@ def _execute():
     if config.SINGLE_TEST_NAME:
         logger.debug('Loading individual test: {}'.format(config.SINGLE_TEST_NAME))
         # Format test name to include module prefix if needed
-        formatted_test_name = _format_single_test_name(config.SINGLE_TEST_NAME)
+        formatted_test_name = TestRunnerUtils.format_single_test_name(config.SINGLE_TEST_NAME)
         # For mobile web browser testing, verify the platform string contains 'web'
         if config.MOBILE_BROWSER:
             test_suite = unittest.TestLoader().loadTestsFromName(
@@ -198,9 +201,6 @@ def _execute():
             if default_exclude:
                 logger.debug('Auto-excluding tests tagged: {}'.format(', '.join(default_exclude)))
 
-    # Start capturing console output to a log file
-    log_path, stop_capture = _start_log_capture()
-
     # Begin timing test execution
     test_run_start_time = time.time()
     logger.debug('Starting test execution')
@@ -209,16 +209,22 @@ def _execute():
         logger.debug('Test execution completed successfully')
     except Exception as error:
         logger.critical('Test execution encountered an error: {}'.format(str(error)))
-        stop_capture()
-        exit(1)
+        results = None
 
     # Calculate total execution duration
     test_run_elapsed_time = time.time() - test_run_start_time
 
     # Stop capture before reporting so the log file is complete
-    stop_capture()
+    _stop_capture()
 
-    _report(results, test_run_elapsed_time, log_path)
+    if results is not None:
+        _report(results, test_run_elapsed_time, _log_path)
+    else:
+        # Still attempt reporting so integrations can notify about the failure
+        logger.warning('Test execution failed — attempting to report available results')
+        test_reporter.test_results = test_reporter.test_results or {}
+        TestRunnerUtils.report(test_reporter.test_results, settings.TEST_RUN_ID, test_run_elapsed_time, _log_path)
+        sys.exit(1)
 
 
 def _report(results, test_run_elapsed_time, log_path=None):
@@ -231,3 +237,4 @@ def _report(results, test_run_elapsed_time, log_path=None):
 
 def qlty():
     _setup()
+    _execute()

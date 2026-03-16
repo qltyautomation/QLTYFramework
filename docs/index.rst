@@ -22,6 +22,7 @@ to keep documentation up to date.
     :maxdepth: 6
     :caption: Guides
 
+    guides/custom_integrations
     guides/mobile_browser
     guides/extending_docs
     guides/saucelabs_integration
