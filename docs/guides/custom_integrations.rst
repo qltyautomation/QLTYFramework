@@ -18,15 +18,56 @@ Lifecycle Hooks
    * - ``on_run_start()``
      - Before tests execute. Use for config validation and connection checks.
        If this raises an exception, the integration is deregistered and its
-       other hooks will not be called. Tests still run.
+       other hooks will not be called. Tests still run — unless the integration
+       is marked as ``required`` (see below).
    * - ``on_test_end(test_case, result)``
      - After each individual test completes.
    * - ``on_run_end(test_results, test_run_id, elapsed_time, log_path, context)``
      - After all tests complete. Use for reporting results to external systems.
        ``context`` is a shared dict that integrations can read from and write to.
 
-Step-by-step
-------------
+Required Integrations
+---------------------
+
+Set ``required = True`` on an integration to make it a hard dependency. If a
+required integration's ``on_run_start()`` raises, the entire test run is aborted
+instead of just deregistering the integration.
+
+Use this for pre-flight checks that must pass before tests can safely run — for
+example, verifying API access needed for test data cleanup:
+
+.. code-block:: python
+
+   class ApiCheckIntegration(Integration):
+       required = True
+
+       def on_run_start(self):
+           response = requests.post(f"{base_url}/api/login", ...)
+           response.raise_for_status()
+
+Project-Level Custom Integrations
+---------------------------------
+
+Test projects can register their own integrations without modifying framework
+code. Add a ``CUSTOM_INTEGRATIONS`` list to the project's ``settings.py``:
+
+.. code-block:: python
+
+   # settings.py
+   CUSTOM_INTEGRATIONS = [
+       'integrations.my_module.MyIntegration',
+   ]
+
+Entries are dotted path strings (``module.path.ClassName``) that are resolved at
+registration time. This avoids circular imports since ``settings.py`` is loaded
+before integration modules. You can also pass pre-built instances if there is no
+circular import concern.
+
+Framework-Level Integrations
+----------------------------
+
+For integrations that ship with the framework (Slack, TestRail, etc.), follow
+these steps:
 
 1. **Create the integration class**
 
@@ -136,7 +177,8 @@ and Slack reads it to include a link in the notification.
 Error Handling
 --------------
 
-- ``on_run_start``: If validation raises, the integration is **deregistered**.
-  Tests proceed normally, and the integration's ``on_run_end`` is not called.
+- ``on_run_start``: If validation raises and ``required = False`` (default), the
+  integration is **deregistered**. Tests proceed normally. If ``required = True``,
+  the entire test run is **aborted**.
 - ``on_run_end``: If one integration fails, the error is logged and the
   remaining integrations still run.

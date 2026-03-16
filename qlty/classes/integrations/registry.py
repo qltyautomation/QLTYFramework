@@ -40,12 +40,19 @@ def on_run_start():
     Calls on_run_start() on all registered integrations.
     Integrations that fail validation are deregistered so their
     subsequent lifecycle hooks are not called.
+
+    If a required integration fails, raises SystemExit to abort the test run.
     """
     failed = []
     for integration in _integrations:
         try:
             integration.on_run_start()
         except Exception as e:
+            if integration.required:
+                logger.error('{} is required and failed startup validation: {}'.format(
+                    integration.__class__.__name__, e))
+                raise SystemExit('Required integration {} failed: {}'.format(
+                    integration.__class__.__name__, e))
             logger.warning('{} failed startup validation and will be disabled: {}'.format(
                 integration.__class__.__name__, e))
             failed.append(integration)

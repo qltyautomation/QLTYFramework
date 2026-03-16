@@ -58,7 +58,21 @@ def _register_integrations():
         from qlty.classes.integrations.slack_integration import SlackIntegration
         registry.register(SlackIntegration())
 
-    # Validate all integrations — failed ones are deregistered
+    # Register project-level custom integrations from settings.CUSTOM_INTEGRATIONS.
+    # Entries can be Integration instances or dotted path strings
+    # (e.g. 'integrations.my_module.MyIntegration') to avoid circular imports.
+    for entry in getattr(settings, 'CUSTOM_INTEGRATIONS', []):
+        if isinstance(entry, str):
+            module_path, class_name = entry.rsplit('.', 1)
+            import importlib
+            module = importlib.import_module(module_path)
+            integration = getattr(module, class_name)()
+        else:
+            integration = entry
+        registry.register(integration)
+
+    # Validate all integrations — failed ones are deregistered,
+    # required ones abort the run if they fail
     registry.on_run_start()
 
 

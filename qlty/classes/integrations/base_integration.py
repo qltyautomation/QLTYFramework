@@ -12,6 +12,10 @@ class Integration:
     Subclasses override only the hooks they need — all hooks are no-ops by default.
     """
 
+    #: When True, a failed on_run_start() aborts the entire test run
+    #: instead of just deregistering the integration.
+    required = False
+
     def on_run_start(self):
         """Called before test execution begins. Override if needed."""
         pass
