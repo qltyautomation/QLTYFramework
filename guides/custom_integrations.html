@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creating Custom Integrations &mdash; QLTY Framework 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ec3859" />
+
+  
+    <link rel="shortcut icon" href="../_static/qltyautomationlogo.jpg"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="QLTY for mobile browsers" href="mobile_browser.html" />
+    <link rel="prev" title="Running tests" href="running_tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #131927" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QLTY Framework
+              <img src="../_static/qltyautomationlogo.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="environment_setup.html">Environment setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="running_tests.html">Running tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Creating Custom Integrations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#lifecycle-hooks">Lifecycle Hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#required-integrations">Required Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-level-custom-integrations">Project-Level Custom Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#framework-level-integrations">Framework-Level Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sharing-data-between-integrations">Sharing Data Between Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mobile_browser.html">QLTY for mobile browsers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending_docs.html">Extending documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="saucelabs_integration.html">Saucelabs integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managed_drivers.html">Managed drivers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/integrations.html">Integrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/selenium.html">Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs/qlty_utilities.html">QLTY Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #131927" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QLTY Framework</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Creating Custom Integrations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/custom_integrations.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="creating-custom-integrations">
+<h1>Creating Custom Integrations<a class="headerlink" href="#creating-custom-integrations" title="Link to this heading"></a></h1>
+<p>QLTY Framework uses a lifecycle-based integration system. Integrations extend the
+<code class="docutils literal notranslate"><span class="pre">Integration</span></code> base class and override hooks that run at specific points during
+test execution. A central registry dispatches lifecycle events to all enabled
+integrations.</p>
+<section id="lifecycle-hooks">
+<h2>Lifecycle Hooks<a class="headerlink" href="#lifecycle-hooks" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Hook</p></th>
+<th class="head"><p>When it runs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">on_run_start()</span></code></p></td>
+<td><p>Before tests execute. Use for config validation and connection checks.
+If this raises an exception, the integration is deregistered and its
+other hooks will not be called. Tests still run — unless the integration
+is marked as <code class="docutils literal notranslate"><span class="pre">required</span></code> (see below).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">on_test_end(test_case,</span> <span class="pre">result)</span></code></p></td>
+<td><p>After each individual test completes.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">on_run_end(test_results,</span> <span class="pre">test_run_id,</span> <span class="pre">elapsed_time,</span> <span class="pre">log_path,</span> <span class="pre">context)</span></code></p></td>
+<td><p>After all tests complete. Use for reporting results to external systems.
+<code class="docutils literal notranslate"><span class="pre">context</span></code> is a shared dict that integrations can read from and write to.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="required-integrations">
+<h2>Required Integrations<a class="headerlink" href="#required-integrations" title="Link to this heading"></a></h2>
+<p>Set <code class="docutils literal notranslate"><span class="pre">required</span> <span class="pre">=</span> <span class="pre">True</span></code> on an integration to make it a hard dependency. If a
+required integration’s <code class="docutils literal notranslate"><span class="pre">on_run_start()</span></code> raises, the entire test run is aborted
+instead of just deregistering the integration.</p>
+<p>Use this for pre-flight checks that must pass before tests can safely run — for
+example, verifying API access needed for test data cleanup:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ApiCheckIntegration</span><span class="p">(</span><span class="n">Integration</span><span class="p">):</span>
+    <span class="n">required</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_run_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/api/login&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="project-level-custom-integrations">
+<h2>Project-Level Custom Integrations<a class="headerlink" href="#project-level-custom-integrations" title="Link to this heading"></a></h2>
+<p>Test projects can register their own integrations without modifying framework
+code. Add a <code class="docutils literal notranslate"><span class="pre">CUSTOM_INTEGRATIONS</span></code> list to the project’s <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.py</span>
+<span class="n">CUSTOM_INTEGRATIONS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;integrations.my_module.MyIntegration&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Entries are dotted path strings (<code class="docutils literal notranslate"><span class="pre">module.path.ClassName</span></code>) that are resolved at
+registration time. This avoids circular imports since <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> is loaded
+before integration modules. You can also pass pre-built instances if there is no
+circular import concern.</p>
+</section>
+<section id="framework-level-integrations">
+<h2>Framework-Level Integrations<a class="headerlink" href="#framework-level-integrations" title="Link to this heading"></a></h2>
+<p>For integrations that ship with the framework (Slack, TestRail, etc.), follow
+these steps:</p>
+<ol class="arabic">
+<li><p><strong>Create the integration class</strong></p>
+<p>Create a new file in <code class="docutils literal notranslate"><span class="pre">qlty/classes/integrations/</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># qlty/classes/integrations/example_integration.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qlty.classes.integrations.base_integration</span><span class="w"> </span><span class="kn">import</span> <span class="n">Integration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qlty.utilities.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">settings</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG_LEVEL</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ExampleIntegration</span><span class="p">(</span><span class="n">Integration</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">EXAMPLE</span><span class="p">[</span><span class="s1">&#39;API_KEY&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_run_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate credentials before tests run.&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Validating Example integration...&#39;</span><span class="p">)</span>
+        <span class="c1"># Make a test API call, raise on failure</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_run_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_results</span><span class="p">,</span> <span class="n">test_run_id</span><span class="p">,</span> <span class="n">elapsed_time</span><span class="p">,</span>
+                   <span class="n">log_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Report results after tests complete.&quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">qlty.classes.core.test_runner_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestRunnerUtils</span>
+        <span class="n">totals</span> <span class="o">=</span> <span class="n">TestRunnerUtils</span><span class="o">.</span><span class="n">get_testrun_totals</span><span class="p">(</span><span class="n">test_results</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Reporting </span><span class="si">{}</span><span class="s1"> results to Example&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">totals</span><span class="p">[</span><span class="s1">&#39;total_testcases&#39;</span><span class="p">]))</span>
+        <span class="c1"># Post results to external service</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>Only override the hooks you need. The base class provides no-op defaults.</p>
+</li>
+<li><p><strong>Add a config flag</strong></p>
+<p>In <code class="docutils literal notranslate"><span class="pre">qlty/config.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#: Enable Example integration</span>
+<span class="n">EXAMPLE_INTEGRATION</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Add a CLI argument</strong></p>
+<p>In <code class="docutils literal notranslate"><span class="pre">qlty/utilities/argument_parser.py</span></code>, add a new argument that sets the flag:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-x&#39;</span><span class="p">,</span> <span class="s1">&#39;--example&#39;</span><span class="p">,</span>
+                    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Enable Example integration&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then in the argument processing logic, set the config flag:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">example</span><span class="p">:</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">EXAMPLE_INTEGRATION</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Register the integration</strong></p>
+<p>In <code class="docutils literal notranslate"><span class="pre">qlty/qlty_tests.py</span></code>, add to <code class="docutils literal notranslate"><span class="pre">_register_integrations()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">EXAMPLE_INTEGRATION</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">qlty.classes.integrations.example_integration</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExampleIntegration</span>
+    <span class="n">registry</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ExampleIntegration</span><span class="p">())</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Add settings</strong></p>
+<p>In the test project’s <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">EXAMPLE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;API_KEY&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;EXAMPLE_API_KEY&#39;</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="sharing-data-between-integrations">
+<h2>Sharing Data Between Integrations<a class="headerlink" href="#sharing-data-between-integrations" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">context</span></code> dict passed to <code class="docutils literal notranslate"><span class="pre">on_run_end</span></code> allows integrations to share data
+without direct dependencies. For example, TestRail sets <code class="docutils literal notranslate"><span class="pre">context['testrail_run_id']</span></code>
+and Slack reads it to include a link in the notification.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In a producer integration</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_run_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_results</span><span class="p">,</span> <span class="n">test_run_id</span><span class="p">,</span> <span class="n">elapsed_time</span><span class="p">,</span>
+               <span class="n">log_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">run_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_run</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;my_run_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">run_id</span>
+
+<span class="c1"># In a consumer integration</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_run_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_results</span><span class="p">,</span> <span class="n">test_run_id</span><span class="p">,</span> <span class="n">elapsed_time</span><span class="p">,</span>
+               <span class="n">log_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">run_id</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;my_run_id&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">context</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="c1"># Use run_id if available, skip if not</span>
+</pre></div>
+</div>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">on_run_start</span></code>: If validation raises and <code class="docutils literal notranslate"><span class="pre">required</span> <span class="pre">=</span> <span class="pre">False</span></code> (default), the
+integration is <strong>deregistered</strong>. Tests proceed normally. If <code class="docutils literal notranslate"><span class="pre">required</span> <span class="pre">=</span> <span class="pre">True</span></code>,
+the entire test run is <strong>aborted</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">on_run_end</span></code>: If one integration fails, the error is logged and the
+remaining integrations still run.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="running_tests.html" class="btn btn-neutral float-left" title="Running tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mobile_browser.html" class="btn btn-neutral float-right" title="QLTY for mobile browsers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, QLTY Automation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
