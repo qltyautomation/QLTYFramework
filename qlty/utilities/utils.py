@@ -193,6 +193,11 @@ def dump_logs(results_dir, driver):
             opened_file.write(pformat(driver.get_log('logcat')))
         elif config.CURRENT_PLATFORM == 'ios':
             opened_file.write(pformat(driver.get_log('syslog')))
+        elif config.CURRENT_PLATFORM in ('chrome', 'firefox'):
+            try:
+                opened_file.write(pformat(driver.get_log('browser')))
+            except Exception:
+                pass
     logger.debug('Logs saved to: {}'.format(log_path))
 
 

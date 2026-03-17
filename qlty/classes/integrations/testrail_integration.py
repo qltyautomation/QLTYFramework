@@ -417,6 +417,8 @@ class TestRailIntegration(Integration):
                 if not result.get('test_case_ids') or len(result['test_case_ids']) == 0:
                     continue
 
+                first_result_id = None
+                first_test_id = None
                 for case_id in result['test_case_ids']:
                     try:
                         status = result['status']
@@ -429,23 +431,32 @@ class TestRailIntegration(Integration):
                         else:
                             comment = 'Test: {}'.format(test_identifier)
 
+                        # Add cross-reference to child cases pointing to the primary case with attachments
+                        if first_result_id is not None and result['status'] in ('failed', 5):
+                            result_url = '{}/index.php?/tests/view/{}'.format(self.base_url, first_test_id)
+                            comment += '\n\n[Screenshots and logs attached here]({})'.format(result_url)
+
                         testrail_result = self.add_result_for_case(run_id, case_id, status, comment, elapsed)
 
-                        # Attach screenshots and logs to the result
-                        result_id = testrail_result.get('id')
-                        results_dir = result.get('results_dir')
-                        if result_id and results_dir:
-                            for filename in ['screenshot.png', 'system.log', 'page_source.txt']:
-                                file_path = os.path.join(results_dir, filename)
-                                if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
-                                    try:
-                                        self.add_attachment_to_result(result_id, file_path)
-                                    except Exception as attach_err:
-                                        logger.warning('Failed to attach {} for case {}: {}'.format(
-                                            filename, case_id, str(attach_err)))
+                        # Track the first result ID and case ID for attaching artifacts once
+                        if first_result_id is None:
+                            first_result_id = testrail_result.get('id')
+                            first_test_id = testrail_result.get('test_id')
 
                     except Exception as e:
                         logger.error('Failed to add result for case {}: {}'.format(case_id, str(e)))
+
+                # Attach screenshots and logs only to failed tests
+                results_dir = result.get('results_dir')
+                if first_result_id and results_dir and result['status'] in ('failed', 5):
+                    for filename in ['screenshot.png', 'system.log', 'page_source.txt']:
+                        file_path = os.path.join(results_dir, filename)
+                        if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+                            try:
+                                self.add_attachment_to_result(first_result_id, file_path)
+                            except Exception as attach_err:
+                                logger.warning('Failed to attach {} for case {}: {}'.format(
+                                    filename, first_result_id, str(attach_err)))
 
         # Attach console output log to the TestRail run
         if log_path and os.path.exists(log_path) and os.path.getsize(log_path) > 0:

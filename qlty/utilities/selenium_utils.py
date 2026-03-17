@@ -134,6 +134,7 @@ def get_desktop_webdriver():
         options = Options()
         options.add_argument('--disable-backgrounding-occluded-windows')
         options.add_argument('--disable-renderer-backgrounding')
+        options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
         if config.HEADLESS:
             logger.info('Running Chrome in headless mode')
             options.add_argument('--headless=new')
