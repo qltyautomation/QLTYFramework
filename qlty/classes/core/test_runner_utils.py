@@ -60,11 +60,12 @@ class TestRunnerUtils:
 
         project_name = settings.PROJECT_CONFIG.get('PROJECT_NAME', 'QLTY').upper()
         platform = config.CURRENT_PLATFORM.upper()
-        start_time = datetime.now().strftime('%H:%M:%S')
+        now = datetime.now()
+        date_prefix = now.strftime('%Y-%m-%d_%H-%M-%S')
         user = pwd.getpwuid(os.getuid())[0]
 
-        return '{} {} running on {} | started at [{}] by {}'.format(
-            BUILD_ID, project_name, platform, start_time, user
+        return '{} {} {} on {} by {}'.format(
+            date_prefix, BUILD_ID, project_name, platform, user
         )
 
     @staticmethod
