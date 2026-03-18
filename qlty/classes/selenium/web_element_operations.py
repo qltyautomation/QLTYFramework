@@ -33,6 +33,18 @@ class WebElementOperations(SeleniumOperations):
         super(WebElementOperations, self).__init__(driver)
         self.controller = controller
 
+    def op_settle(self, seconds=2):
+        """
+        Pause briefly to allow the UI to stabilize before a critical interaction
+        (e.g. form submission). Use sparingly when framework waits alone are
+        insufficient due to client-side rendering or async validation.
+
+        :param seconds: Duration to wait (default 2)
+        :type seconds: int or float
+        """
+        logger.debug('Settling for {}s before next interaction'.format(seconds))
+        time.sleep(seconds)
+
     def op_click_element(self, locator_key, timeout=settings.SELENIUM['TIMEOUT']):
         """
         Locates and clicks the element identified by locator_key
