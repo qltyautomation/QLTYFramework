@@ -90,6 +90,33 @@ class PostWithRateLimitRetryTests(unittest.TestCase):
 
     @patch("qlty.classes.integrations.mailtm_integration.time.sleep")
     @patch("qlty.classes.integrations.mailtm_integration.requests.post")
+    def test_clamps_excessive_retry_after_to_max_delay(self, mock_post, mock_sleep):
+        # A misbehaving / malicious server returning an absurd Retry-After
+        # must not hang the test indefinitely.
+        mock_post.side_effect = [
+            _response(429, headers={"Retry-After": "999999"}),
+            _response(201),
+        ]
+
+        self.integration._post_with_rate_limit_retry(self.url, self.payload)
+
+        mock_sleep.assert_called_once_with(MailTMIntegration._RATE_LIMIT_MAX_DELAY)
+
+    @patch("qlty.classes.integrations.mailtm_integration.time.sleep")
+    @patch("qlty.classes.integrations.mailtm_integration.requests.post")
+    def test_clamps_negative_retry_after_to_zero(self, mock_post, mock_sleep):
+        # time.sleep raises ValueError on negative input; floor at 0.
+        mock_post.side_effect = [
+            _response(429, headers={"Retry-After": "-5"}),
+            _response(201),
+        ]
+
+        self.integration._post_with_rate_limit_retry(self.url, self.payload)
+
+        mock_sleep.assert_called_once_with(0)
+
+    @patch("qlty.classes.integrations.mailtm_integration.time.sleep")
+    @patch("qlty.classes.integrations.mailtm_integration.requests.post")
     def test_returns_final_429_after_exhausting_retries(self, mock_post, mock_sleep):
         max_retries = MailTMIntegration._RATE_LIMIT_MAX_RETRIES
         total_attempts = max_retries + 1

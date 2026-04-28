@@ -35,6 +35,7 @@ class MailTMIntegration(EmailIntegration):
     # exceed it late in the run, so retry with the server-supplied Retry-After.
     _RATE_LIMIT_MAX_RETRIES = 3
     _RATE_LIMIT_FALLBACK_DELAY = 30  # seconds, used when Retry-After is absent
+    _RATE_LIMIT_MAX_DELAY = 360  # seconds, ceiling for any server-supplied Retry-After
 
     def __init__(self):
         """
@@ -191,9 +192,14 @@ class MailTMIntegration(EmailIntegration):
 
             retry_after = response.headers.get('Retry-After')
             try:
-                delay = int(retry_after) if retry_after else self._RATE_LIMIT_FALLBACK_DELAY
+                parsed = int(retry_after) if retry_after else self._RATE_LIMIT_FALLBACK_DELAY
             except ValueError:
-                delay = self._RATE_LIMIT_FALLBACK_DELAY
+                # Non-integer (e.g. an HTTP-date) — fall back rather than guess.
+                parsed = self._RATE_LIMIT_FALLBACK_DELAY
+            # Clamp to a sane window: floor at 0 (negative would crash time.sleep)
+            # and ceiling at _RATE_LIMIT_MAX_DELAY so a misbehaving server can't
+            # hang the test for hours.
+            delay = max(0, min(parsed, self._RATE_LIMIT_MAX_DELAY))
             logger.warning(
                 f"mail.tm 429 on {url} (attempt {attempt + 1}/"
                 f"{self._RATE_LIMIT_MAX_RETRIES + 1}); sleeping {delay}s before retry"
