@@ -1,5 +1,6 @@
 # Native libraries
 import requests
+import time
 import uuid
 # Project libraries
 from qlty.classes.integrations.email_integration import EmailIntegration
@@ -28,6 +29,13 @@ class MailTMIntegration(EmailIntegration):
     """
 
     BASE_URL = "https://api.mail.tm"
+
+    # mail.tm enforces a per-IP sliding-window rate limit on /accounts (and
+    # adjacent endpoints). Across a multi-env production run we comfortably
+    # exceed it late in the run, so retry with the server-supplied Retry-After.
+    _RATE_LIMIT_MAX_RETRIES = 3
+    _RATE_LIMIT_FALLBACK_DELAY = 30  # seconds, used when Retry-After is absent
+    _RATE_LIMIT_MAX_DELAY = 360  # seconds, ceiling for any server-supplied Retry-After
 
     def __init__(self):
         """
@@ -150,9 +158,10 @@ class MailTMIntegration(EmailIntegration):
         Creates a new disposable email account on mail.tm.
         Updates self.email to the canonical address returned by the API
         (mail.tm may normalize the address, e.g. stripping periods).
+        Retries with server-supplied Retry-After on 429 responses.
         """
         try:
-            response = requests.post(f"{self.BASE_URL}/accounts", json={
+            response = self._post_with_rate_limit_retry(f"{self.BASE_URL}/accounts", {
                 'address': self.email,
                 'password': self._password
             })
@@ -162,6 +171,41 @@ class MailTMIntegration(EmailIntegration):
         except requests.exceptions.RequestException as e:
             logger.error(f"Failed to create mail.tm account: {e}")
             raise
+
+    def _post_with_rate_limit_retry(self, url, payload):
+        """
+        POST helper that retries on HTTP 429, honoring the Retry-After header
+        when present. Falls back to a fixed delay otherwise. Non-429 errors
+        and the final attempt's response are returned to the caller as-is for
+        normal raise_for_status() handling.
+        """
+        last_response = None
+        for attempt in range(self._RATE_LIMIT_MAX_RETRIES + 1):
+            response = requests.post(url, json=payload)
+            last_response = response
+            if response.status_code != 429:
+                return response
+
+            if attempt == self._RATE_LIMIT_MAX_RETRIES:
+                logger.error(f"mail.tm rate-limited after {attempt + 1} attempts on {url}")
+                return response
+
+            retry_after = response.headers.get('Retry-After')
+            try:
+                parsed = int(retry_after) if retry_after else self._RATE_LIMIT_FALLBACK_DELAY
+            except ValueError:
+                # Non-integer (e.g. an HTTP-date) — fall back rather than guess.
+                parsed = self._RATE_LIMIT_FALLBACK_DELAY
+            # Clamp to a sane window: floor at 0 (negative would crash time.sleep)
+            # and ceiling at _RATE_LIMIT_MAX_DELAY so a misbehaving server can't
+            # hang the test for hours.
+            delay = max(0, min(parsed, self._RATE_LIMIT_MAX_DELAY))
+            logger.warning(
+                f"mail.tm 429 on {url} (attempt {attempt + 1}/"
+                f"{self._RATE_LIMIT_MAX_RETRIES + 1}); sleeping {delay}s before retry"
+            )
+            time.sleep(delay)
+        return last_response
 
     def _authenticate(self):
         """
