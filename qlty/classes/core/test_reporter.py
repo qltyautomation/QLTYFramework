@@ -127,10 +127,18 @@ class TestReporter:
             # Extract test class and method identifiers
             test_class = test_case.__class__.__qualname__
             if test_class == '_ErrorHolder':
-                # setUp method failure detected (class or test case level)
+                # Module/class-level failure (setUpClass / setUpModule / tearDown
+                # / cleanup). There is no per-test entry to annotate, so log it
+                # and move on — a single holder must not abort processing of the
+                # remaining failed cases.
                 logger.critical('SetUp method failure for Class or Test Case: {}'.format(test_case.description))
-                return
+                continue
             test_method_name = test_case._testMethodName
+            # A test that errors inside its own setUp fails before register_test_case
+            # ever runs, so it has no entry in test_results. Create a minimal one
+            # here so the failure is still reported instead of raising KeyError.
+            if test_method_name not in self.test_results.get(test_class, {}):
+                self._add_test_case(test_case, feature_name='', test_target=TestTarget.UI)
             # Record failure status and stack trace
             self.test_results[test_class][test_method_name]['status'] = 'failed'
             self.test_results[test_class][test_method_name]['message'] = stack_trace
