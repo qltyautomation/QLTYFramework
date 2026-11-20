@@ -30,9 +30,10 @@ class MailTMIntegration(EmailIntegration):
 
     BASE_URL = "https://api.mail.tm"
 
-    # mail.tm enforces a per-IP sliding-window rate limit on /accounts (and
-    # adjacent endpoints). Across a multi-env production run we comfortably
-    # exceed it late in the run, so retry with the server-supplied Retry-After.
+    # mail.tm enforces a per-IP sliding-window rate limit across its API, so
+    # POST /accounts, GET /domains and GET /messages/{id} retry with the
+    # server-supplied Retry-After. GET /messages is left alone: the polling
+    # loop already treats a failed poll as "no email yet" and polls again.
     _RATE_LIMIT_MAX_RETRIES = 3
     _RATE_LIMIT_FALLBACK_DELAY = 30  # seconds, used when Retry-After is absent
     _RATE_LIMIT_MAX_DELAY = 360  # seconds, ceiling for any server-supplied Retry-After
@@ -104,6 +105,7 @@ class MailTMIntegration(EmailIntegration):
     def _get_message_body(self, message_id):
         """
         Retrieves the full content of a message and returns normalized body.
+        Retries with server-supplied Retry-After on 429 responses.
 
         :param message_id: The message ID
         :type message_id: str
@@ -111,7 +113,8 @@ class MailTMIntegration(EmailIntegration):
         :rtype: dict
         """
         try:
-            response = requests.get(
+            response = self._request_with_rate_limit_retry(
+                'GET',
                 f"{self.BASE_URL}/messages/{message_id}",
                 headers=self._get_auth_headers()
             )
@@ -135,12 +138,13 @@ class MailTMIntegration(EmailIntegration):
     def _get_domain(self):
         """
         Fetches available domains from mail.tm and returns the first active one.
+        Retries with server-supplied Retry-After on 429 responses.
 
         :return: An active domain string
         :rtype: str
         """
         try:
-            response = requests.get(f"{self.BASE_URL}/domains")
+            response = self._request_with_rate_limit_retry('GET', f"{self.BASE_URL}/domains")
             response.raise_for_status()
             data = response.json()
             members = data.get('hydra:member', [])
@@ -161,7 +165,7 @@ class MailTMIntegration(EmailIntegration):
         Retries with server-supplied Retry-After on 429 responses.
         """
         try:
-            response = self._post_with_rate_limit_retry(f"{self.BASE_URL}/accounts", {
+            response = self._request_with_rate_limit_retry('POST', f"{self.BASE_URL}/accounts", json={
                 'address': self.email,
                 'password': self._password
             })
@@ -172,16 +176,24 @@ class MailTMIntegration(EmailIntegration):
             logger.error(f"Failed to create mail.tm account: {e}")
             raise
 
-    def _post_with_rate_limit_retry(self, url, payload):
+    def _request_with_rate_limit_retry(self, method, url, **kwargs):
         """
-        POST helper that retries on HTTP 429, honoring the Retry-After header
+        Request helper that retries on HTTP 429, honoring the Retry-After header
         when present. Falls back to a fixed delay otherwise. Non-429 errors
         and the final attempt's response are returned to the caller as-is for
         normal raise_for_status() handling.
+
+        :param method: HTTP method, e.g. 'GET' or 'POST'
+        :type method: str
+        :param url: The request URL
+        :type url: str
+        :param kwargs: Passed through to requests.request (json, headers, ...)
+        :return: The first non-429 response, or the final 429 response
+        :rtype: requests.Response
         """
         last_response = None
         for attempt in range(self._RATE_LIMIT_MAX_RETRIES + 1):
-            response = requests.post(url, json=payload)
+            response = requests.request(method, url, **kwargs)
             last_response = response
             if response.status_code != 429:
                 return response
