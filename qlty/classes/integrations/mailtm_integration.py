@@ -31,12 +31,17 @@ class MailTMIntegration(EmailIntegration):
     BASE_URL = "https://api.mail.tm"
 
     # mail.tm enforces a per-IP sliding-window rate limit across its API, so
-    # POST /accounts, GET /domains and GET /messages/{id} retry with the
-    # server-supplied Retry-After. GET /messages is left alone: the polling
-    # loop already treats a failed poll as "no email yet" and polls again.
+    # GET /domains, POST /accounts, POST /token and GET /messages/{id} retry
+    # with the server-supplied Retry-After. GET /messages is not wrapped: the
+    # loop in poll_for_verification_link treats a failed poll as "no email yet"
+    # and polls again, but get_emails() calls it directly and still raises on
+    # the first 429.
     _RATE_LIMIT_MAX_RETRIES = 3
     _RATE_LIMIT_FALLBACK_DELAY = 30  # seconds, used when Retry-After is absent
-    _RATE_LIMIT_MAX_DELAY = 360  # seconds, ceiling for any server-supplied Retry-After
+    # Seconds one call may spend sleeping across all its retries. Bounds the
+    # worst case per call no matter what Retry-After says.
+    _RATE_LIMIT_MAX_TOTAL_WAIT = 120
+    _REQUEST_TIMEOUT = 30  # seconds, default for every request through the helper
 
     def __init__(self):
         """
@@ -179,9 +184,11 @@ class MailTMIntegration(EmailIntegration):
     def _request_with_rate_limit_retry(self, method, url, **kwargs):
         """
         Request helper that retries on HTTP 429, honoring the Retry-After header
-        when present. Falls back to a fixed delay otherwise. Non-429 errors
-        and the final attempt's response are returned to the caller as-is for
-        normal raise_for_status() handling.
+        when present. Falls back to a fixed delay otherwise. Gives up once the
+        next sleep would push the call past _RATE_LIMIT_MAX_TOTAL_WAIT. Non-429
+        errors and the final attempt's response are returned to the caller
+        as-is for normal raise_for_status() handling. Every request gets a
+        _REQUEST_TIMEOUT default unless the caller passes its own timeout.
 
         :param method: HTTP method, e.g. 'GET' or 'POST'
         :type method: str
@@ -191,10 +198,10 @@ class MailTMIntegration(EmailIntegration):
         :return: The first non-429 response, or the final 429 response
         :rtype: requests.Response
         """
-        last_response = None
+        kwargs.setdefault('timeout', self._REQUEST_TIMEOUT)
+        total_slept = 0
         for attempt in range(self._RATE_LIMIT_MAX_RETRIES + 1):
             response = requests.request(method, url, **kwargs)
-            last_response = response
             if response.status_code != 429:
                 return response
 
@@ -208,26 +215,34 @@ class MailTMIntegration(EmailIntegration):
             except ValueError:
                 # Non-integer (e.g. an HTTP-date) — fall back rather than guess.
                 parsed = self._RATE_LIMIT_FALLBACK_DELAY
-            # Clamp to a sane window: floor at 0 (negative would crash time.sleep)
-            # and ceiling at _RATE_LIMIT_MAX_DELAY so a misbehaving server can't
-            # hang the test for hours.
-            delay = max(0, min(parsed, self._RATE_LIMIT_MAX_DELAY))
+            # Floor at 0: a negative value would crash time.sleep.
+            delay = max(0, parsed)
+            # Retrying sooner than Retry-After asks only earns another 429, so a
+            # wait that doesn't fit the remaining budget ends the call instead.
+            if total_slept + delay > self._RATE_LIMIT_MAX_TOTAL_WAIT:
+                logger.error(
+                    f"mail.tm asked for {delay}s on {url} after {total_slept}s of retries, "
+                    f"past the {self._RATE_LIMIT_MAX_TOTAL_WAIT}s budget; giving up"
+                )
+                return response
+
             logger.warning(
                 f"mail.tm 429 on {url} (attempt {attempt + 1}/"
                 f"{self._RATE_LIMIT_MAX_RETRIES + 1}); sleeping {delay}s before retry"
             )
             time.sleep(delay)
-        return last_response
+            total_slept += delay
 
     def _authenticate(self):
         """
         Authenticates with mail.tm and returns a JWT token.
+        Retries with server-supplied Retry-After on 429 responses.
 
         :return: JWT bearer token
         :rtype: str
         """
         try:
-            response = requests.post(f"{self.BASE_URL}/token", json={
+            response = self._request_with_rate_limit_retry('POST', f"{self.BASE_URL}/token", json={
                 'address': self.email,
                 'password': self._password
             })

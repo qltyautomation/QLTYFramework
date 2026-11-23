@@ -90,7 +90,7 @@ class RequestWithRateLimitRetryTests(unittest.TestCase):
 
     @patch("qlty.classes.integrations.mailtm_integration.time.sleep")
     @patch("qlty.classes.integrations.mailtm_integration.requests.request")
-    def test_clamps_excessive_retry_after_to_max_delay(self, mock_request, mock_sleep):
+    def test_gives_up_without_sleeping_when_retry_after_exceeds_budget(self, mock_request, mock_sleep):
         # A misbehaving / malicious server returning an absurd Retry-After
         # must not hang the test indefinitely.
         mock_request.side_effect = [
@@ -98,9 +98,43 @@ class RequestWithRateLimitRetryTests(unittest.TestCase):
             _response(201),
         ]
 
-        self.integration._request_with_rate_limit_retry("POST", self.url, json=self.payload)
+        response = self.integration._request_with_rate_limit_retry("POST", self.url, json=self.payload)
 
-        mock_sleep.assert_called_once_with(MailTMIntegration._RATE_LIMIT_MAX_DELAY)
+        self.assertEqual(response.status_code, 429)
+        mock_request.assert_called_once()
+        mock_sleep.assert_not_called()
+
+    @patch("qlty.classes.integrations.mailtm_integration.time.sleep")
+    @patch("qlty.classes.integrations.mailtm_integration.requests.request")
+    def test_gives_up_once_the_next_sleep_would_pass_the_total_budget(self, mock_request, mock_sleep):
+        budget = MailTMIntegration._RATE_LIMIT_MAX_TOTAL_WAIT
+        first_wait = budget - 10
+        mock_request.side_effect = [
+            _response(429, headers={"Retry-After": str(first_wait)}),
+            _response(429, headers={"Retry-After": "11"}),
+            _response(201),
+        ]
+
+        response = self.integration._request_with_rate_limit_retry("POST", self.url, json=self.payload)
+
+        self.assertEqual(response.status_code, 429)
+        self.assertEqual(mock_request.call_count, 2)
+        mock_sleep.assert_called_once_with(first_wait)
+
+    @patch("qlty.classes.integrations.mailtm_integration.time.sleep")
+    @patch("qlty.classes.integrations.mailtm_integration.requests.request")
+    def test_retries_while_waits_fit_the_budget_exactly(self, mock_request, mock_sleep):
+        budget = MailTMIntegration._RATE_LIMIT_MAX_TOTAL_WAIT
+        mock_request.side_effect = [
+            _response(429, headers={"Retry-After": str(budget - 10)}),
+            _response(429, headers={"Retry-After": "10"}),
+            _response(201),
+        ]
+
+        response = self.integration._request_with_rate_limit_retry("POST", self.url, json=self.payload)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(mock_sleep.call_count, 2)
 
     @patch("qlty.classes.integrations.mailtm_integration.time.sleep")
     @patch("qlty.classes.integrations.mailtm_integration.requests.request")
@@ -140,14 +174,24 @@ class RequestWithRateLimitRetryTests(unittest.TestCase):
         self.assertEqual(mock_request.call_count, 2)
         for call in mock_request.call_args_list:
             self.assertEqual(call.args, ("GET", self.url))
-            self.assertEqual(call.kwargs, {"headers": headers})
+            self.assertEqual(
+                call.kwargs, {"headers": headers, "timeout": MailTMIntegration._REQUEST_TIMEOUT}
+            )
+
+    @patch("qlty.classes.integrations.mailtm_integration.requests.request")
+    def test_keeps_a_caller_supplied_timeout(self, mock_request):
+        mock_request.return_value = _response(200)
+
+        self.integration._request_with_rate_limit_retry("GET", self.url, timeout=5)
+
+        self.assertEqual(mock_request.call_args.kwargs["timeout"], 5)
 
 
-class ReadEndpointRateLimitTests(unittest.TestCase):
+class EndpointRateLimitTests(unittest.TestCase):
     """
-    GET /messages/{id} and GET /domains were the endpoints that 429'd in
-    production runs once POST /accounts retried, so each must go through the
-    retry helper rather than raising on the first 429.
+    Every mail.tm call a registration test makes outside the polling loop
+    shares the same per-IP limit, so each must go through the retry helper
+    rather than raising on the first 429.
     """
 
     def setUp(self):
@@ -166,9 +210,31 @@ class ReadEndpointRateLimitTests(unittest.TestCase):
 
         self.assertEqual(body, {"html": "<a href='x'>y</a>", "text": "y"})
         mock_request.assert_called_with(
-            "GET", "https://api.mail.tm/messages/abc", headers={"Authorization": "Bearer t"}
+            "GET",
+            "https://api.mail.tm/messages/abc",
+            headers={"Authorization": "Bearer t"},
+            timeout=MailTMIntegration._REQUEST_TIMEOUT,
         )
         mock_sleep.assert_called_once_with(2)
+
+    @patch("qlty.classes.integrations.mailtm_integration.time.sleep")
+    @patch("qlty.classes.integrations.mailtm_integration.requests.request")
+    def test_authenticate_retries_429_then_returns_token(self, mock_request, mock_sleep):
+        self.integration.email = "test@example.com"
+        self.integration._password = "pw"
+        mock_request.side_effect = [
+            _response(429, headers={"Retry-After": "4"}),
+            _response(200, body={"token": "jwt"}),
+        ]
+
+        self.assertEqual(self.integration._authenticate(), "jwt")
+        mock_request.assert_called_with(
+            "POST",
+            "https://api.mail.tm/token",
+            json={"address": "test@example.com", "password": "pw"},
+            timeout=MailTMIntegration._REQUEST_TIMEOUT,
+        )
+        mock_sleep.assert_called_once_with(4)
 
     @patch("qlty.classes.integrations.mailtm_integration.time.sleep")
     @patch("qlty.classes.integrations.mailtm_integration.requests.request")
