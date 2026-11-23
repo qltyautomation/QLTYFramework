@@ -315,4 +315,4 @@ class SlackIntegration(Integration):
             )
             logger.info(result)
         except SlackApiError as e:
-            logger.info('Slack notification failed\nError: {}'.format(e))
+            logger.error('Slack notification failed\nError: {}'.format(e))

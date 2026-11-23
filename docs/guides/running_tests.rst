@@ -126,7 +126,11 @@ command line arguments. These options can be activated by the short flag or the 
         SLACK = {
             'SLACK_AUTH_TOKEN': os.getenv('SLACK_TOKEN', None),
             'CHANNEL_ID': 'C123456789',
-            # Optional: post the report as a reply in this thread of CHANNEL_ID
+            # Optional: post the report as a reply in this thread of CHANNEL_ID.
+            # The value is the message's ts string exactly as Slack returns it,
+            # e.g. '1795193000.123456', never a number. Threading usually wants
+            # -f (REPORT_ON_FAIL) too: without it a run with failures posts
+            # nothing, and its absence from the thread reads as running or passed.
             'THREAD_TS': os.getenv('SLACK_THREAD_TS', None),
         }
 
