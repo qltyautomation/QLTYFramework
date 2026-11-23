@@ -298,15 +298,20 @@ class SlackIntegration(Integration):
 
     def _post_results(self, payload):
         """
-        Publishes message to Slack using REST API endpoint for the configured channel
+        Publishes message to Slack using REST API endpoint for the configured channel.
+        When settings.SLACK has a THREAD_TS, the message is posted as a reply in that
+        thread instead, so a caller can gather several runs under one message of its own.
 
         :param payload: Data formatted in Slack block kit structure
         """
+        thread_ts = settings.SLACK.get('THREAD_TS')
+        optional_args = {'thread_ts': thread_ts} if thread_ts else {}
         try:
             result = self.client.chat_postMessage(
                 channel=settings.SLACK['CHANNEL_ID'],
                 blocks=payload['blocks'],
-                icon_emoji=':astro-love:'
+                icon_emoji=':astro-love:',
+                **optional_args
             )
             logger.info(result)
         except SlackApiError as e:

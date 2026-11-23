@@ -172,7 +172,7 @@ SELENIUM = {
 }
 
 # Integration settings (optional, based on flags used)
-SLACK = {'SLACK_AUTH_TOKEN': os.getenv('SLACK_TOKEN'), 'CHANNEL_ID': 'C123456'}
+SLACK = {'SLACK_AUTH_TOKEN': os.getenv('SLACK_TOKEN'), 'CHANNEL_ID': 'C123456'}  # optional 'THREAD_TS' posts the report as a reply in that thread
 SAUCELABS = {'USERNAME': '...', 'ACCESS_KEY': '...', 'URL': '...'}
 TESTRAIL = {
     'BASE_URL': 'https://yourcompany.testrail.io',

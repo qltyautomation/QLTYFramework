@@ -126,6 +126,8 @@ command line arguments. These options can be activated by the short flag or the 
         SLACK = {
             'SLACK_AUTH_TOKEN': os.getenv('SLACK_TOKEN', None),
             'CHANNEL_ID': 'C123456789',
+            # Optional: post the report as a reply in this thread of CHANNEL_ID
+            'THREAD_TS': os.getenv('SLACK_THREAD_TS', None),
         }
 
         PROJECT_CONFIG = {
